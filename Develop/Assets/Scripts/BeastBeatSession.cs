@@ -7,6 +7,7 @@ namespace BeastBeat
     // Data survives scene changes; presentation objects never do.
     public static class BeastBeatSession
     {
+        public static string HomeScenePath="Assets/Scenes/main.unity";
         public static ProgressService Progress;
         public static BattleEngine Battle;
         public static int StageGroup=1, SelectedStage=1, SelectedBoo=11, RewardGroup;
@@ -17,7 +18,7 @@ namespace BeastBeat
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void Reset()
         {
-            Progress=null;Battle=null;StageGroup=1;SelectedStage=1;SelectedBoo=11;RewardGroup=0;
+            HomeScenePath="Assets/Scenes/main.unity";Progress=null;Battle=null;StageGroup=1;SelectedStage=1;SelectedBoo=11;RewardGroup=0;
             BattleLine="";PreviousScreen="Home";History=new List<string>();ResultNotes=new List<string>();TutorialPending=false;PreviewBattle=false;
         }
         public static string SceneName(string screen)
