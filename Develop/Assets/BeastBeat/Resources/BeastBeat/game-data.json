@@ -1,0 +1,1399 @@
+{
+  "event_list": {
+    "id": 1,
+    "type": 1,
+    "name": "비스트-비트 스테이션",
+    "description": "그 화제의 게임, 「비스트 비트」가 드디어 뉴에리두에 입성했습니다!\n챔피언전에 참가하려면, 당신만의 파트너가 필요합니다.\n자, 어떤 Bangboo를 선택하시겠습니까?",
+    "minimumAccountLevel": 23,
+    "minimumChapter": 3,
+    "demoLimitedDays": 14
+  },
+  "balance": {
+    "strong": 1.5,
+    "weak": 0.65,
+    "defenseFactor": 0.012,
+    "maxLevel": 20,
+    "evolutionLevel": 10,
+    "xpBase": 100,
+    "xpStep": 20
+  },
+  "bangboo": [
+    {
+      "id": 11,
+      "name": "봉투부",
+      "type": 1,
+      "hp": 800,
+      "atk": 50,
+      "unlockLevel": 1,
+      "description": "봉투 속에 숨겨 둔 묵직한 한 방.",
+      "skillIds": [
+        111,
+        112,
+        113
+      ],
+      "def": 50
+    },
+    {
+      "id": 12,
+      "name": "스모부",
+      "type": 1,
+      "hp": 700,
+      "atk": 60,
+      "unlockLevel": 2,
+      "description": "작은 몸으로 버티는 든든한 파트너.",
+      "skillIds": [
+        121,
+        122,
+        123
+      ],
+      "def": 40
+    },
+    {
+      "id": 21,
+      "name": "울보부",
+      "type": 2,
+      "hp": 750,
+      "atk": 60,
+      "unlockLevel": 1,
+      "description": "울음보다 뜨거운 불꽃으로 맞서요.",
+      "skillIds": [
+        211,
+        212,
+        213
+      ],
+      "def": 50
+    },
+    {
+      "id": 22,
+      "name": "격투부",
+      "type": 2,
+      "hp": 900,
+      "atk": 70,
+      "unlockLevel": 4,
+      "description": "불꽃 같은 기세로 전장을 누벼요.",
+      "skillIds": [
+        221,
+        222,
+        223
+      ],
+      "def": 90
+    },
+    {
+      "id": 31,
+      "name": "펭귄부",
+      "type": 3,
+      "hp": 600,
+      "atk": 90,
+      "unlockLevel": 1,
+      "description": "차가운 얼음으로 흐름을 바꿔요.",
+      "skillIds": [
+        311,
+        312,
+        313
+      ],
+      "def": 60
+    },
+    {
+      "id": 32,
+      "name": "아보카부",
+      "type": 3,
+      "hp": 800,
+      "atk": 30,
+      "unlockLevel": 5,
+      "description": "튼튼한 방어와 회복의 전문가.",
+      "skillIds": [
+        321,
+        322,
+        323
+      ],
+      "def": 70
+    },
+    {
+      "id": 41,
+      "name": "자석부",
+      "type": 4,
+      "hp": 860,
+      "atk": 50,
+      "unlockLevel": 3,
+      "description": "찌릿한 힘으로 상대를 끌어당겨요.",
+      "skillIds": [
+        411,
+        412,
+        413
+      ],
+      "def": 50
+    },
+    {
+      "id": 42,
+      "name": "찌릿부",
+      "type": 4,
+      "hp": 920,
+      "atk": 60,
+      "unlockLevel": 6,
+      "description": "작은 코어에 전기를 가득 충전!",
+      "skillIds": [
+        421,
+        422,
+        423
+      ],
+      "def": 60
+    },
+    {
+      "id": 51,
+      "name": "데빌부",
+      "type": 5,
+      "hp": 680,
+      "atk": 60,
+      "unlockLevel": 7,
+      "description": "장난스러운 에테르의 마술사.",
+      "skillIds": [
+        511,
+        512,
+        513
+      ],
+      "def": 50
+    },
+    {
+      "id": 52,
+      "name": "압력부",
+      "type": 5,
+      "hp": 720,
+      "atk": 45,
+      "unlockLevel": 8,
+      "description": "압축한 에너지를 한 번에 방출!",
+      "skillIds": [
+        521,
+        522,
+        523
+      ],
+      "def": 65
+    }
+  ],
+  "skills": [
+    {
+      "id": 111,
+      "bangboo_id": 11,
+      "name": "몸통박치기",
+      "effect": "attack",
+      "power": 4.5,
+      "charge_count": 15,
+      "status": 1,
+      "chance": 0,
+      "description": "상성에 영향을 받지 않는 안정적인 공격."
+    },
+    {
+      "id": 112,
+      "bangboo_id": 11,
+      "name": "봉투난타",
+      "effect": "element",
+      "power": 5.4,
+      "charge_count": 8,
+      "status": 1,
+      "chance": 0.25,
+      "description": "속성 공격. 유리한 상성은 1.5배 피해."
+    },
+    {
+      "id": 113,
+      "bangboo_id": 11,
+      "name": "응급수리",
+      "effect": "heal",
+      "power": 0.3,
+      "charge_count": 5,
+      "status": 1,
+      "chance": 0,
+      "description": "최대 HP의 30% 회복 · 상태 이상 해제."
+    },
+    {
+      "id": 121,
+      "bangboo_id": 12,
+      "name": "몸통박치기",
+      "effect": "attack",
+      "power": 4.5,
+      "charge_count": 15,
+      "status": 1,
+      "chance": 0,
+      "description": "상성에 영향을 받지 않는 안정적인 공격."
+    },
+    {
+      "id": 122,
+      "bangboo_id": 12,
+      "name": "봉투난타",
+      "effect": "element",
+      "power": 5.4,
+      "charge_count": 8,
+      "status": 1,
+      "chance": 0.25,
+      "description": "속성 공격. 유리한 상성은 1.5배 피해."
+    },
+    {
+      "id": 123,
+      "bangboo_id": 12,
+      "name": "응급수리",
+      "effect": "heal",
+      "power": 0.3,
+      "charge_count": 5,
+      "status": 1,
+      "chance": 0,
+      "description": "최대 HP의 30% 회복 · 상태 이상 해제."
+    },
+    {
+      "id": 211,
+      "bangboo_id": 21,
+      "name": "몸통박치기",
+      "effect": "attack",
+      "power": 4.5,
+      "charge_count": 15,
+      "status": 1,
+      "chance": 0,
+      "description": "상성에 영향을 받지 않는 안정적인 공격."
+    },
+    {
+      "id": 212,
+      "bangboo_id": 21,
+      "name": "불꽃탄",
+      "effect": "element",
+      "power": 5.4,
+      "charge_count": 8,
+      "status": 4,
+      "chance": 0.25,
+      "description": "속성 공격. 유리한 상성은 1.5배 피해."
+    },
+    {
+      "id": 213,
+      "bangboo_id": 21,
+      "name": "응급수리",
+      "effect": "heal",
+      "power": 0.3,
+      "charge_count": 5,
+      "status": 1,
+      "chance": 0,
+      "description": "최대 HP의 30% 회복 · 상태 이상 해제."
+    },
+    {
+      "id": 221,
+      "bangboo_id": 22,
+      "name": "몸통박치기",
+      "effect": "attack",
+      "power": 4.5,
+      "charge_count": 15,
+      "status": 1,
+      "chance": 0,
+      "description": "상성에 영향을 받지 않는 안정적인 공격."
+    },
+    {
+      "id": 222,
+      "bangboo_id": 22,
+      "name": "불꽃탄",
+      "effect": "element",
+      "power": 5.4,
+      "charge_count": 8,
+      "status": 4,
+      "chance": 0.25,
+      "description": "속성 공격. 유리한 상성은 1.5배 피해."
+    },
+    {
+      "id": 223,
+      "bangboo_id": 22,
+      "name": "응급수리",
+      "effect": "heal",
+      "power": 0.3,
+      "charge_count": 5,
+      "status": 1,
+      "chance": 0,
+      "description": "최대 HP의 30% 회복 · 상태 이상 해제."
+    },
+    {
+      "id": 311,
+      "bangboo_id": 31,
+      "name": "몸통박치기",
+      "effect": "attack",
+      "power": 4.5,
+      "charge_count": 15,
+      "status": 1,
+      "chance": 0,
+      "description": "상성에 영향을 받지 않는 안정적인 공격."
+    },
+    {
+      "id": 312,
+      "bangboo_id": 31,
+      "name": "얼음파동",
+      "effect": "element",
+      "power": 5.4,
+      "charge_count": 8,
+      "status": 3,
+      "chance": 0.25,
+      "description": "속성 공격. 유리한 상성은 1.5배 피해."
+    },
+    {
+      "id": 313,
+      "bangboo_id": 31,
+      "name": "응급수리",
+      "effect": "heal",
+      "power": 0.3,
+      "charge_count": 5,
+      "status": 1,
+      "chance": 0,
+      "description": "최대 HP의 30% 회복 · 상태 이상 해제."
+    },
+    {
+      "id": 321,
+      "bangboo_id": 32,
+      "name": "몸통박치기",
+      "effect": "attack",
+      "power": 4.5,
+      "charge_count": 15,
+      "status": 1,
+      "chance": 0,
+      "description": "상성에 영향을 받지 않는 안정적인 공격."
+    },
+    {
+      "id": 322,
+      "bangboo_id": 32,
+      "name": "얼음파동",
+      "effect": "element",
+      "power": 5.4,
+      "charge_count": 8,
+      "status": 3,
+      "chance": 0.25,
+      "description": "속성 공격. 유리한 상성은 1.5배 피해."
+    },
+    {
+      "id": 323,
+      "bangboo_id": 32,
+      "name": "응급수리",
+      "effect": "heal",
+      "power": 0.3,
+      "charge_count": 5,
+      "status": 1,
+      "chance": 0,
+      "description": "최대 HP의 30% 회복 · 상태 이상 해제."
+    },
+    {
+      "id": 411,
+      "bangboo_id": 41,
+      "name": "몸통박치기",
+      "effect": "attack",
+      "power": 4.5,
+      "charge_count": 15,
+      "status": 1,
+      "chance": 0,
+      "description": "상성에 영향을 받지 않는 안정적인 공격."
+    },
+    {
+      "id": 412,
+      "bangboo_id": 41,
+      "name": "방전",
+      "effect": "element",
+      "power": 5.4,
+      "charge_count": 8,
+      "status": 2,
+      "chance": 0.25,
+      "description": "속성 공격. 유리한 상성은 1.5배 피해."
+    },
+    {
+      "id": 413,
+      "bangboo_id": 41,
+      "name": "응급수리",
+      "effect": "heal",
+      "power": 0.3,
+      "charge_count": 5,
+      "status": 1,
+      "chance": 0,
+      "description": "최대 HP의 30% 회복 · 상태 이상 해제."
+    },
+    {
+      "id": 421,
+      "bangboo_id": 42,
+      "name": "몸통박치기",
+      "effect": "attack",
+      "power": 4.5,
+      "charge_count": 15,
+      "status": 1,
+      "chance": 0,
+      "description": "상성에 영향을 받지 않는 안정적인 공격."
+    },
+    {
+      "id": 422,
+      "bangboo_id": 42,
+      "name": "방전",
+      "effect": "element",
+      "power": 5.4,
+      "charge_count": 8,
+      "status": 2,
+      "chance": 0.25,
+      "description": "속성 공격. 유리한 상성은 1.5배 피해."
+    },
+    {
+      "id": 423,
+      "bangboo_id": 42,
+      "name": "응급수리",
+      "effect": "heal",
+      "power": 0.3,
+      "charge_count": 5,
+      "status": 1,
+      "chance": 0,
+      "description": "최대 HP의 30% 회복 · 상태 이상 해제."
+    },
+    {
+      "id": 511,
+      "bangboo_id": 51,
+      "name": "몸통박치기",
+      "effect": "attack",
+      "power": 4.5,
+      "charge_count": 15,
+      "status": 1,
+      "chance": 0,
+      "description": "상성에 영향을 받지 않는 안정적인 공격."
+    },
+    {
+      "id": 512,
+      "bangboo_id": 51,
+      "name": "에테르탄",
+      "effect": "element",
+      "power": 5.4,
+      "charge_count": 8,
+      "status": 1,
+      "chance": 0.25,
+      "description": "속성 공격. 유리한 상성은 1.5배 피해."
+    },
+    {
+      "id": 513,
+      "bangboo_id": 51,
+      "name": "응급수리",
+      "effect": "heal",
+      "power": 0.3,
+      "charge_count": 5,
+      "status": 1,
+      "chance": 0,
+      "description": "최대 HP의 30% 회복 · 상태 이상 해제."
+    },
+    {
+      "id": 521,
+      "bangboo_id": 52,
+      "name": "몸통박치기",
+      "effect": "attack",
+      "power": 4.5,
+      "charge_count": 15,
+      "status": 1,
+      "chance": 0,
+      "description": "상성에 영향을 받지 않는 안정적인 공격."
+    },
+    {
+      "id": 522,
+      "bangboo_id": 52,
+      "name": "에테르탄",
+      "effect": "element",
+      "power": 5.4,
+      "charge_count": 8,
+      "status": 1,
+      "chance": 0.25,
+      "description": "속성 공격. 유리한 상성은 1.5배 피해."
+    },
+    {
+      "id": 523,
+      "bangboo_id": 52,
+      "name": "응급수리",
+      "effect": "heal",
+      "power": 0.3,
+      "charge_count": 5,
+      "status": 1,
+      "chance": 0,
+      "description": "최대 HP의 30% 회복 · 상태 이상 해제."
+    }
+  ],
+  "stage_list": [
+    {
+      "id": 1,
+      "event_list_id": 1,
+      "name": "상점 점원",
+      "npc": "점원",
+      "type": 1,
+      "npc_type": 2,
+      "enemies": [
+        21
+      ],
+      "level": 1,
+      "experience": 280,
+      "npc_dialogue": "환영해요! 파트너와 호흡을 맞춰볼까요?"
+    },
+    {
+      "id": 2,
+      "event_list_id": 1,
+      "name": "Random Play",
+      "npc": "벨",
+      "type": 2,
+      "npc_type": 1,
+      "enemies": [
+        11,
+        31
+      ],
+      "level": 2,
+      "experience": 365,
+      "npc_dialogue": "새로운 게임이라면 놓칠 수 없지!"
+    },
+    {
+      "id": 3,
+      "event_list_id": 1,
+      "name": "갓핑거",
+      "npc": "아샤",
+      "type": 2,
+      "npc_type": 2,
+      "enemies": [
+        21,
+        12
+      ],
+      "level": 3,
+      "experience": 450,
+      "npc_dialogue": "에너지 풀 충전! 재미있어지겠는걸?"
+    },
+    {
+      "id": 4,
+      "event_list_id": 1,
+      "name": "벨로보그 중공업",
+      "npc": "콜레다",
+      "type": 2,
+      "npc_type": 4,
+      "enemies": [
+        41,
+        22
+      ],
+      "level": 4,
+      "experience": 535,
+      "npc_dialogue": "현장의 저력을 보여주겠어!"
+    },
+    {
+      "id": 5,
+      "event_list_id": 1,
+      "name": "교활한 토끼굴",
+      "npc": "니콜",
+      "type": 2,
+      "npc_type": 5,
+      "enemies": [
+        51,
+        11
+      ],
+      "level": 5,
+      "experience": 620,
+      "npc_dialogue": "우승 상금은 우리 거야!"
+    },
+    {
+      "id": 6,
+      "event_list_id": 1,
+      "name": "빅토리아 하우스",
+      "npc": "코린",
+      "type": 2,
+      "npc_type": 3,
+      "enemies": [
+        31,
+        32
+      ],
+      "level": 6,
+      "experience": 705,
+      "npc_dialogue": "저, 최선을 다할게요!"
+    },
+    {
+      "id": 7,
+      "event_list_id": 1,
+      "name": "대공동 제6과",
+      "npc": "소우카쿠",
+      "type": 3,
+      "npc_type": 3,
+      "enemies": [
+        31,
+        32,
+        42
+      ],
+      "level": 8,
+      "experience": 790,
+      "npc_dialogue": "이기면 맛있는 거 먹으러 가자!"
+    },
+    {
+      "id": 8,
+      "event_list_id": 1,
+      "name": "형사특수팀",
+      "npc": "주연",
+      "type": 3,
+      "npc_type": 5,
+      "enemies": [
+        51,
+        52,
+        41
+      ],
+      "level": 10,
+      "experience": 875,
+      "npc_dialogue": "준비가 됐다면 시작하죠."
+    },
+    {
+      "id": 9,
+      "event_list_id": 1,
+      "name": "칼리돈의 자손",
+      "npc": "카이사르",
+      "type": 3,
+      "npc_type": 1,
+      "enemies": [
+        12,
+        22,
+        11
+      ],
+      "level": 12,
+      "experience": 960,
+      "npc_dialogue": "정정당당한 승부를 기대할게!"
+    },
+    {
+      "id": 10,
+      "event_list_id": 1,
+      "name": "스타즈 오브 리라",
+      "npc": "아스트라",
+      "type": 3,
+      "npc_type": 4,
+      "enemies": [
+        42,
+        51,
+        32
+      ],
+      "level": 14,
+      "experience": 1045,
+      "npc_dialogue": "오늘 무대의 주인공은 누구일까?"
+    },
+    {
+      "id": 11,
+      "event_list_id": 1,
+      "name": "챔피언 리카온",
+      "npc": "리카온",
+      "type": 4,
+      "npc_type": 3,
+      "enemies": [
+        32,
+        42,
+        22
+      ],
+      "level": 16,
+      "experience": 1130,
+      "npc_dialogue": "최고의 승부로 보답하겠습니다."
+    }
+  ],
+  "items": [
+    {
+      "id": 1,
+      "name": "기밀 마스터 테이프",
+      "grade": 1
+    },
+    {
+      "id": 2,
+      "name": "Bangboo 티켓",
+      "grade": 1
+    },
+    {
+      "id": 3,
+      "name": "선임 조사원 기록",
+      "grade": 2
+    },
+    {
+      "id": 4,
+      "name": "정규 조사원 기록",
+      "grade": 3
+    },
+    {
+      "id": 5,
+      "name": "수습 조사원 기록",
+      "grade": 4
+    },
+    {
+      "id": 6,
+      "name": "W-엔진 에너지 모듈",
+      "grade": 2
+    },
+    {
+      "id": 7,
+      "name": "변조 W-엔진 전원",
+      "grade": 3
+    },
+    {
+      "id": 8,
+      "name": "W-엔진 배터리",
+      "grade": 4
+    },
+    {
+      "id": 9,
+      "name": "데니",
+      "grade": 3
+    },
+    {
+      "id": 10,
+      "name": "비스트 비트 한정 훈장",
+      "grade": 1
+    },
+    {
+      "id": 11,
+      "name": "챔피언 라이브 배경",
+      "grade": 1
+    },
+    {
+      "id": 12,
+      "name": "비스트 마스터 타이틀",
+      "grade": 1
+    }
+  ],
+  "stage_rewards": [
+    {
+      "id": 1,
+      "owner_id": 1,
+      "items_id": 2,
+      "amount": 2
+    },
+    {
+      "id": 2,
+      "owner_id": 1,
+      "items_id": 3,
+      "amount": 3
+    },
+    {
+      "id": 3,
+      "owner_id": 1,
+      "items_id": 9,
+      "amount": 1500
+    },
+    {
+      "id": 4,
+      "owner_id": 2,
+      "items_id": 2,
+      "amount": 2
+    },
+    {
+      "id": 5,
+      "owner_id": 2,
+      "items_id": 3,
+      "amount": 3
+    },
+    {
+      "id": 6,
+      "owner_id": 2,
+      "items_id": 9,
+      "amount": 2000
+    },
+    {
+      "id": 7,
+      "owner_id": 3,
+      "items_id": 2,
+      "amount": 2
+    },
+    {
+      "id": 8,
+      "owner_id": 3,
+      "items_id": 3,
+      "amount": 3
+    },
+    {
+      "id": 9,
+      "owner_id": 3,
+      "items_id": 9,
+      "amount": 2500
+    },
+    {
+      "id": 10,
+      "owner_id": 4,
+      "items_id": 2,
+      "amount": 2
+    },
+    {
+      "id": 11,
+      "owner_id": 4,
+      "items_id": 3,
+      "amount": 3
+    },
+    {
+      "id": 12,
+      "owner_id": 4,
+      "items_id": 9,
+      "amount": 3000
+    },
+    {
+      "id": 13,
+      "owner_id": 5,
+      "items_id": 2,
+      "amount": 2
+    },
+    {
+      "id": 14,
+      "owner_id": 5,
+      "items_id": 3,
+      "amount": 3
+    },
+    {
+      "id": 15,
+      "owner_id": 5,
+      "items_id": 9,
+      "amount": 3500
+    },
+    {
+      "id": 16,
+      "owner_id": 6,
+      "items_id": 2,
+      "amount": 2
+    },
+    {
+      "id": 17,
+      "owner_id": 6,
+      "items_id": 3,
+      "amount": 3
+    },
+    {
+      "id": 18,
+      "owner_id": 6,
+      "items_id": 9,
+      "amount": 4000
+    },
+    {
+      "id": 19,
+      "owner_id": 7,
+      "items_id": 2,
+      "amount": 2
+    },
+    {
+      "id": 20,
+      "owner_id": 7,
+      "items_id": 3,
+      "amount": 3
+    },
+    {
+      "id": 21,
+      "owner_id": 7,
+      "items_id": 9,
+      "amount": 4500
+    },
+    {
+      "id": 22,
+      "owner_id": 8,
+      "items_id": 2,
+      "amount": 2
+    },
+    {
+      "id": 23,
+      "owner_id": 8,
+      "items_id": 3,
+      "amount": 3
+    },
+    {
+      "id": 24,
+      "owner_id": 8,
+      "items_id": 9,
+      "amount": 5000
+    },
+    {
+      "id": 25,
+      "owner_id": 9,
+      "items_id": 2,
+      "amount": 2
+    },
+    {
+      "id": 26,
+      "owner_id": 9,
+      "items_id": 3,
+      "amount": 3
+    },
+    {
+      "id": 27,
+      "owner_id": 9,
+      "items_id": 9,
+      "amount": 5500
+    },
+    {
+      "id": 28,
+      "owner_id": 10,
+      "items_id": 2,
+      "amount": 2
+    },
+    {
+      "id": 29,
+      "owner_id": 10,
+      "items_id": 3,
+      "amount": 3
+    },
+    {
+      "id": 30,
+      "owner_id": 10,
+      "items_id": 9,
+      "amount": 6000
+    },
+    {
+      "id": 31,
+      "owner_id": 11,
+      "items_id": 2,
+      "amount": 2
+    },
+    {
+      "id": 32,
+      "owner_id": 11,
+      "items_id": 3,
+      "amount": 3
+    },
+    {
+      "id": 33,
+      "owner_id": 11,
+      "items_id": 9,
+      "amount": 6500
+    }
+  ],
+  "level_rewards": [
+    {
+      "id": 1,
+      "owner_id": 1,
+      "items_id": 2,
+      "amount": 1
+    },
+    {
+      "id": 2,
+      "owner_id": 1,
+      "items_id": 4,
+      "amount": 3
+    },
+    {
+      "id": 3,
+      "owner_id": 2,
+      "items_id": 2,
+      "amount": 1
+    },
+    {
+      "id": 4,
+      "owner_id": 2,
+      "items_id": 4,
+      "amount": 3
+    },
+    {
+      "id": 5,
+      "owner_id": 3,
+      "items_id": 2,
+      "amount": 1
+    },
+    {
+      "id": 6,
+      "owner_id": 3,
+      "items_id": 4,
+      "amount": 3
+    },
+    {
+      "id": 7,
+      "owner_id": 4,
+      "items_id": 2,
+      "amount": 1
+    },
+    {
+      "id": 8,
+      "owner_id": 4,
+      "items_id": 4,
+      "amount": 3
+    },
+    {
+      "id": 9,
+      "owner_id": 5,
+      "items_id": 1,
+      "amount": 1
+    },
+    {
+      "id": 10,
+      "owner_id": 5,
+      "items_id": 2,
+      "amount": 2
+    },
+    {
+      "id": 11,
+      "owner_id": 5,
+      "items_id": 6,
+      "amount": 2
+    },
+    {
+      "id": 12,
+      "owner_id": 6,
+      "items_id": 2,
+      "amount": 1
+    },
+    {
+      "id": 13,
+      "owner_id": 6,
+      "items_id": 4,
+      "amount": 3
+    },
+    {
+      "id": 14,
+      "owner_id": 7,
+      "items_id": 2,
+      "amount": 1
+    },
+    {
+      "id": 15,
+      "owner_id": 7,
+      "items_id": 4,
+      "amount": 3
+    },
+    {
+      "id": 16,
+      "owner_id": 8,
+      "items_id": 2,
+      "amount": 1
+    },
+    {
+      "id": 17,
+      "owner_id": 8,
+      "items_id": 4,
+      "amount": 3
+    },
+    {
+      "id": 18,
+      "owner_id": 9,
+      "items_id": 2,
+      "amount": 1
+    },
+    {
+      "id": 19,
+      "owner_id": 9,
+      "items_id": 4,
+      "amount": 3
+    },
+    {
+      "id": 20,
+      "owner_id": 10,
+      "items_id": 1,
+      "amount": 1
+    },
+    {
+      "id": 21,
+      "owner_id": 10,
+      "items_id": 2,
+      "amount": 2
+    },
+    {
+      "id": 22,
+      "owner_id": 10,
+      "items_id": 6,
+      "amount": 2
+    },
+    {
+      "id": 23,
+      "owner_id": 11,
+      "items_id": 2,
+      "amount": 1
+    },
+    {
+      "id": 24,
+      "owner_id": 11,
+      "items_id": 4,
+      "amount": 3
+    },
+    {
+      "id": 25,
+      "owner_id": 12,
+      "items_id": 2,
+      "amount": 1
+    },
+    {
+      "id": 26,
+      "owner_id": 12,
+      "items_id": 4,
+      "amount": 3
+    },
+    {
+      "id": 27,
+      "owner_id": 13,
+      "items_id": 2,
+      "amount": 1
+    },
+    {
+      "id": 28,
+      "owner_id": 13,
+      "items_id": 4,
+      "amount": 3
+    },
+    {
+      "id": 29,
+      "owner_id": 14,
+      "items_id": 2,
+      "amount": 1
+    },
+    {
+      "id": 30,
+      "owner_id": 14,
+      "items_id": 4,
+      "amount": 3
+    },
+    {
+      "id": 31,
+      "owner_id": 15,
+      "items_id": 1,
+      "amount": 1
+    },
+    {
+      "id": 32,
+      "owner_id": 15,
+      "items_id": 2,
+      "amount": 2
+    },
+    {
+      "id": 33,
+      "owner_id": 15,
+      "items_id": 6,
+      "amount": 2
+    },
+    {
+      "id": 34,
+      "owner_id": 16,
+      "items_id": 2,
+      "amount": 1
+    },
+    {
+      "id": 35,
+      "owner_id": 16,
+      "items_id": 4,
+      "amount": 3
+    },
+    {
+      "id": 36,
+      "owner_id": 17,
+      "items_id": 2,
+      "amount": 1
+    },
+    {
+      "id": 37,
+      "owner_id": 17,
+      "items_id": 4,
+      "amount": 3
+    },
+    {
+      "id": 38,
+      "owner_id": 18,
+      "items_id": 2,
+      "amount": 1
+    },
+    {
+      "id": 39,
+      "owner_id": 18,
+      "items_id": 4,
+      "amount": 3
+    },
+    {
+      "id": 40,
+      "owner_id": 19,
+      "items_id": 2,
+      "amount": 1
+    },
+    {
+      "id": 41,
+      "owner_id": 19,
+      "items_id": 4,
+      "amount": 3
+    },
+    {
+      "id": 42,
+      "owner_id": 20,
+      "items_id": 1,
+      "amount": 1
+    },
+    {
+      "id": 43,
+      "owner_id": 20,
+      "items_id": 2,
+      "amount": 2
+    },
+    {
+      "id": 44,
+      "owner_id": 20,
+      "items_id": 6,
+      "amount": 2
+    }
+  ],
+  "achievement": [
+    {
+      "id": 1,
+      "name": "첫 배틀의 기억",
+      "metric": "stage",
+      "target": 1
+    },
+    {
+      "id": 2,
+      "name": "예선 돌파",
+      "metric": "stage",
+      "target": 6
+    },
+    {
+      "id": 3,
+      "name": "본선 돌파",
+      "metric": "stage",
+      "target": 10
+    },
+    {
+      "id": 4,
+      "name": "뉴에리두 챔피언",
+      "metric": "stage",
+      "target": 11
+    },
+    {
+      "id": 5,
+      "name": "첫 번째 파티",
+      "metric": "collection",
+      "target": 3
+    },
+    {
+      "id": 6,
+      "name": "든든한 동료들",
+      "metric": "collection",
+      "target": 6
+    },
+    {
+      "id": 7,
+      "name": "방부 도감 완성",
+      "metric": "collection",
+      "target": 10
+    },
+    {
+      "id": 8,
+      "name": "각성의 순간",
+      "metric": "evolution",
+      "target": 1
+    }
+  ],
+  "achievement_rewards": [
+    {
+      "id": 1,
+      "owner_id": 1,
+      "items_id": 1,
+      "amount": 1
+    },
+    {
+      "id": 2,
+      "owner_id": 1,
+      "items_id": 3,
+      "amount": 5
+    },
+    {
+      "id": 3,
+      "owner_id": 1,
+      "items_id": 9,
+      "amount": 5000
+    },
+    {
+      "id": 4,
+      "owner_id": 2,
+      "items_id": 1,
+      "amount": 1
+    },
+    {
+      "id": 5,
+      "owner_id": 2,
+      "items_id": 3,
+      "amount": 5
+    },
+    {
+      "id": 6,
+      "owner_id": 2,
+      "items_id": 9,
+      "amount": 5000
+    },
+    {
+      "id": 7,
+      "owner_id": 3,
+      "items_id": 1,
+      "amount": 1
+    },
+    {
+      "id": 8,
+      "owner_id": 3,
+      "items_id": 3,
+      "amount": 5
+    },
+    {
+      "id": 9,
+      "owner_id": 3,
+      "items_id": 9,
+      "amount": 5000
+    },
+    {
+      "id": 10,
+      "owner_id": 4,
+      "items_id": 1,
+      "amount": 1
+    },
+    {
+      "id": 11,
+      "owner_id": 4,
+      "items_id": 3,
+      "amount": 5
+    },
+    {
+      "id": 12,
+      "owner_id": 4,
+      "items_id": 9,
+      "amount": 5000
+    },
+    {
+      "id": 13,
+      "owner_id": 5,
+      "items_id": 1,
+      "amount": 1
+    },
+    {
+      "id": 14,
+      "owner_id": 5,
+      "items_id": 3,
+      "amount": 5
+    },
+    {
+      "id": 15,
+      "owner_id": 5,
+      "items_id": 9,
+      "amount": 5000
+    },
+    {
+      "id": 16,
+      "owner_id": 6,
+      "items_id": 1,
+      "amount": 1
+    },
+    {
+      "id": 17,
+      "owner_id": 6,
+      "items_id": 3,
+      "amount": 5
+    },
+    {
+      "id": 18,
+      "owner_id": 6,
+      "items_id": 9,
+      "amount": 5000
+    },
+    {
+      "id": 19,
+      "owner_id": 7,
+      "items_id": 1,
+      "amount": 1
+    },
+    {
+      "id": 20,
+      "owner_id": 7,
+      "items_id": 3,
+      "amount": 5
+    },
+    {
+      "id": 21,
+      "owner_id": 7,
+      "items_id": 9,
+      "amount": 5000
+    },
+    {
+      "id": 22,
+      "owner_id": 8,
+      "items_id": 1,
+      "amount": 1
+    },
+    {
+      "id": 23,
+      "owner_id": 8,
+      "items_id": 3,
+      "amount": 5
+    },
+    {
+      "id": 24,
+      "owner_id": 8,
+      "items_id": 9,
+      "amount": 5000
+    }
+  ]
+}
