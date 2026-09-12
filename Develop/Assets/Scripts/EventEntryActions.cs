@@ -1,0 +1,164 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
+namespace BeastBeat
+{
+    public sealed class EventEntryActions : MonoBehaviour
+    {
+        [Header("CSV and editable list prefab")]
+        public TextAsset eventCsv;
+        public ScrollRect eventScroll;
+        public EventCatalogRow rowPrefab;
+        [Header("Existing scene objects")]
+        public Button permanentButton, limitedButton, goEventButton;
+        public TMP_Text titleText, descriptionText, statusText;
+        public TMP_Text[] achievementTitles, achievementCounts, rewardLabels;
+        public Image background;
+        public Image[] rewardImages;
+        [Header("Scene destinations")]
+        public string mainScene = "Assets/Scenes/New/Main Scene.unity";
+        public string levelScene = "Assets/Scenes/rw_level.unity";
+        [Header("Tab colors (no sprites)")]
+        public Color activeTab = new Color(1f, .87f, .08f), inactiveTab = Color.white;
+        [SerializeField] string category = "permanent";
+        [SerializeField] int selectedId;
+        string lastCsv;
+        float nextRefresh;
+        bool navigating;
+        Sprite initialBackground;
+        GameData data;
+        List<EventCatalogEntry> entries = new List<EventCatalogEntry>();
+        static string rememberedCategory = "permanent";
+        static int rememberedId;
+        public string Category => category;
+        public int SelectedId => selectedId;
+        public int VisibleCount => entries.Count(e => e.enabled && e.category == category);
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void ResetSelection() { rememberedCategory = "permanent"; rememberedId = 0; }
+        void Awake()
+        {
+            initialBackground = background ? background.sprite : null;
+            EnsureData(); category = rememberedCategory; selectedId = rememberedId;
+            ReloadCsv();
+        }
+        void EnsureData()
+        {
+            if (data == null) data = GameData.Load();
+            if (Application.isPlaying && BeastBeatSession.Progress == null)
+            {
+                var p = new ProgressService(data); BeastBeatSession.Progress = p;
+                BeastBeatSession.SelectedStage = p.Save.lastStage;
+                BeastBeatSession.StageGroup = data.Stage(p.Save.lastStage).type;
+            }
+        }
+        void Update()
+        {
+            if (Time.unscaledTime < nextRefresh) return;
+            nextRefresh = Time.unscaledTime + .5f;
+            if ((eventCsv ? eventCsv.text : "") != lastCsv) ReloadCsv();
+        }
+        [ContextMenu("Reload CSV / Update Scene Preview")]
+        public void ReloadCsv()
+        {
+            lastCsv = eventCsv ? eventCsv.text : "";
+            try
+            {
+                EnsureData(); var parsed = EventCatalog.Parse(lastCsv);
+                foreach (var entry in parsed)
+                {
+                    if (entry.rewardIds.Any(id => !data.items.Any(item => item.id == id))) throw new FormatException("없는 보상 아이템 ID: 이벤트 " + entry.id);
+                    if (entry.achievementIds.Any(id => !data.achievement.Any(a => a.id == id))) throw new FormatException("없는 업적 ID: 이벤트 " + entry.id);
+                }
+                entries = parsed; RefreshList(false);
+            }
+            catch (Exception ex) { Debug.LogError("이벤트 CSV: " + ex.Message, this); if (descriptionText) descriptionText.text = "이벤트 데이터를 확인해 주세요.\n" + ex.Message; }
+        }
+        public void ShowPermanent() { SetCategory("permanent"); }
+        public void ShowLimited() { SetCategory("limited"); }
+        void SetCategory(string value)
+        {
+            if (category != value) selectedId = 0;
+            category = value; RefreshList(true);
+        }
+        void RefreshList(bool resetScroll)
+        {
+            if (!eventScroll || !rowPrefab) return;
+            var visible = entries.Where(e => e.enabled && e.category == category).ToList();
+            if (!visible.Any(e => e.id == selectedId)) selectedId = visible.Count > 0 ? visible[0].id : 0;
+            // Only pool our row components. Other user-authored children are untouched.
+            var rows = eventScroll.content.GetComponentsInChildren<EventCatalogRow>(true).ToList();
+            while (rows.Count < visible.Count)
+            {
+                EventCatalogRow row;
+                #if UNITY_EDITOR
+                if (!Application.isPlaying)
+                {
+                    var go = (GameObject)UnityEditor.PrefabUtility.InstantiatePrefab(rowPrefab.gameObject, eventScroll.content);
+                    UnityEditor.Undo.RegisterCreatedObjectUndo(go, "Add CSV event row");
+                    row = go.GetComponent<EventCatalogRow>();
+                }
+                else
+                #endif
+                row = Instantiate(rowPrefab, eventScroll.content);
+                rows.Add(row);
+            }
+            for (int i = 0; i < rows.Count; i++)
+            {
+                rows[i].gameObject.SetActive(i < visible.Count);
+                if (i < visible.Count) { rows[i].name = "Btn_Event_" + visible[i].id; rows[i].Bind(this, visible[i], visible[i].id == selectedId); }
+            }
+            if (permanentButton.targetGraphic) permanentButton.targetGraphic.color = category == "permanent" ? activeTab : inactiveTab;
+            if (limitedButton.targetGraphic) limitedButton.targetGraphic.color = category == "limited" ? activeTab : inactiveTab;
+            goEventButton.interactable = visible.Count > 0;
+            SelectEvent(selectedId);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(eventScroll.content);
+            if (resetScroll) { eventScroll.StopMovement(); eventScroll.verticalNormalizedPosition = 1; }
+            #if UNITY_EDITOR
+            if (!Application.isPlaying) UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
+            #endif
+        }
+        public void SelectEvent(int id)
+        {
+            var entry = entries.FirstOrDefault(e => e.id == id && e.enabled && e.category == category);
+            selectedId = entry == null ? 0 : id;
+            if (Application.isPlaying) { rememberedCategory = category; rememberedId = selectedId; }
+            foreach (var row in eventScroll.content.GetComponentsInChildren<EventCatalogRow>(true)) row.SetSelected(row.EventId == selectedId);
+            titleText.text = entry == null ? "등록된 이벤트가 없습니다" : entry.title;
+            descriptionText.text = entry == null ? "CSV에 이벤트를 추가해 주세요." : entry.description;
+            statusText.text = category == "permanent" ? "리두기록" : "기간 한정";
+            if (background)
+            {
+                if (!initialBackground) initialBackground = background.sprite;
+                var sprite = entry != null && !string.IsNullOrEmpty(entry.background) ? Resources.Load<Sprite>(entry.background) : null;
+                background.sprite = sprite ? sprite : initialBackground;
+            }
+            for (int i = 0; i < rewardImages.Length; i++)
+            {
+                var item = entry != null && i < entry.rewardIds.Length ? data.items.First(x => x.id == entry.rewardIds[i]) : null;
+                // Keep the original image and sprite; placeholders use item names and grade colors.
+                rewardImages[i].color = item == null ? new Color(.08f, .09f, .1f, .7f) : item.grade == 1 ? new Color(.64f, .47f, .17f) : item.grade == 2 ? new Color(.4f, .28f, .57f) : item.grade == 3 ? new Color(.22f, .41f, .51f) : new Color(.32f, .4f, .36f);
+                if (i < rewardLabels.Length) rewardLabels[i].text = item == null ? "—" : item.name;
+            }
+            for (int i = 0; i < achievementTitles.Length; i++)
+            {
+                var achievement = entry != null && i < entry.achievementIds.Length ? data.achievement.First(a => a.id == entry.achievementIds[i]) : null;
+                achievementTitles[i].text = achievement == null ? "—" : achievement.name;
+                int progress = achievement != null && Application.isPlaying ? BeastBeatSession.Progress.Metric(achievement) : 0;
+                achievementCounts[i].text = achievement == null ? "—" : Math.Min(progress, achievement.target) + " / " + achievement.target;
+            }
+        }
+        public void OpenMainScene() { if (selectedId != 0) Open(mainScene); }
+        public void OpenLevelRewards() { BeastBeatSession.PreviousScreen = "Entry"; Open(levelScene); }
+        void Open(string path)
+        {
+            if (navigating) return;
+            if (!Application.CanStreamedLevelBeLoaded(path)) { Debug.LogError("Scene is not registered: " + path, this); return; }
+            navigating = true; SceneManager.LoadScene(path);
+        }
+    }
+}

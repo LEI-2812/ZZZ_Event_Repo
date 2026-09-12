@@ -7,7 +7,7 @@ namespace BeastBeat
     public sealed class MainSceneActions : MonoBehaviour
     {
         [Header("Scene destinations")]
-        public string entryScene="Assets/Scenes/eventlist.unity";
+        public string entryScene="Assets/Scenes/New/Event List Scene.unity";
         public string levelScene="Assets/Scenes/rw_level.unity";
         public string leagueScene="Assets/Scenes/stage_list.unity";
         public string bangbooScene="Assets/Scenes/bangboo_list.unity";
@@ -16,6 +16,7 @@ namespace BeastBeat
 
         void Awake()
         {
+            if (!enabled) return;
             BeastBeatSession.HomeScenePath=gameObject.scene.path;
             EnsureProgress();
         }

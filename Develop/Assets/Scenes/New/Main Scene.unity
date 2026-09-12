@@ -380,7 +380,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94ea598249500a94cac1eb567baf3a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.MainSceneActions
-  entryScene: Assets/Scenes/eventlist.unity
+  entryScene: Assets/Scenes/New/Event List Scene.unity
   levelScene: Assets/Scenes/rw_level.unity
   leagueScene: Assets/Scenes/stage_list.unity
   bangbooScene: Assets/Scenes/bangboo_list.unity
