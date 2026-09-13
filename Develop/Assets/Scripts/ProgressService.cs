@@ -35,14 +35,16 @@ namespace BeastBeat
             if (File.Exists(path)) try { File.Copy(path, path + ".corrupt-" + DateTime.UtcNow.Ticks, false); } catch { }
             return null;
         }
-        public void Persist()
+        public void Persist() { TryPersist(); }
+        public bool TryPersist()
         {
             try {
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
                 File.WriteAllText(path + ".tmp", JsonUtility.ToJson(Save, true));
                 if (File.Exists(path)) File.Replace(path + ".tmp", path, path + ".bak");
                 else File.Move(path + ".tmp", path);
-            } catch (Exception e) { StorageWarning = "자동 저장 실패: 저장 폴더의 여유 공간과 권한을 확인해주세요."; Debug.LogWarning("BeastBeat save failed: " + e.Message); }
+                StorageWarning = ""; return true;
+            } catch (Exception e) { StorageWarning = "자동 저장 실패: 저장 폴더의 여유 공간과 권한을 확인해주세요."; Debug.LogWarning("BeastBeat save failed: " + e.Message); return false; }
         }
         public bool Eligible { get { return Save.accountLevel >= Data.event_list.minimumAccountLevel && Save.clearedChapter >= Data.event_list.minimumChapter; } }
         public bool LimitedActive { get { return DateTime.UtcNow < DateTime.Parse(Save.eventStartedUtc, null, System.Globalization.DateTimeStyles.RoundtripKind).AddDays(Data.event_list.demoLimitedDays); } }
@@ -112,6 +114,7 @@ namespace BeastBeat
         }
         public bool CanClaim(string key)
         {
+            if (Data.rewardCatalog != null) return RewardClaims.CanClaim(this,key);
             if (Save.claimed.Contains(key)) return false;
             if (key == "special") return LimitedActive && Data.achievement.All(a => Save.claimed.Contains("a" + a.id));
             if (key == "maxlevel") return Enumerable.Range(1, 20).All(l => Save.claimed.Contains("l" + l));
@@ -122,6 +125,7 @@ namespace BeastBeat
         }
         public bool Claim(string key)
         {
+            if (Data.rewardCatalog != null) return RewardClaims.Claim(this,key);
             if (!CanClaim(key)) return false;
             RewardData[] rows;
             if (key == "special") rows = new[] { new RewardData { items_id = 10, amount = 1 }, new RewardData { items_id = 11, amount = 1 } };

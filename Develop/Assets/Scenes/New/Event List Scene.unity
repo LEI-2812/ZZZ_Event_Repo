@@ -573,7 +573,7 @@ MonoBehaviour:
   - {fileID: 715444705}
   - {fileID: 256011707}
   mainScene: Assets/Scenes/New/Main Scene.unity
-  levelScene: Assets/Scenes/rw_level.unity
+  levelScene: Assets/Scenes/New/Level Complete List Scene.unity
   activeTab: {r: 1, g: 0.87, b: 0.08, a: 1}
   inactiveTab: {r: 1, g: 1, b: 1, a: 1}
   category: permanent
@@ -6713,8 +6713,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -283, y: 256}
-  m_SizeDelta: {x: 900, y: 50}
+  m_AnchoredPosition: {x: -295, y: 256}
+  m_SizeDelta: {x: 500, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1783414846
 MonoBehaviour:
@@ -6770,7 +6770,7 @@ MonoBehaviour:
   m_fontSizeMin: 40
   m_fontSizeMax: 70
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 4
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0

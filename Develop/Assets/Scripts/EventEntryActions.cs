@@ -22,7 +22,7 @@ namespace BeastBeat
         public Image[] rewardImages;
         [Header("Scene destinations")]
         public string mainScene = "Assets/Scenes/New/Main Scene.unity";
-        public string levelScene = "Assets/Scenes/rw_level.unity";
+        public string levelScene = "Assets/Scenes/New/Level Complete List Scene.unity";
         [Header("Tab colors (no sprites)")]
         public Color activeTab = new Color(1f, .87f, .08f), inactiveTab = Color.white;
         [SerializeField] string category = "permanent";
@@ -156,7 +156,7 @@ namespace BeastBeat
             }
         }
         public void OpenMainScene() { if (selectedId != 0) Open(mainScene); }
-        public void OpenLevelRewards() { BeastBeatSession.PreviousScreen = "Entry"; Open(levelScene); }
+        public void OpenLevelRewards() { BeastBeatSession.PreviousScreen = "Entry"; BeastBeatSession.RewardReturnScenePath = gameObject.scene.path; Open(levelScene); }
         void Open(string path)
         {
             if (navigating) return;

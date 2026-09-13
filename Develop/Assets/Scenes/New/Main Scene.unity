@@ -381,10 +381,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.MainSceneActions
   entryScene: Assets/Scenes/New/Event List Scene.unity
-  levelScene: Assets/Scenes/rw_level.unity
+  levelScene: Assets/Scenes/New/Level Complete List Scene.unity
   leagueScene: Assets/Scenes/New/Stage List Scene.unity
   bangbooScene: Assets/Scenes/bangboo_list.unity
-  rewardScene: Assets/Scenes/reward_list.unity
+  rewardScene: Assets/Scenes/New/Reward List Scene.unity
 --- !u!1 &114805535
 GameObject:
   m_ObjectHideFlags: 0

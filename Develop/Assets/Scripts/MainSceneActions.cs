@@ -8,10 +8,10 @@ namespace BeastBeat
     {
         [Header("Scene destinations")]
         public string entryScene="Assets/Scenes/New/Event List Scene.unity";
-        public string levelScene="Assets/Scenes/rw_level.unity";
+        public string levelScene="Assets/Scenes/New/Level Complete List Scene.unity";
         public string leagueScene="Assets/Scenes/New/Stage List Scene.unity";
         public string bangbooScene="Assets/Scenes/bangboo_list.unity";
-        public string rewardScene="Assets/Scenes/reward_list.unity";
+        public string rewardScene="Assets/Scenes/New/Reward List Scene.unity";
         bool navigating;
 
         void Awake()
@@ -33,6 +33,7 @@ namespace BeastBeat
         public void OpenPlayerLevel()
         {
             BeastBeatSession.PreviousScreen="Home";
+            BeastBeatSession.RewardReturnScenePath=gameObject.scene.path;
             BeastBeatSession.RewardGroup=0;
             Open(levelScene);
         }
@@ -48,6 +49,7 @@ namespace BeastBeat
         public void OpenLimitedRewards()
         {
             BeastBeatSession.PreviousScreen="Home";
+            BeastBeatSession.RewardReturnScenePath=gameObject.scene.path;
             BeastBeatSession.RewardGroup=0;
             Open(rewardScene);
         }

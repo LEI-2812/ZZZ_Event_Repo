@@ -41,6 +41,7 @@ namespace BeastBeat
     }
     [Serializable] public class GameData
     {
+        [NonSerialized] public RewardCatalog rewardCatalog;
         public EventData event_list;
         public BalanceData balance;
         public BooData[] bangboo;
@@ -59,6 +60,7 @@ namespace BeastBeat
             var data = LoadBase();
             var workbook = GameWorkbook.Load();
             if (workbook) { try { StageCatalog.Apply(data, StageCatalog.Parse(workbook.ReadSheet("stage_list"))); } catch (Exception ex) { Debug.LogError("Stage XLSX: " + ex.Message); } }
+            if (workbook) RewardCatalog.Apply(data, workbook);
             return data;
         }
         public StageData ResolveStage(int id) { return stage_list.FirstOrDefault(s => s.id == id) ?? stage_list.OrderBy(s => s.id).FirstOrDefault(); }

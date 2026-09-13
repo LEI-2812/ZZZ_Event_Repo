@@ -1,0 +1,64 @@
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+
+namespace BeastBeat
+{
+    [Serializable] public sealed class AchievementRewardEntry { public int id, items_id, level_id, amount; public string info; }
+    [Serializable] public sealed class RewardUser { public int id; public string name; public bool is_get_lm_reward, is_get_lv_reward; }
+    public sealed class RewardCatalog
+    {
+        public AchievementRewardEntry[] rows;
+        public RewardUser user;
+        public Dictionary<string, RewardData[]> special;
+        static List<Dictionary<string,string>> Table(GameWorkbook book, string sheet, params string[] columns)
+        {
+            var rows = EventCatalog.ReadRows(book.ReadSheet(sheet)).Where(r => r.Any(c => !string.IsNullOrWhiteSpace(c))).ToList();
+            if (rows.Count == 0 || !rows[0].SequenceEqual(columns)) throw new FormatException(sheet + " 컬럼: " + string.Join(",", columns));
+            var output = new List<Dictionary<string,string>>(); var ids = new HashSet<int>();
+            for (int i = 1; i < rows.Count; i++)
+            {
+                if (rows[i].Count != columns.Length) throw new FormatException(sheet + " " + (i+1) + "행 컬럼 수 오류");
+                var row = columns.Select((c,j) => new { c, value = rows[i][j].Trim() }).ToDictionary(x => x.c, x => x.value);
+                if (!ids.Add(Number(row,"id"))) throw new FormatException(sheet + " 중복 id: " + row["id"]);
+                output.Add(row);
+            }
+            return output;
+        }
+        static int Number(Dictionary<string,string> row, string key)
+        {
+            if (!int.TryParse(row[key],NumberStyles.Integer,CultureInfo.InvariantCulture,out int value) || value <= 0) throw new FormatException(key + "는 양수입니다: " + row[key]);
+            return value;
+        }
+        static bool Flag(string value)
+        {
+            if(value=="0"||value.Equals("false",StringComparison.OrdinalIgnoreCase))return false;
+            if(value=="1"||value.Equals("true",StringComparison.OrdinalIgnoreCase))return true;
+            throw new FormatException("획득 여부는 0 또는 1입니다.");
+        }
+        public static void Apply(GameData data, GameWorkbook book)
+        {
+            var names=Table(book,"Achievement","id","name");
+            var conditions=Table(book,"achievement_condition","id","metric","target");
+            var achievements=names.Select(n=>{
+                int id=Number(n,"id");var c=conditions.SingleOrDefault(x=>Number(x,"id")==id)??throw new FormatException("업적 조건 누락: "+id);
+                if(!new[]{"stage","collection","evolution"}.Contains(c["metric"]))throw new FormatException("지원하지 않는 metric: "+c["metric"]);
+                if(string.IsNullOrWhiteSpace(n["name"]))throw new FormatException("업적 이름 누락: "+id);
+                return new AchievementData{id=id,name=n["name"],metric=c["metric"],target=Number(c,"target")};
+            }).OrderBy(a=>a.id).ToArray();
+            var rewards=Table(book,"Achievement_reward","id","items_id","info","level_id","amount").Select(r=>new AchievementRewardEntry{id=Number(r,"id"),items_id=Number(r,"items_id"),info=r["info"],level_id=Number(r,"level_id"),amount=Number(r,"amount")}).OrderBy(r=>r.id).ToArray();
+            foreach(var row in rewards)if(!achievements.Any(a=>a.id==row.level_id)||!data.items.Any(i=>i.id==row.items_id)||string.IsNullOrWhiteSpace(row.info))throw new FormatException("Achievement_reward 참조/제목 오류: "+row.id);
+            var levels=Table(book,"level_reward","id","lv_num","items_id","amount").Select(r=>new RewardData{id=Number(r,"id"),owner_id=Number(r,"lv_num"),items_id=Number(r,"items_id"),amount=Number(r,"amount")}).OrderBy(r=>r.id).ToArray();
+            foreach(var row in levels)if(row.owner_id>data.balance.maxLevel||!data.items.Any(i=>i.id==row.items_id))throw new FormatException("level_reward 참조 오류: "+row.id);
+            var users=Table(book,"user","id","name","is_get_lm_reward","is_get_lv_reward").Select(r=>new RewardUser{id=Number(r,"id"),name=r["name"],is_get_lm_reward=Flag(r["is_get_lm_reward"]),is_get_lv_reward=Flag(r["is_get_lv_reward"])}).ToArray();
+            var user=users.SingleOrDefault(u=>u.id==1)??throw new FormatException("user 시트에 현재 사용자 id=1이 필요합니다.");
+            var specials=Table(book,"special_reward","id","kind","items_id","amount");
+            foreach(var row in specials)if(!new[]{"special","maxlevel"}.Contains(row["kind"])||!data.items.Any(i=>i.id==Number(row,"items_id")))throw new FormatException("특별 보상 참조 오류");
+            var mapped=specials.GroupBy(r=>r["kind"]).ToDictionary(g=>g.Key,g=>g.Select(r=>new RewardData{id=Number(r,"id"),items_id=Number(r,"items_id"),amount=Number(r,"amount")}).ToArray());
+            if(!mapped.ContainsKey("special")||!mapped.ContainsKey("maxlevel"))throw new FormatException("special/maxlevel 지급 아이템이 필요합니다.");
+            data.achievement=achievements;data.achievement_rewards=rewards.Select(r=>new RewardData{id=r.id,owner_id=r.level_id,items_id=r.items_id,amount=r.amount}).ToArray();data.level_rewards=levels;
+            data.rewardCatalog=new RewardCatalog{rows=rewards,user=user,special=mapped};
+        }
+    }
+}

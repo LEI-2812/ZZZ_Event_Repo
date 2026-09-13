@@ -23,13 +23,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/clear.unity
     guid: e4fd0f2c3c2e59349b46443d49377950
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/reward_list.unity
     guid: 3ee6f608932dda940a30ca07f7d46e11
   - enabled: 1
     path: Assets/Scenes/bangboo_list.unity
     guid: b99b068a75985c649b603164a497f28f
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/rw_level.unity
     guid: e8883d14e0d08434bbc220b4c8eb427f
   - enabled: 0
@@ -41,6 +41,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/New/Stage List Scene.unity
     guid: 34e8e93dbf220c14c9a826eab1678f7a
+  - enabled: 1
+    path: Assets/Scenes/New/Reward List Scene.unity
+    guid: c7fbfb434a1d2eb46a348872b05731b1
+  - enabled: 1
+    path: Assets/Scenes/New/Level Complete List Scene.unity
+    guid: ce90cc65f83cc78459516583e4ab32e1
   m_configObjects:
     com.unity.dt.app-ui: {fileID: 11400000, guid: 1b1c20d82303e4b5781c3ef50ac1449f, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

@@ -38,6 +38,7 @@ namespace BeastBeat
         public int VisibleCount => data == null ? 0 : data.stage_list.Count(s => s.event_list_id == eventId && s.type == group);
         void Awake()
         {
+            if (!enabled) return;
             if (BeastBeatSession.Progress == null)
             {
                 BeastBeatSession.Progress = new ProgressService(GameData.Load());

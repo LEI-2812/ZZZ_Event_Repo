@@ -119,7 +119,7 @@ namespace BeastBeat
         public void Show(string screen)
         {
             if(Busy && screen!="Battle")return;
-            if(screen!=sceneScreen){CaptureSession();SceneManager.LoadScene(screen=="Home"?BeastBeatSession.HomeScenePath:"Assets/Scenes/"+BeastBeatSession.SceneName(screen)+".unity");return;}
+            if(screen!=sceneScreen){if(screen=="Rewards"||screen=="Levels")BeastBeatSession.RewardReturnScenePath=gameObject.scene.path;CaptureSession();SceneManager.LoadScene(screen=="Home"?BeastBeatSession.HomeScenePath:"Assets/Scenes/"+BeastBeatSession.SceneName(screen)+".unity");return;}
             RenderScreen(screen);
         }
         public void CaptureSession()
