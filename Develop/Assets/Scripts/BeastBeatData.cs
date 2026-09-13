@@ -53,7 +53,15 @@ namespace BeastBeat
         public SkillData Skill(int id) { return skills.First(x => x.id == id); }
         public StageData Stage(int id) { return stage_list.First(x => x.id == id); }
         public int NeedXp(int level) { return balance.xpBase + (level - 1) * balance.xpStep; }
-        public static GameData Load() { return JsonUtility.FromJson<GameData>((Resources.Load<TextAsset>("Image/game-data")??Resources.Load<TextAsset>("BeastBeat/game-data")).text); }
+        public static GameData LoadBase() { return JsonUtility.FromJson<GameData>((Resources.Load<TextAsset>("Image/game-data")??Resources.Load<TextAsset>("BeastBeat/game-data")).text); }
+        public static GameData Load()
+        {
+            var data = LoadBase();
+            var workbook = GameWorkbook.Load();
+            if (workbook) { try { StageCatalog.Apply(data, StageCatalog.Parse(workbook.ReadSheet("stage_list"))); } catch (Exception ex) { Debug.LogError("Stage XLSX: " + ex.Message); } }
+            return data;
+        }
+        public StageData ResolveStage(int id) { return stage_list.FirstOrDefault(s => s.id == id) ?? stage_list.OrderBy(s => s.id).FirstOrDefault(); }
         public void Validate()
         {
             if (bangboo.Select(x => x.id).Distinct().Count() != bangboo.Length) throw new Exception("Duplicate bangboo ID");

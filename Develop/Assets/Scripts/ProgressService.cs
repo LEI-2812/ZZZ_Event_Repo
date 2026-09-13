@@ -63,7 +63,11 @@ namespace BeastBeat
             if (list.Count < 1 || list.Count > 3 || list.Distinct().Count() != list.Count || list.Any(x => !Owns(x))) return false;
             Save.party = list; Persist(); return true;
         }
-        public bool StageOpen(int id) { return Data.stage_list.Where(x => x.id < id).All(x => Save.cleared.Contains(x.id)); }
+        public bool StageOpen(int id)
+        {
+            var stage = Data.stage_list.FirstOrDefault(s => s.id == id);
+            return stage != null && Data.stage_list.Where(x => x.event_list_id == stage.event_list_id && x.id < id).All(x => Save.cleared.Contains(x.id));
+        }
         public void Grant(RewardData[] rewards)
         {
             foreach (var r in rewards) {

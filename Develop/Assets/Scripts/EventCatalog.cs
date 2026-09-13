@@ -63,7 +63,7 @@ namespace BeastBeat
             if (values.Any(n => n <= 0)) throw new FormatException("참조 ID는 양수여야 합니다.");
             return values;
         }
-        static List<List<string>> ReadRows(string value)
+        public static List<List<string>> ReadRows(string value)
         {
             var rows = new List<List<string>>(); var row = new List<string>(); var field = new StringBuilder();
             bool quoted = false, closed = false;

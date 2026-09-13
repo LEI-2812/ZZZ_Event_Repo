@@ -1,3 +1,5 @@
+> XLSX 전환 완료: 현재 데이터는 Assets/Resources/Data/game_data.xlsx의 event_catalog / stage_list 시트에서 수정합니다. 기존 CSV는 삭제했습니다. 아래 CSV 관련 안내는 이전 방식이며, 최신 안내는 Assets/Resources/Data/game_data-사용안내.md를 확인하세요.
+
 # Event List Scene 편집 안내
 
 - 진입 씬: `Assets/Scenes/New/Event List Scene.unity`

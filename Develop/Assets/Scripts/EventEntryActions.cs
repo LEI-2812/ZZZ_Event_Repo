@@ -10,8 +10,8 @@ namespace BeastBeat
 {
     public sealed class EventEntryActions : MonoBehaviour
     {
-        [Header("CSV and editable list prefab")]
-        public TextAsset eventCsv;
+        [Header("XLSX and editable list prefab")]
+        public GameWorkbook workbook;
         public ScrollRect eventScroll;
         public EventCatalogRow rowPrefab;
         [Header("Existing scene objects")]
@@ -27,7 +27,7 @@ namespace BeastBeat
         public Color activeTab = new Color(1f, .87f, .08f), inactiveTab = Color.white;
         [SerializeField] string category = "permanent";
         [SerializeField] int selectedId;
-        string lastCsv;
+        string lastRevision;
         float nextRefresh;
         bool navigating;
         Sprite initialBackground;
@@ -44,7 +44,7 @@ namespace BeastBeat
         {
             initialBackground = background ? background.sprite : null;
             EnsureData(); category = rememberedCategory; selectedId = rememberedId;
-            ReloadCsv();
+            ReloadWorkbook();
         }
         void EnsureData()
         {
@@ -52,23 +52,26 @@ namespace BeastBeat
             if (Application.isPlaying && BeastBeatSession.Progress == null)
             {
                 var p = new ProgressService(data); BeastBeatSession.Progress = p;
-                BeastBeatSession.SelectedStage = p.Save.lastStage;
-                BeastBeatSession.StageGroup = data.Stage(p.Save.lastStage).type;
+                var stage = data.ResolveStage(p.Save.lastStage);
+                BeastBeatSession.SelectedStage = stage == null ? 0 : stage.id;
+                BeastBeatSession.StageGroup = stage == null ? 1 : stage.type;
             }
         }
         void Update()
         {
             if (Time.unscaledTime < nextRefresh) return;
             nextRefresh = Time.unscaledTime + .5f;
-            if ((eventCsv ? eventCsv.text : "") != lastCsv) ReloadCsv();
+            var source = workbook ? workbook : GameWorkbook.Load();
+            if ((source ? source.revision : "missing") != lastRevision) ReloadWorkbook();
         }
-        [ContextMenu("Reload CSV / Update Scene Preview")]
-        public void ReloadCsv()
+        [ContextMenu("Reload Workbook / Update Scene Preview")]
+        public void ReloadWorkbook()
         {
-            lastCsv = eventCsv ? eventCsv.text : "";
+            var source = workbook ? workbook : GameWorkbook.Load();
+            lastRevision = source ? source.revision : "missing";
             try
             {
-                EnsureData(); var parsed = EventCatalog.Parse(lastCsv);
+                EnsureData(); var parsed = EventCatalog.Parse(source ? source.ReadSheet("event_catalog") : throw new FormatException("game_data.xlsx를 찾을 수 없습니다."));
                 foreach (var entry in parsed)
                 {
                     if (entry.rewardIds.Any(id => !data.items.Any(item => item.id == id))) throw new FormatException("없는 보상 아이템 ID: 이벤트 " + entry.id);
@@ -76,7 +79,7 @@ namespace BeastBeat
                 }
                 entries = parsed; RefreshList(false);
             }
-            catch (Exception ex) { Debug.LogError("이벤트 CSV: " + ex.Message, this); if (descriptionText) descriptionText.text = "이벤트 데이터를 확인해 주세요.\n" + ex.Message; }
+            catch (Exception ex) { Debug.LogError("이벤트 XLSX: " + ex.Message, this); if (descriptionText) descriptionText.text = "이벤트 데이터를 확인해 주세요.\n" + ex.Message; }
         }
         public void ShowPermanent() { SetCategory("permanent"); }
         public void ShowLimited() { SetCategory("limited"); }
@@ -99,7 +102,7 @@ namespace BeastBeat
                 if (!Application.isPlaying)
                 {
                     var go = (GameObject)UnityEditor.PrefabUtility.InstantiatePrefab(rowPrefab.gameObject, eventScroll.content);
-                    UnityEditor.Undo.RegisterCreatedObjectUndo(go, "Add CSV event row");
+                    UnityEditor.Undo.RegisterCreatedObjectUndo(go, "Add XLSX event row");
                     row = go.GetComponent<EventCatalogRow>();
                 }
                 else
@@ -129,7 +132,7 @@ namespace BeastBeat
             if (Application.isPlaying) { rememberedCategory = category; rememberedId = selectedId; }
             foreach (var row in eventScroll.content.GetComponentsInChildren<EventCatalogRow>(true)) row.SetSelected(row.EventId == selectedId);
             titleText.text = entry == null ? "등록된 이벤트가 없습니다" : entry.title;
-            descriptionText.text = entry == null ? "CSV에 이벤트를 추가해 주세요." : entry.description;
+            descriptionText.text = entry == null ? "XLSX에 이벤트를 추가해 주세요." : entry.description;
             statusText.text = category == "permanent" ? "리두기록" : "기간 한정";
             if (background)
             {

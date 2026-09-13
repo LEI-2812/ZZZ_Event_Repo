@@ -9,7 +9,7 @@ namespace BeastBeat
         [Header("Scene destinations")]
         public string entryScene="Assets/Scenes/New/Event List Scene.unity";
         public string levelScene="Assets/Scenes/rw_level.unity";
-        public string leagueScene="Assets/Scenes/stage_list.unity";
+        public string leagueScene="Assets/Scenes/New/Stage List Scene.unity";
         public string bangbooScene="Assets/Scenes/bangboo_list.unity";
         public string rewardScene="Assets/Scenes/reward_list.unity";
         bool navigating;
@@ -25,8 +25,9 @@ namespace BeastBeat
             if(BeastBeatSession.Progress!=null)return;
             var progress=new ProgressService(GameData.Load());
             BeastBeatSession.Progress=progress;
-            BeastBeatSession.SelectedStage=progress.Save.lastStage;
-            BeastBeatSession.StageGroup=progress.Data.Stage(progress.Save.lastStage).type;
+            var stage=progress.Data.ResolveStage(progress.Save.lastStage);
+            BeastBeatSession.SelectedStage=stage==null?0:stage.id;
+            BeastBeatSession.StageGroup=stage==null?1:stage.type;
         }
         public void GoBack(){Open(entryScene);}
         public void OpenPlayerLevel()
@@ -38,6 +39,7 @@ namespace BeastBeat
         public void OpenLeague()
         {
             EnsureProgress();
+            BeastBeatSession.StageReturnScenePath=gameObject.scene.path;
             // Match the original main: adopt a partner before entering the league.
             if(BeastBeatSession.Progress.Save.party.Count==0){BeastBeatSession.SelectedBoo=11;Open(bangbooScene);}
             else Open(leagueScene);

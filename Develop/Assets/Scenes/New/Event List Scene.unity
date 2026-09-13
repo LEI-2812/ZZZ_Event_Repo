@@ -540,7 +540,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c42f4bc80758a2418b0153474a93d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.EventEntryActions
-  eventCsv: {fileID: 4900000, guid: 17314d5293fc2b745a22a97176afd19e, type: 3}
+  workbook: {fileID: -5793588265265129360, guid: 0cf609fb4205258429440f2f3148cab5, type: 3}
   eventScroll: {fileID: 1454695312}
   rowPrefab: {fileID: 5572293180607315938, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
   permanentButton: {fileID: 2065452303}

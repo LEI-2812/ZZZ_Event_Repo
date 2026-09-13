@@ -41,7 +41,7 @@ namespace BeastBeat
         void Awake()
         {
             Instance=this;Application.runInBackground=true;
-            if(BeastBeatSession.Progress==null){BeastBeatSession.Progress=new ProgressService(GameData.Load());BeastBeatSession.SelectedStage=BeastBeatSession.Progress.Save.lastStage;BeastBeatSession.StageGroup=BeastBeatSession.Progress.Data.Stage(BeastBeatSession.SelectedStage).type;}
+            if(BeastBeatSession.Progress==null){BeastBeatSession.Progress=new ProgressService(GameData.Load());var initialStage=BeastBeatSession.Progress.Data.ResolveStage(BeastBeatSession.Progress.Save.lastStage);BeastBeatSession.SelectedStage=initialStage==null?0:initialStage.id;BeastBeatSession.StageGroup=initialStage==null?1:initialStage.type;}
             Progress=BeastBeatSession.Progress;Battle=BeastBeatSession.Battle;portraits=new BangbooPortraits();
             selectedStage=BeastBeatSession.SelectedStage;stageGroup=BeastBeatSession.StageGroup;selectedBoo=BeastBeatSession.SelectedBoo;rewardGroup=BeastBeatSession.RewardGroup;
             previousScreen=BeastBeatSession.PreviousScreen;battleLine=BeastBeatSession.BattleLine;battleHistory.AddRange(BeastBeatSession.History);resultNotes=new List<string>(BeastBeatSession.ResultNotes);
