@@ -39,7 +39,7 @@ EditorBuildSettings:
     path: Assets/Scenes/New/Main Scene.unity
     guid: 843791173256e024ab794165ff412ce2
   - enabled: 1
-    path: Assets/Scenes/New/Stage List Scene.unity
+    path: Assets/Scenes/New/Battle Scene.unity
     guid: 34e8e93dbf220c14c9a826eab1678f7a
   - enabled: 1
     path: Assets/Scenes/New/Reward List Scene.unity
