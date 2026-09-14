@@ -381,7 +381,7 @@ MonoBehaviour:
   - {fileID: 289300503}
   - {fileID: 272287216}
   previousScene: Assets/Scenes/New/Main Scene.unity
-  battleScene: Assets/Scenes/battle.unity
+  battleScene: Assets/Scenes/New/Battle Scene.unity
   activeTab: {r: 0.2, g: 0.72, b: 1, a: 1}
   inactiveTab: {r: 1, g: 1, b: 1, a: 1}
   inactiveElement: {r: 0.35, g: 0.37, b: 0.4, a: 1}

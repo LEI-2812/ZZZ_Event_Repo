@@ -23,16 +23,29 @@ namespace BeastBeat
         public readonly StageData Stage;
         public readonly Fighter[] player, enemy;
         public int playerIndex, enemyIndex, round = 1;
+        public int[] playerExperience, playerNeedExperience;
         public bool Finished, Won;
         readonly Random random;
         public Fighter Player { get { return player[playerIndex]; } }
         public Fighter Enemy { get { return enemy[enemyIndex]; } }
         public bool NeedsSwitch { get { return !Finished && !Player.Alive; } }
-        public BattleEngine(ProgressService p, int stage, int seed = -1)
+        public BattleEngine(ProgressService p, int stage, int seed = -1, PartyEntry[] initialParty = null)
         {
             Progress = p; Stage = p.Data.Stage(stage); random = seed < 0 ? new Random() : new Random(seed);
-            if (!p.Eligible || !p.StageOpen(stage) || p.Save.party.Count == 0) throw new InvalidOperationException("Battle not eligible");
-            player = p.Save.party.Select(id => Create(id, p.Owned(id).level)).ToArray();
+            if (!p.Eligible || !p.StageOpen(stage) || (initialParty == null ? p.Save.party.Count == 0 : initialParty.Length == 0)) throw new InvalidOperationException("Battle not eligible");
+            player = initialParty == null ? p.Save.party.Select(id => Create(id, p.Owned(id).level)).ToArray() : initialParty.Select(row => {
+                var fighter = Create(row.bid, row.level > 0 ? row.level : p.Owned(row.bid).level);
+                if (row.max_hp > 0) fighter.maxHp = row.max_hp;
+                if (row.hp > fighter.maxHp) throw new InvalidOperationException("party hp exceeds max_hp");
+                fighter.hp = row.state == 5 ? 0 : row.hp;
+                fighter.state = row.state == 5 ? Condition.Ready : (Condition)row.state;
+                fighter.stateTurns = fighter.state == Condition.Ready ? 0 : 2;
+                return fighter;
+            }).ToArray();
+            playerExperience = player.Select((f,i) => initialParty == null ? p.Owned(f.id).xp : initialParty[i].current_exp).ToArray();
+            playerNeedExperience = player.Select((f,i) => initialParty == null ? p.Data.NeedXp(f.level) : initialParty[i].need_exp).ToArray();
+            if (initialParty != null) playerIndex = Array.FindIndex(initialParty, r=>r.is_on_field==1);
+            if (!Player.Alive) playerIndex = Array.FindIndex(player, f=>f.Alive);
             enemy = Stage.enemies.Select(id => Create(id, Stage.level)).ToArray();
         }
         Fighter Create(int id, int level)

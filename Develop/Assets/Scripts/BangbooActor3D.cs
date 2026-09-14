@@ -56,7 +56,7 @@ namespace BeastBeat
         void OnDestroy(){if(Application.isPlaying&&generatedMaterials!=null)foreach(var m in generatedMaterials)if(m!=null&&m.name=="Actor material")Destroy(m);}
         void Update()
         {
-            if(!initialized||!visualRoot||(BeastBeatApp.Instance&&BeastBeatApp.Instance.IsPaused))return;
+            if(!initialized||!visualRoot||((BeastBeatApp.Instance&&BeastBeatApp.Instance.IsPaused)||(BattleSceneActions.Instance&&BattleSceneActions.Instance.IsPaused)))return;
             float dt=Time.unscaledDeltaTime;phase+=dt*2.4f;attack=Mathf.Max(0,attack-dt*1.8f);hit=Mathf.Max(0,hit-dt*2.4f);arrival=Mathf.Max(0,arrival-dt*2);
             Vector3 direction=opponent?(opponent.position-transform.position).normalized:Vector3.zero;direction.y=0;
             transform.localPosition=restPosition+direction*Mathf.Sin(attack*Mathf.PI)*1.1f+Vector3.up*(Mathf.Sin(phase)*.035f+Mathf.Sin(arrival*Mathf.PI)*.45f);

@@ -24,7 +24,7 @@ namespace BeastBeat
         public TMP_Text[] rewardLabels;
         [Header("Destinations")]
         public string previousScene = "Assets/Scenes/New/Main Scene.unity";
-        public string battleScene = "Assets/Scenes/battle.unity";
+        public string battleScene = "Assets/Scenes/New/Battle Scene.unity";
         [Header("Selection colors")]
         public Color activeTab = new Color(.2f, .72f, 1f), inactiveTab = Color.white;
         public Color inactiveElement = new Color(.35f, .37f, .4f);
@@ -200,7 +200,8 @@ namespace BeastBeat
             var p = BeastBeatSession.Progress;
             if (!p.Eligible || !p.StageOpen(selectedId) || p.Save.party.Count == 0) { SelectStage(selectedId); return; }
             if (!Application.CanStreamedLevelBeLoaded(battleScene)) { statusText.text = "배틀 씬이 등록되어 있지 않습니다."; return; }
-            BeastBeatSession.Battle = new BattleEngine(p, selectedId);
+            try { BeastBeatSession.Battle = BattleCatalog.CreateBattle(p, selectedId); }
+            catch (Exception ex) { statusText.text = ex.Message; return; }
             BeastBeatSession.SelectedStage = selectedId; BeastBeatSession.StageGroup = group;
             BeastBeatSession.PreviewBattle = false; BeastBeatSession.History.Clear(); BeastBeatSession.ResultNotes.Clear();
             BeastBeatSession.BattleLine = p.Data.Stage(selectedId).npc + "가 승부를 걸어왔다!";

@@ -12,7 +12,7 @@ namespace BeastBeat
         public void StartBattle(int id)
         {
             if(Busy || !Progress.StageOpen(id) || Progress.Save.party.Count==0 || !Progress.Eligible)return;
-            BeastBeatSession.PreviewBattle=false;Battle=new BattleEngine(Progress,id);selectedStage=id;skillsOpen=false;paused=false;battleHistory.Clear();battleLine=Battle.Stage.npc+"가 승부를 걸어왔다!";
+            BeastBeatSession.PreviewBattle=false;Battle=BattleCatalog.CreateBattle(Progress,id);selectedStage=id;skillsOpen=false;paused=false;battleHistory.Clear();battleLine=Battle.Stage.npc+"가 승부를 걸어왔다!";
             BeastBeatSession.TutorialPending=!Progress.Save.tutorialSeen;Show("Battle");
             if(sceneScreen=="Battle"&&BeastBeatSession.TutorialPending){BeastBeatSession.TutorialPending=false;ShowBattleTutorial();}
         }

@@ -25,11 +25,11 @@ namespace BeastBeat
         }
         public static string SceneName(string screen)
         {
-            switch(screen){case "Entry":return "New/Event List Scene";case "Home":return "New/Main Scene";case "Stages":return "New/Stage List Scene";case "Battle":return "battle";case "Result":return "clear";case "Rewards":return "New/Reward List Scene";case "Collection":return "bangboo_list";case "Levels":return "New/Level Complete List Scene";default:throw new ArgumentException(screen);}
+            switch(screen){case "Entry":return "New/Event List Scene";case "Home":return "New/Main Scene";case "Stages":return "New/Stage List Scene";case "Battle":return "New/Battle Scene";case "Result":return "clear";case "Rewards":return "New/Reward List Scene";case "Collection":return "bangboo_list";case "Levels":return "New/Level Complete List Scene";default:throw new ArgumentException(screen);}
         }
         public static string ScreenName(string scene)
         {
-            switch(scene){case "Event List Scene":return "Entry";case "Main Scene":return "Home";case "Stage List Scene":return "Stages";case "battle":return "Battle";case "clear":return "Result";case "Reward List Scene":return "Rewards";case "bangboo_list":return "Collection";case "Level Complete List Scene":return "Levels";default:return "Entry";}
+            switch(scene){case "Event List Scene":return "Entry";case "Main Scene":return "Home";case "Stage List Scene":return "Stages";case "Battle Scene":return "Battle";case "clear":return "Result";case "Reward List Scene":return "Rewards";case "bangboo_list":return "Collection";case "Level Complete List Scene":return "Levels";default:return "Entry";}
         }
     }
 }

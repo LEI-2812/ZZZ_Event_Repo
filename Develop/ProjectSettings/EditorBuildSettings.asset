@@ -17,7 +17,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/stage_list.unity
     guid: b23653c2a878bd946be53c4d31b22613
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/battle.unity
     guid: 231715bebdb60c0448cc2e7c27c500eb
   - enabled: 1
@@ -47,6 +47,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/New/Level Complete List Scene.unity
     guid: ce90cc65f83cc78459516583e4ab32e1
+  - enabled: 1
+    path: Assets/Scenes/New/Stage List Scene.unity
+    guid: 6b78aa1871b86d6429d178bff9952d14
   m_configObjects:
     com.unity.dt.app-ui: {fileID: 11400000, guid: 1b1c20d82303e4b5781c3ef50ac1449f, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
