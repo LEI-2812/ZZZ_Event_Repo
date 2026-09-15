@@ -25,6 +25,7 @@ namespace BeastBeat
         public int playerIndex, enemyIndex, round = 1;
         public int[] playerExperience, playerNeedExperience;
         public bool Finished, Won;
+        public BattleOutcome Outcome;
         readonly Random random;
         public Fighter Player { get { return player[playerIndex]; } }
         public Fighter Enemy { get { return enemy[enemyIndex]; } }
@@ -34,7 +35,7 @@ namespace BeastBeat
             Progress = p; Stage = p.Data.Stage(stage); random = seed < 0 ? new Random() : new Random(seed);
             if (!p.Eligible || !p.StageOpen(stage) || (initialParty == null ? p.Save.party.Count == 0 : initialParty.Length == 0)) throw new InvalidOperationException("Battle not eligible");
             player = initialParty == null ? p.Save.party.Select(id => Create(id, p.Owned(id).level)).ToArray() : initialParty.Select(row => {
-                var fighter = Create(row.bid, row.level > 0 ? row.level : p.Owned(row.bid).level);
+                var fighter = Create(row.bid, row.lv > 0 ? row.lv : p.Owned(row.bid).level);
                 if (row.max_hp > 0) fighter.maxHp = row.max_hp;
                 if (row.hp > fighter.maxHp) throw new InvalidOperationException("party hp exceeds max_hp");
                 fighter.hp = row.state == 5 ? 0 : row.hp;

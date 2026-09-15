@@ -572,8 +572,8 @@ MonoBehaviour:
   - {fileID: 417092834}
   - {fileID: 715444705}
   - {fileID: 256011707}
-  mainScene: Assets/Scenes/New/Main Scene.unity
-  levelScene: Assets/Scenes/New/Level Complete List Scene.unity
+  mainScene: Assets/Scenes/Main Scene.unity
+  levelScene: Assets/Scenes/Level Complete List Scene.unity
   activeTab: {r: 1, g: 0.87, b: 0.08, a: 1}
   inactiveTab: {r: 1, g: 1, b: 1, a: 1}
   category: permanent

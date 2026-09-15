@@ -60,7 +60,7 @@ namespace BeastBeat
             var data = LoadBase();
             var workbook = GameWorkbook.Load();
             if (workbook) { try { StageCatalog.Apply(data, StageCatalog.Parse(workbook.ReadSheet("stage_list"))); } catch (Exception ex) { Debug.LogError("Stage XLSX: " + ex.Message); } }
-            if (workbook) RewardCatalog.Apply(data, workbook);
+            if (workbook) { RewardCatalog.Apply(data, workbook); BangbooCatalog.Apply(data, workbook); }
             return data;
         }
         public StageData ResolveStage(int id) { return stage_list.FirstOrDefault(s => s.id == id) ?? stage_list.OrderBy(s => s.id).FirstOrDefault(); }
@@ -81,6 +81,7 @@ namespace BeastBeat
         public bool tutorialSeen, muted, liveBackground, masterTitle;
         public List<OwnedBoo> owned = new List<OwnedBoo>();
         public List<int> party = new List<int>();
+        public int[] configuredParty;
         public List<int> cleared = new List<int>();
         public List<string> claimed = new List<string>();
         public List<InventoryItem> inventory = new List<InventoryItem>();

@@ -1110,7 +1110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94ea598249500a94cac1eb567baf3a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.MainSceneActions
-  entryScene: Assets/Scenes/New/Event List Scene.unity
+  entryScene: Assets/Scenes/Event List Scene.unity
   levelScene: Assets/Scenes/rw_level.unity
   leagueScene: Assets/Scenes/stage_list.unity
   bangbooScene: Assets/Scenes/bangboo_list.unity
@@ -1167,7 +1167,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  previousScene: Assets/Scenes/New/Main Scene.unity
+  previousScene: Assets/Scenes/Main Scene.unity
   battleScene: Assets/Scenes/battle.unity
   activeTab: {r: 0.2, g: 0.72, b: 1, a: 1}
   inactiveTab: {r: 1, g: 1, b: 1, a: 1}
@@ -1220,8 +1220,8 @@ MonoBehaviour:
   - {fileID: 1293789588}
   infoScroll: {fileID: 932787567}
   infoRowPrefab: {fileID: 351351815}
-  stageScene: Assets/Scenes/New/Stage List Scene.unity
-  resultScene: Assets/Scenes/clear.unity
+  stageScene: Assets/Scenes/Stage List Scene.unity
+  resultScene: Assets/Scenes/Clear Scene.unity
 --- !u!1 &51297159
 GameObject:
   m_ObjectHideFlags: 0
@@ -14371,7 +14371,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000026185926}
+  m_AnchoredPosition: {x: 0, y: 300}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &472101036

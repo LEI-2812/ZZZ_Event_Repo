@@ -23,8 +23,8 @@ namespace BeastBeat
         public TMP_Text npcElementLabel;
         public TMP_Text[] rewardLabels;
         [Header("Destinations")]
-        public string previousScene = "Assets/Scenes/New/Main Scene.unity";
-        public string battleScene = "Assets/Scenes/New/Battle Scene.unity";
+        public string previousScene = "Assets/Scenes/Main Scene.unity";
+        public string battleScene = "Assets/Scenes/Battle Scene.unity";
         [Header("Selection colors")]
         public Color activeTab = new Color(.2f, .72f, 1f), inactiveTab = Color.white;
         public Color inactiveElement = new Color(.35f, .37f, .4f);

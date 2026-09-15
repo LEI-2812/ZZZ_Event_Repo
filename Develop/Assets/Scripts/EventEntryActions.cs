@@ -21,8 +21,8 @@ namespace BeastBeat
         public Image background;
         public Image[] rewardImages;
         [Header("Scene destinations")]
-        public string mainScene = "Assets/Scenes/New/Main Scene.unity";
-        public string levelScene = "Assets/Scenes/New/Level Complete List Scene.unity";
+        public string mainScene = "Assets/Scenes/Main Scene.unity";
+        public string levelScene = "Assets/Scenes/Level Complete List Scene.unity";
         [Header("Tab colors (no sprites)")]
         public Color activeTab = new Color(1f, .87f, .08f), inactiveTab = Color.white;
         [SerializeField] string category = "permanent";
@@ -71,7 +71,7 @@ namespace BeastBeat
             lastRevision = source ? source.revision : "missing";
             try
             {
-                EnsureData(); var parsed = EventCatalog.Parse(source ? source.ReadSheet("event_catalog") : throw new FormatException("game_data.xlsx를 찾을 수 없습니다."));
+                EnsureData(); var parsed = EventCatalog.Parse(source ? source.ReadSheet("event_list") : throw new FormatException("game_data.xlsx를 찾을 수 없습니다."));
                 foreach (var entry in parsed)
                 {
                     if (entry.rewardIds.Any(id => !data.items.Any(item => item.id == id))) throw new FormatException("없는 보상 아이템 ID: 이벤트 " + entry.id);

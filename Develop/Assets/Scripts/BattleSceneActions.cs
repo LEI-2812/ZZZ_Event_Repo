@@ -25,8 +25,8 @@ namespace BeastBeat
         public TMP_Text[] infoLabels;
         public ScrollRect infoScroll;
         public PauseInfoRow infoRowPrefab;
-        public string stageScene = "Assets/Scenes/New/Stage List Scene.unity";
-        public string resultScene = "Assets/Scenes/clear.unity";
+        public string stageScene = "Assets/Scenes/Stage List Scene.unity";
+        public string resultScene = "Assets/Scenes/Clear Scene.unity";
         public BattleEngine Battle { get; private set; }
         public ProgressService Progress => Battle == null ? BeastBeatSession.Progress : Battle.Progress;
         public bool Busy { get; private set; }
@@ -170,7 +170,7 @@ namespace BeastBeat
             Busy=false;enemyActing=false;Refresh();
             if(Battle.Finished)
             {
-                BeastBeatSession.ResultNotes=BeastBeatSession.PreviewBattle?new List<string>{"연습 배틀입니다. 저장 데이터와 보상은 변경되지 않습니다."}:Battle.Won?Progress.Victory(Battle.Stage.id,Battle.player.Select(p=>p.id)):new List<string>{"실패한 배틀의 경험치와 보상은 지급되지 않습니다."};
+                BeastBeatSession.ResultNotes=BattleOutcome.Complete(Battle,BeastBeatSession.PreviewBattle).Notes;
                 BeastBeatSession.Battle=Battle;Open(resultScene);
             }
             else if(Battle.NeedsSwitch) { changePopup.SetActive(true);Refresh(); }

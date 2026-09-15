@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 namespace BeastBeat {
- [Serializable] public sealed class PartyEntry { public int id,uid,bid,is_on_field,hp,state,need_exp,current_exp,level,max_hp; }
+ [Serializable] public sealed class PartyEntry { public int id,uid,bid,is_on_field,hp,state,need_exp,current_exp,level,max_hp,lv; }
  [Serializable] public sealed class PauseEntry { public int id; public string name,info1,info2,info3,info4,info5,info6; }
  public sealed class BattleCatalog {
   public PartyEntry[] party; public PauseEntry[] pause;
@@ -18,12 +18,17 @@ namespace BeastBeat {
   public static BattleCatalog Load(GameWorkbook book=null){
    book=book?book:GameWorkbook.Load();if(!book)throw new FormatException("game_data.xlsx 누락");
    var c=new BattleCatalog();
-   c.party=Rows(book,"party","id","uid","bid","is_on_field","hp","state","need_exp","current_exp").Select(r=>new PartyEntry{id=N(r,"id"),uid=N(r,"uid"),bid=N(r,"bid"),is_on_field=N(r,"is_on_field"),hp=N(r,"hp"),state=N(r,"state"),need_exp=N(r,"need_exp"),current_exp=N(r,"current_exp"),level=N(r,"level"),max_hp=N(r,"max_hp")}).OrderBy(r=>r.id).ToArray();
+   c.party=Rows(book,"party","id","uid","bid","is_on_field","hp","state","need_exp","current_exp","lv").Select(r=>new PartyEntry{id=N(r,"id"),uid=N(r,"uid"),bid=N(r,"bid"),is_on_field=N(r,"is_on_field"),hp=N(r,"hp"),state=N(r,"state"),need_exp=N(r,"need_exp"),current_exp=N(r,"current_exp"),level=N(r,"level"),lv=N(r,"lv"),max_hp=N(r,"max_hp")}).OrderBy(r=>r.id).ToArray();
    c.pause=Rows(book,"pause_list","id","name","info1","info2","info3","info4","info5","info6").Select(r=>new PauseEntry{id=N(r,"id"),name=r["name"],info1=r["info1"],info2=r["info2"],info3=r["info3"],info4=r["info4"],info5=r["info5"],info6=r["info6"]}).OrderBy(r=>r.id).ToArray();return c;
   }
   public PartyEntry[] ForUser(ProgressService p){var rows=party.Where(r=>r.uid==p.Data.rewardCatalog.user.id).ToArray();
+   if(p.Save.configuredParty!=null&&p.Save.configuredParty.Length==3){
+    var ids=p.Save.configuredParty.Where(id=>id!=0).ToArray();
+    if(ids.Any(id=>!p.Owns(id)))throw new FormatException("party: 보유하지 않은 방부");
+    rows=ids.Select((id,i)=>{var owned=p.Owned(id);int hp=p.Stat(p.Data.Boo(id),owned.level,"hp");return new PartyEntry{id=i+1,uid=p.Data.rewardCatalog.user.id,bid=id,is_on_field=i==0?1:0,hp=hp,max_hp=hp,state=1,lv=owned.level,level=owned.level,need_exp=p.Data.NeedXp(owned.level),current_exp=owned.xp};}).ToArray();
+   }
    if(rows.Length<1||rows.Length>3||rows.Select(r=>r.bid).Distinct().Count()!=rows.Length)throw new FormatException("party: 현재 유저의 서로 다른 방부 1~3마리가 필요합니다.");
-   if(rows.Count(r=>r.is_on_field==1)!=1||rows.Any(r=>r.is_on_field<0||r.is_on_field>1||r.hp<0||r.state<1||r.state>5||r.need_exp<=0||r.current_exp<0||r.current_exp>r.need_exp||!p.Owns(r.bid)))throw new FormatException("party: 보유 방부·출전 표시·체력·상태·경험치를 확인하세요.");
+   if(rows.Count(r=>r.is_on_field==1)!=1||rows.Any(r=>r.is_on_field<0||r.is_on_field>1||r.lv<1||r.lv>p.Data.balance.maxLevel||r.hp<0||r.state<1||r.state>5||r.need_exp<=0||r.current_exp<0||r.current_exp>r.need_exp||!p.Owns(r.bid)))throw new FormatException("party: 보유 방부·출전 표시·체력·상태·경험치를 확인하세요.");
    if(!rows.Any(r=>r.hp>0&&r.state!=5))throw new FormatException("party: 출전 가능한 방부가 없습니다.");return rows;}
   public static BattleEngine CreateBattle(ProgressService p,int stage){return new BattleEngine(p,stage,-1,Load().ForUser(p));}
  }

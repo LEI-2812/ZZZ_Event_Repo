@@ -15,7 +15,7 @@ namespace BeastBeat
         public RewardListRow groupPrefab,infoPrefab;
         public Button specialButton;
         public TMP_Text specialButtonText,specialCount,specialCondition,specialItems,timeText,statusText;
-        public string previousScene="Assets/Scenes/New/Main Scene.unity";
+        public string previousScene="Assets/Scenes/Main Scene.unity";
         [SerializeField] int selectedGroup;
         string revision,saveState;
         float nextRefresh;

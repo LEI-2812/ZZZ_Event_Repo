@@ -323,7 +323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94ea598249500a94cac1eb567baf3a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.MainSceneActions
-  entryScene: Assets/Scenes/New/Event List Scene.unity
+  entryScene: Assets/Scenes/Event List Scene.unity
   levelScene: Assets/Scenes/rw_level.unity
   leagueScene: Assets/Scenes/stage_list.unity
   bangbooScene: Assets/Scenes/bangboo_list.unity
@@ -380,8 +380,8 @@ MonoBehaviour:
   - {fileID: 1368429794}
   - {fileID: 289300503}
   - {fileID: 272287216}
-  previousScene: Assets/Scenes/New/Main Scene.unity
-  battleScene: Assets/Scenes/New/Battle Scene.unity
+  previousScene: Assets/Scenes/Main Scene.unity
+  battleScene: Assets/Scenes/Battle Scene.unity
   activeTab: {r: 0.2, g: 0.72, b: 1, a: 1}
   inactiveTab: {r: 1, g: 1, b: 1, a: 1}
   inactiveElement: {r: 0.35, g: 0.37, b: 0.4, a: 1}

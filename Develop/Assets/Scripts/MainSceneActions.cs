@@ -7,11 +7,11 @@ namespace BeastBeat
     public sealed class MainSceneActions : MonoBehaviour
     {
         [Header("Scene destinations")]
-        public string entryScene="Assets/Scenes/New/Event List Scene.unity";
-        public string levelScene="Assets/Scenes/New/Level Complete List Scene.unity";
-        public string leagueScene="Assets/Scenes/New/Stage List Scene.unity";
-        public string bangbooScene="Assets/Scenes/bangboo_list.unity";
-        public string rewardScene="Assets/Scenes/New/Reward List Scene.unity";
+        public string entryScene="Assets/Scenes/Event List Scene.unity";
+        public string levelScene="Assets/Scenes/Level Complete List Scene.unity";
+        public string leagueScene="Assets/Scenes/Stage List Scene.unity";
+        public string bangbooScene="Assets/Scenes/Bangboo List Scene.unity";
+        public string rewardScene="Assets/Scenes/Reward List Scene.unity";
         bool navigating;
 
         void Awake()
@@ -45,7 +45,7 @@ namespace BeastBeat
             if(BeastBeatSession.Progress.Save.party.Count==0){BeastBeatSession.SelectedBoo=11;Open(bangbooScene);}
             else Open(leagueScene);
         }
-        public void OpenBangboo(){Open(bangbooScene);}
+        public void OpenBangboo(){BeastBeatSession.BangbooReturnScenePath=gameObject.scene.path;Open(bangbooScene);}
         public void OpenLimitedRewards()
         {
             BeastBeatSession.PreviousScreen="Home";

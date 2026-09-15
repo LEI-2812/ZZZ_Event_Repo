@@ -72,7 +72,7 @@ namespace BeastBeat
             while(paused)yield return null;
             Busy=false;
             if(Battle.Finished) {
-                resultNotes=BeastBeatSession.PreviewBattle?new List<string>{"씬 직접 실행 연습 배틀입니다. 저장 데이터와 보상은 변경되지 않습니다."}:Battle.Won?Progress.Victory(Battle.Stage.id,Battle.player.Select(x=>x.id)):new List<string>{"파티를 다시 편성하고 상성을 확인해보세요.","실패한 배틀의 경험치와 보상은 지급되지 않습니다."};
+                resultNotes=BattleOutcome.Complete(Battle,BeastBeatSession.PreviewBattle).Notes;
                 if(Battle.Won)Sound(winClip);Show("Result");
             } else Show("Battle");
         }
