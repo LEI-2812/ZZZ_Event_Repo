@@ -15,7 +15,7 @@ namespace BeastBeat
         public ProgressService(GameData data, string file = null)
         {
             Data = data; Data.Validate(); path = file ?? Path.Combine(Application.persistentDataPath, "beast-beat-v1.json");
-            Save = Load() ?? new SaveData { eventStartedUtc = DateTime.UtcNow.ToString("o") };
+            Save = Load() ?? new SaveData { eventStartedUtc = DateTime.UtcNow.ToString("o"), bangbooIdSchema = 1 };
         }
         SaveData Load()
         {
@@ -25,6 +25,7 @@ namespace BeastBeat
                 try {
                     var s = JsonUtility.FromJson<SaveData>(File.ReadAllText(p));
                     if (s == null || s.version != 1 || s.level < 1 || s.level > 20 || s.owned == null || s.party == null || s.claimed == null || s.inventory == null || s.cleared == null) throw new Exception("Invalid save");
+                    BangbooCatalog.UpgradeSave(Data,s);
                     DateTime.Parse(s.eventStartedUtc, null, System.Globalization.DateTimeStyles.RoundtripKind);
                     if (s.owned.Any(x => !Data.bangboo.Any(b => b.id == x.id) || x.level < 1 || x.level > s.level) || s.party.Count > 3 || s.party.Distinct().Count() != s.party.Count || s.party.Any(x => !s.owned.Any(o => o.id == x))) throw new Exception("Invalid party");
                     if (p.EndsWith(".bak")) StorageWarning = "백업 저장 데이터로 복구했습니다.";

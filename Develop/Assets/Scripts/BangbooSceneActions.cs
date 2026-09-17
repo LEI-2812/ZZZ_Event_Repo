@@ -17,9 +17,13 @@ namespace BeastBeat {
   public ProgressService Progress{get;private set;}public BangbooCatalog Catalog{get;private set;}
   public int SelectedId{get;private set;}
   BangbooPortraits portraits;readonly Dictionary<int,Sprite> sprites=new Dictionary<int,Sprite>();string revision;float nextRefresh;bool navigating;
-  void Awake(){if(!enabled)return;try{if(BeastBeatSession.Progress==null)BeastBeatSession.Progress=new ProgressService(GameData.Load());Progress=BeastBeatSession.Progress;previousScene=BeastBeatSession.BangbooReturnScenePath;portraits=new BangbooPortraits();Reload();}catch(Exception e){ShowError(e);}}
-  void Update(){if(Time.unscaledTime<nextRefresh)return;nextRefresh=Time.unscaledTime+.5f;if(workbook&&workbook.revision!=revision)try{Reload();}catch(Exception e){ShowError(e);}}
-  void ShowError(Exception e){statusText.text="데이터 확인: "+e.Message;foreach(var b in partyButtons)b.interactable=false;Debug.LogError("Bangboo Scene: "+e.Message,this);}
+  void Awake(){if(!enabled)return;workbook=workbook?workbook:GameWorkbook.Load();previousScene=BeastBeatSession.BangbooReturnScenePath;ReloadSafely();}
+  void ReloadSafely(){revision=workbook?workbook.revision:"";try{
+   if(BeastBeatSession.Progress==null)BeastBeatSession.Progress=new ProgressService(GameData.Load());
+   Progress=BeastBeatSession.Progress;if(portraits==null)portraits=new BangbooPortraits();Reload();
+  }catch(Exception e){ShowError(e);}}
+  void Update(){if(Time.unscaledTime<nextRefresh)return;nextRefresh=Time.unscaledTime+.5f;if(workbook&&workbook.revision!=revision)ReloadSafely();}
+  void ShowError(Exception e){statusText.text="데이터 확인: "+e.Message;foreach(var b in partyButtons)if(b)b.interactable=false;foreach(var row in rows)if(row&&row.button)row.button.interactable=false;Debug.LogError("Bangboo Scene: "+e.Message,this);}
   public void Reload(){
    workbook=workbook?workbook:GameWorkbook.Load();Catalog=BangbooCatalog.Load(workbook,Progress.Data.rewardCatalog.user.id);revision=workbook.revision;
    int wanted=SelectedId!=0?SelectedId:BeastBeatSession.SelectedBoo;SelectedId=Catalog.entries.Any(b=>b.id==wanted&&Catalog.Has(Progress,b.id))?wanted:Catalog.entries.Where(b=>Catalog.Has(Progress,b.id)).Select(b=>b.id).FirstOrDefault();

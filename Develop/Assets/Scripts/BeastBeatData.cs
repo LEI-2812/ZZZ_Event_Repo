@@ -42,6 +42,7 @@ namespace BeastBeat
     [Serializable] public class GameData
     {
         [NonSerialized] public RewardCatalog rewardCatalog;
+        [NonSerialized] public Dictionary<int,int> legacyBangbooIds;
         public EventData event_list;
         public BalanceData balance;
         public BooData[] bangboo;
@@ -82,6 +83,7 @@ namespace BeastBeat
         public List<OwnedBoo> owned = new List<OwnedBoo>();
         public List<int> party = new List<int>();
         public int[] configuredParty;
+        public int bangbooIdSchema;
         public List<int> cleared = new List<int>();
         public List<string> claimed = new List<string>();
         public List<InventoryItem> inventory = new List<InventoryItem>();

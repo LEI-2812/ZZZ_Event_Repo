@@ -21,7 +21,8 @@ namespace BeastBeat {
    c.party=Rows(book,"party","id","uid","bid","is_on_field","hp","state","need_exp","current_exp","lv").Select(r=>new PartyEntry{id=N(r,"id"),uid=N(r,"uid"),bid=N(r,"bid"),is_on_field=N(r,"is_on_field"),hp=N(r,"hp"),state=N(r,"state"),need_exp=N(r,"need_exp"),current_exp=N(r,"current_exp"),level=N(r,"level"),lv=N(r,"lv"),max_hp=N(r,"max_hp")}).OrderBy(r=>r.id).ToArray();
    c.pause=Rows(book,"pause_list","id","name","info1","info2","info3","info4","info5","info6").Select(r=>new PauseEntry{id=N(r,"id"),name=r["name"],info1=r["info1"],info2=r["info2"],info3=r["info3"],info4=r["info4"],info5=r["info5"],info6=r["info6"]}).OrderBy(r=>r.id).ToArray();return c;
   }
-  public PartyEntry[] ForUser(ProgressService p){var rows=party.Where(r=>r.uid==p.Data.rewardCatalog.user.id).ToArray();
+  public PartyEntry[] ForUser(ProgressService p){var rows=party.Where(r=>r.uid==p.Data.rewardCatalog.user.id).Select(r=>UnityEngine.JsonUtility.FromJson<PartyEntry>(UnityEngine.JsonUtility.ToJson(r))).ToArray();
+   foreach(var row in rows)row.bid=BangbooCatalog.WorkbookPartyId(p.Data,GameWorkbook.Load(),row.bid);
    if(p.Save.configuredParty!=null&&p.Save.configuredParty.Length==3){
     var ids=p.Save.configuredParty.Where(id=>id!=0).ToArray();
     if(ids.Any(id=>!p.Owns(id)))throw new FormatException("party: 보유하지 않은 방부");
