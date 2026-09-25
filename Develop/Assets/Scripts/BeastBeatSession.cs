@@ -13,6 +13,7 @@ namespace BeastBeat
         public static string RewardReturnScenePath="Assets/Scenes/Main Scene.unity";
         public static ProgressService Progress;
         public static BattleEngine Battle;
+        public static int SelectedEvent;
         public static int StageGroup=1, SelectedStage=1, SelectedBoo=11, RewardGroup;
         public static string BattleLine="", PreviousScreen="Home";
         public static List<string> History=new List<string>(), ResultNotes=new List<string>();
@@ -21,8 +22,15 @@ namespace BeastBeat
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void Reset()
         {
-            BangbooReturnScenePath="Assets/Scenes/Main Scene.unity";HomeScenePath="Assets/Scenes/Main Scene.unity";StageReturnScenePath="Assets/Scenes/Main Scene.unity";RewardReturnScenePath="Assets/Scenes/Main Scene.unity";Progress=null;Battle=null;StageGroup=1;SelectedStage=1;SelectedBoo=11;RewardGroup=0;
+            BangbooReturnScenePath="Assets/Scenes/Main Scene.unity";HomeScenePath="Assets/Scenes/Main Scene.unity";StageReturnScenePath="Assets/Scenes/Main Scene.unity";RewardReturnScenePath="Assets/Scenes/Main Scene.unity";Progress=null;Battle=null;SelectedEvent=0;StageGroup=1;SelectedStage=1;SelectedBoo=11;RewardGroup=0;
             BattleLine="";PreviousScreen="Home";History=new List<string>();ResultNotes=new List<string>();TutorialPending=false;PreviewBattle=false;
+        }
+        // 씬 이동 전에 공통 데이터를 한 번 검증하고 기존 저장 상태에 연결합니다.
+        public static ProgressService EnsureProgress(bool refresh = false)
+        {
+            if (Progress == null) Progress = new ProgressService(GameData.Load());
+            else if (refresh) Progress.ReloadData(GameData.Load());
+            return Progress;
         }
         public static string SceneName(string screen)
         {

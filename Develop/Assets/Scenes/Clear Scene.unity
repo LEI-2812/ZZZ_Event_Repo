@@ -271,6 +271,7 @@ GameObject:
   - component: {fileID: 35111688}
   - component: {fileID: 35111689}
   - component: {fileID: 35111690}
+  - component: {fileID: 35111691}
   m_Layer: 0
   m_Name: "main \xB7 UI Canvas"
   m_TagString: Untagged
@@ -382,11 +383,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94ea598249500a94cac1eb567baf3a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.MainSceneActions
-  entryScene: Assets/Scenes/eventlist.unity
-  levelScene: Assets/Scenes/rw_level.unity
-  leagueScene: Assets/Scenes/stage_list.unity
-  bangbooScene: Assets/Scenes/bangboo_list.unity
-  rewardScene: Assets/Scenes/reward_list.unity
 --- !u!114 &35111689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -431,8 +427,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  mainScene: Assets/Scenes/Main Scene.unity
-  levelScene: Assets/Scenes/Level Complete List Scene.unity
   activeTab: {r: 1, g: 0.87, b: 0.08, a: 1}
   inactiveTab: {r: 1, g: 1, b: 1, a: 1}
   category: permanent
@@ -459,13 +453,25 @@ MonoBehaviour:
   - {fileID: 1617468031}
   - {fileID: 1470567909}
   levelUpLabels:
-  - {fileID: 2084329343}
-  - {fileID: 362667695}
-  - {fileID: 1838976416}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   infoText: {fileID: 19952406}
   titleText: {fileID: 624696522}
   okButton: {fileID: 836949143}
-  stageScene: Assets/Scenes/Stage List Scene.unity
+--- !u!114 &35111691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 35111683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a01f867b8f889e4c84244181a033d96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.Move_Scene
+  errorText: {fileID: 19952406}
 --- !u!1 &118808775
 GameObject:
   m_ObjectHideFlags: 0
@@ -634,7 +640,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1470567908}
-  - {fileID: 1838976415}
   m_Father: {fileID: 35111687}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -689,7 +694,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 351642055}
-  - component: {fileID: 351642059}
   - component: {fileID: 351642058}
   - component: {fileID: 351642057}
   - component: {fileID: 351642056}
@@ -802,162 +806,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 351642054}
   m_CullTransparentMesh: 1
---- !u!114 &351642059
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 351642054}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a93803ad7cc474ea620c0194b63118, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.EditableUINode
-  bindingKey: "Popup/Toast \xB7 \uC548\uB0B4/#0/Button:21/Toast:70#0"
-  overrideText: 0
-  overrideTexture: 0
-  authored: 1
-  sourceText: 
-  sourceColor: {r: 0.22, g: 0.81, b: 0.98, a: 1}
-  sourceSize: {x: 690, y: 50}
---- !u!1 &362667693
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 362667694}
-  - component: {fileID: 362667696}
-  - component: {fileID: 362667695}
-  m_Layer: 0
-  m_Name: Txt_Lvup
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &362667694
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 362667693}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 425970600}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: -30}
-  m_SizeDelta: {x: 200, y: 50}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &362667695
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 362667693}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: LV UP!
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4279355648
-  m_fontColor: {r: 0, g: 0.78823537, b: 0.06666667, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_characterHorizontalScale: 1
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656bu
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_EmojiFallbackSupport: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!222 &362667696
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 362667693}
-  m_CullTransparentMesh: 1
 --- !u!1 &425970599
 GameObject:
   m_ObjectHideFlags: 0
@@ -989,7 +837,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1617468030}
-  - {fileID: 362667694}
   m_Father: {fileID: 35111687}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -1141,7 +988,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1899075625}
-  - {fileID: 2084329342}
   m_Father: {fileID: 35111687}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -1333,7 +1179,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 684093447}
-  - component: {fileID: 684093450}
   - component: {fileID: 684093449}
   - component: {fileID: 684093448}
   m_Layer: 0
@@ -1404,25 +1249,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 684093446}
   m_CullTransparentMesh: 1
---- !u!114 &684093450
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 684093446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a93803ad7cc474ea620c0194b63118, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.EditableUINode
-  bindingKey: "Popup/Toast \xB7 \uC548\uB0B4/#0/Button:21/Toast:70#0/Label:0/Button:216/Toast:70#0"
-  overrideText: 0
-  overrideTexture: 0
-  authored: 1
-  sourceText: "\uD655\uC778"
-  sourceColor: {r: 0.025, g: 0.033, b: 0.055, a: 1}
-  sourceSize: {x: 658, y: 50}
 --- !u!1 &750386344
 GameObject:
   m_ObjectHideFlags: 0
@@ -1434,7 +1260,6 @@ GameObject:
   - component: {fileID: 750386345}
   - component: {fileID: 750386348}
   - component: {fileID: 750386347}
-  - component: {fileID: 750386346}
   m_Layer: 0
   m_Name: "Toast \xB7 \uC548\uB0B4"
   m_TagString: Untagged
@@ -1462,25 +1287,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &750386346
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 750386344}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a93803ad7cc474ea620c0194b63118, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.EditableUINode
-  bindingKey: "Popup/Toast \xB7 \uC548\uB0B4"
-  overrideText: 0
-  overrideTexture: 0
-  authored: 1
-  sourceText: 
-  sourceColor: {r: 0, g: 0, b: 0, a: 0.78}
-  sourceSize: {x: 0, y: 0}
 --- !u!114 &750386347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1602,10 +1408,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 35111690}
-        m_TargetAssemblyTypeName: BeastBeat.ClearSceneActions, Assembly-CSharp
+      - m_Target: {fileID: 35111691}
+        m_TargetAssemblyTypeName: BeastBeat.Move_Scene, Assembly-CSharp
         m_MethodName: Confirm
-        m_Mode: 0
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: 
@@ -1740,7 +1546,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1081634742}
-  - component: {fileID: 1081634745}
   - component: {fileID: 1081634744}
   - component: {fileID: 1081634743}
   m_Layer: 0
@@ -1811,25 +1616,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1081634741}
   m_CullTransparentMesh: 1
---- !u!114 &1081634745
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1081634741}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a93803ad7cc474ea620c0194b63118, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.EditableUINode
-  bindingKey: "Popup/Toast \xB7 \uC548\uB0B4/#0/Button:21#0/Label:0/Button:216#0"
-  overrideText: 0
-  overrideTexture: 0
-  authored: 1
-  sourceText: "\xD7"
-  sourceColor: {r: 1, g: 1, b: 1, a: 1}
-  sourceSize: {x: 13, y: 45}
 --- !u!1 &1470567907
 GameObject:
   m_ObjectHideFlags: 0
@@ -1976,7 +1762,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1477228147}
-  - component: {fileID: 1477228150}
   - component: {fileID: 1477228149}
   - component: {fileID: 1477228148}
   m_Layer: 0
@@ -2047,25 +1832,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1477228146}
   m_CullTransparentMesh: 1
---- !u!114 &1477228150
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1477228146}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a93803ad7cc474ea620c0194b63118, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.EditableUINode
-  bindingKey: "Popup/Toast \xB7 \uC548\uB0B4/#0/Label:0/Toast:27#0"
-  overrideText: 0
-  overrideTexture: 0
-  authored: 1
-  sourceText: "\uC548\uB0B4 \uBB38\uAD6C"
-  sourceColor: {r: 1, g: 1, b: 1, a: 1}
-  sourceSize: {x: 690, y: 86}
 --- !u!1 &1529176572
 GameObject:
   m_ObjectHideFlags: 0
@@ -2075,7 +1841,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1529176573}
-  - component: {fileID: 1529176577}
   - component: {fileID: 1529176576}
   - component: {fileID: 1529176575}
   - component: {fileID: 1529176574}
@@ -2188,25 +1953,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1529176572}
   m_CullTransparentMesh: 1
---- !u!114 &1529176577
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1529176572}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a93803ad7cc474ea620c0194b63118, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.EditableUINode
-  bindingKey: "Popup/Toast \xB7 \uC548\uB0B4/#0/Button:21#0"
-  overrideText: 0
-  overrideTexture: 0
-  authored: 1
-  sourceText: 
-  sourceColor: {r: 0.055, g: 0.075, b: 0.12, a: 1}
-  sourceSize: {x: 45, y: 45}
 --- !u!1 &1558400073
 GameObject:
   m_ObjectHideFlags: 0
@@ -2216,7 +1962,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1558400074}
-  - component: {fileID: 1558400077}
   - component: {fileID: 1558400076}
   - component: {fileID: 1558400075}
   m_Layer: 0
@@ -2288,25 +2033,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1558400073}
   m_CullTransparentMesh: 1
---- !u!114 &1558400077
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1558400073}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a93803ad7cc474ea620c0194b63118, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.EditableUINode
-  bindingKey: "Popup/Toast \xB7 \uC548\uB0B4/#0"
-  overrideText: 0
-  overrideTexture: 0
-  authored: 1
-  sourceText: 
-  sourceColor: {r: 0.055, g: 0.075, b: 0.12, a: 1}
-  sourceSize: {x: 750, y: 280}
 --- !u!1 &1600488919
 GameObject:
   m_ObjectHideFlags: 0
@@ -2316,7 +2042,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1600488920}
-  - component: {fileID: 1600488923}
   - component: {fileID: 1600488922}
   - component: {fileID: 1600488921}
   m_Layer: 0
@@ -2383,25 +2108,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1600488919}
   m_CullTransparentMesh: 1
---- !u!114 &1600488923
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1600488919}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a93803ad7cc474ea620c0194b63118, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.EditableUINode
-  bindingKey: "Popup/Toast \xB7 \uC548\uB0B4/#0/#0"
-  overrideText: 0
-  overrideTexture: 0
-  authored: 1
-  sourceText: 
-  sourceColor: {r: 0.22, g: 0.81, b: 0.98, a: 1}
-  sourceSize: {x: 750, y: 5}
 --- !u!1 &1617468029
 GameObject:
   m_ObjectHideFlags: 0
@@ -2548,7 +2254,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1650917584}
-  - component: {fileID: 1650917587}
   - component: {fileID: 1650917586}
   - component: {fileID: 1650917585}
   m_Layer: 0
@@ -2619,25 +2324,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1650917583}
   m_CullTransparentMesh: 1
---- !u!114 &1650917587
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1650917583}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a93803ad7cc474ea620c0194b63118, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.EditableUINode
-  bindingKey: "Popup/Toast \xB7 \uC548\uB0B4/#0/Label:0#0"
-  overrideText: 0
-  overrideTexture: 0
-  authored: 1
-  sourceText: "\uC548\uB0B4"
-  sourceColor: {r: 1, g: 1, b: 1, a: 1}
-  sourceSize: {x: 650, y: 50}
 --- !u!1 &1775992500
 GameObject:
   m_ObjectHideFlags: 0
@@ -2712,143 +2398,6 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1775992500}
-  m_CullTransparentMesh: 1
---- !u!1 &1838976414
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1838976415}
-  - component: {fileID: 1838976417}
-  - component: {fileID: 1838976416}
-  m_Layer: 0
-  m_Name: Txt_Lvup
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1838976415
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1838976414}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 124112280}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: -30}
-  m_SizeDelta: {x: 200, y: 50}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1838976416
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1838976414}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: LV UP!
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4279355648
-  m_fontColor: {r: 0, g: 0.78823537, b: 0.06666667, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_characterHorizontalScale: 1
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656bu
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_EmojiFallbackSupport: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!222 &1838976417
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1838976414}
   m_CullTransparentMesh: 1
 --- !u!1 &1899075624
 GameObject:
@@ -3235,143 +2784,6 @@ RectTransform:
   m_AnchoredPosition: {x: 800, y: 566.2142}
   m_SizeDelta: {x: 1600, y: 1132.4283}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &2084329341
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2084329342}
-  - component: {fileID: 2084329344}
-  - component: {fileID: 2084329343}
-  m_Layer: 0
-  m_Name: Txt_Lvup
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &2084329342
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2084329341}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 565973867}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: -30}
-  m_SizeDelta: {x: 200, y: 50}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2084329343
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2084329341}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: LV UP!
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4279355648
-  m_fontColor: {r: 0, g: 0.78823537, b: 0.06666667, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_characterHorizontalScale: 1
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656bu
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_EmojiFallbackSupport: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!222 &2084329344
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2084329341}
-  m_CullTransparentMesh: 1
 --- !u!1 &2127008838
 GameObject:
   m_ObjectHideFlags: 0

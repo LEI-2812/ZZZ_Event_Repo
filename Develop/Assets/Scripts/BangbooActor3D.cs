@@ -12,18 +12,22 @@ namespace BeastBeat
         Vector3 restPosition;
         float phase,attack,hit,arrival;
         bool initialized;
-        public void Configure(int id,int lv)
+        int configuredType;
+        public void Configure(int id,int lv) { Configure(GameData.Load().Boo(id),lv); }
+        public void Configure(BooData definition,int lv)
         {
-            if(visualRoot!=null && bangbooId==id && level==lv){InitializePose();return;}
+            int id=definition.id, element=definition.type;
+            if(element<1||element>5)throw new System.ArgumentOutOfRangeException("definition.type", "방부 속성은 1~5여야 합니다.");
+            if(visualRoot!=null && bangbooId==id && level==lv && configuredType==element){InitializePose();return;}
             if(visualRoot!=null){visualRoot.gameObject.SetActive(false);if(Application.isPlaying)Destroy(visualRoot.gameObject);else DestroyImmediate(visualRoot.gameObject);}
             if(Application.isPlaying&&generatedMaterials!=null)foreach(var m in generatedMaterials)if(m!=null&&m.name=="Actor material")Destroy(m);
-            bangbooId=id;level=lv;
+            bangbooId=id;level=lv;configuredType=element;
             var materials=new List<Material>();
-            ColorUtility.TryParseHtmlString("#"+Elements.Hex(id/10),out var color);
+            ColorUtility.TryParseHtmlString("#"+Elements.Hex(element),out var color);
             var coat=Material(color,materials);var dark=Material(new Color(.025f,.045f,.07f),materials);var white=Material(new Color(.84f,.91f,.94f),materials);var eye=Material(new Color(.85f,1,.35f),materials,true);
             var face=Material(new Color(.008f,.012f,.02f),materials);
             visualRoot=new GameObject("Visual · "+id).transform;visualRoot.SetParent(transform,false);
-            Part("Body",id==11?PrimitiveType.Cube:PrimitiveType.Capsule,new Vector3(0,1.12f,0),new Vector3(1.08f,.76f,.77f),coat);
+            Part("Body",definition.name=="봉투부"?PrimitiveType.Cube:PrimitiveType.Capsule,new Vector3(0,1.12f,0),new Vector3(1.08f,.76f,.77f),coat);
             Part("Face screen",PrimitiveType.Sphere,new Vector3(0,1.35f,-.37f),new Vector3(.9f,.59f,.23f),face);
             for(int s=-1;s<=1;s+=2){
                 Part("Ear",PrimitiveType.Capsule,new Vector3(s*.32f,2.04f,0),new Vector3(.23f,.43f,.23f),coat,s*-13);
@@ -35,8 +39,8 @@ namespace BeastBeat
             Part("Belly",PrimitiveType.Sphere,new Vector3(0,.88f,-.35f),new Vector3(.46f,.34f,.16f),white);
             Part("Core",PrimitiveType.Cube,new Vector3(0,.88f,-.45f),new Vector3(.18f,.18f,.03f),eye,45);
             if(id%2==0)Part("Visor",PrimitiveType.Cube,new Vector3(0,1.7f,-.37f),new Vector3(.85f,.10f,.12f),dark);
-            if(id/10==4)Part("Antenna",PrimitiveType.Cube,new Vector3(.4f,2.0f,-.08f),new Vector3(.40f,.12f,.12f),eye,-30);
-            if(id/10==5)for(int s=-1;s<=1;s+=2)Part("Wing",PrimitiveType.Cube,new Vector3(s*.68f,1.04f,.26f),new Vector3(.4f,.50f,.09f),coat,s*35);
+            if(element==4)Part("Antenna",PrimitiveType.Cube,new Vector3(.4f,2.0f,-.08f),new Vector3(.40f,.12f,.12f),eye,-30);
+            if(element==5)for(int s=-1;s<=1;s+=2)Part("Wing",PrimitiveType.Cube,new Vector3(s*.68f,1.04f,.26f),new Vector3(.4f,.50f,.09f),coat,s*35);
             if(lv>=10)for(int i=-1;i<=1;i++)Part("Evolved crown",PrimitiveType.Cube,new Vector3(i*.19f,1.86f,-.25f),new Vector3(.12f,.18f,.12f),eye,45);
             generatedMaterials=materials.ToArray();arrival=1;InitializePose();
         }
@@ -56,7 +60,7 @@ namespace BeastBeat
         void OnDestroy(){if(Application.isPlaying&&generatedMaterials!=null)foreach(var m in generatedMaterials)if(m!=null&&m.name=="Actor material")Destroy(m);}
         void Update()
         {
-            if(!initialized||!visualRoot||((BeastBeatApp.Instance&&BeastBeatApp.Instance.IsPaused)||(BattleSceneActions.Instance&&BattleSceneActions.Instance.IsPaused)))return;
+            if(!initialized||!visualRoot||(BattleSceneActions.Instance&&BattleSceneActions.Instance.IsPaused))return;
             float dt=Time.unscaledDeltaTime;phase+=dt*2.4f;attack=Mathf.Max(0,attack-dt*1.8f);hit=Mathf.Max(0,hit-dt*2.4f);arrival=Mathf.Max(0,arrival-dt*2);
             Vector3 direction=opponent?(opponent.position-transform.position).normalized:Vector3.zero;direction.y=0;
             transform.localPosition=restPosition+direction*Mathf.Sin(attack*Mathf.PI)*1.1f+Vector3.up*(Mathf.Sin(phase)*.035f+Mathf.Sin(arrival*Mathf.PI)*.45f);

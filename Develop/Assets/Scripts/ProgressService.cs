@@ -8,14 +8,28 @@ namespace BeastBeat
 {
     public class ProgressService
     {
-        public readonly GameData Data;
+        public GameData Data { get; private set; }
         public SaveData Save;
         public string StorageWarning = "";
+        public string WorkbookStorageWarning { get; private set; } = "";
+        readonly string workbookPath;
         readonly string path;
-        public ProgressService(GameData data, string file = null)
+        public ProgressService(GameData data, string file = null, string ownershipWorkbookPath = null)
         {
             Data = data; Data.Validate(); path = file ?? Path.Combine(Application.persistentDataPath, "beast-beat-v1.json");
+            // 임시 저장 경로를 쓰는 연습/테스트는 원본 엑셀을 수정하지 않습니다.
+            workbookPath = ownershipWorkbookPath ?? (file == null ? Path.Combine(Application.dataPath, "Resources/Data/game_data.xlsx") : null);
             Save = Load() ?? new SaveData { eventStartedUtc = DateTime.UtcNow.ToString("o"), bangbooIdSchema = 1 };
+            if (Save.pendingWorkbookUnlocks == null) Save.pendingWorkbookUnlocks = new List<int>();
+            SyncPartyLevels();
+            QueueWorkbookUnlocks();
+        }
+        // 저장된 진행도는 유지하고 검증된 데이터 정의만 갱신합니다.
+        public void ReloadData(GameData data)
+        {
+            data.Validate();
+            Data = data;
+            SyncPartyLevels();
         }
         SaveData Load()
         {
@@ -27,7 +41,7 @@ namespace BeastBeat
                     if (s == null || s.version != 1 || s.level < 1 || s.level > 20 || s.owned == null || s.party == null || s.claimed == null || s.inventory == null || s.cleared == null) throw new Exception("Invalid save");
                     BangbooCatalog.UpgradeSave(Data,s);
                     DateTime.Parse(s.eventStartedUtc, null, System.Globalization.DateTimeStyles.RoundtripKind);
-                    if (s.owned.Any(x => !Data.bangboo.Any(b => b.id == x.id) || x.level < 1 || x.level > s.level) || s.party.Count > 3 || s.party.Distinct().Count() != s.party.Count || s.party.Any(x => !s.owned.Any(o => o.id == x))) throw new Exception("Invalid party");
+                    if (s.party.Count > 3 || s.party.Distinct().Count() != s.party.Count) throw new Exception("Invalid party");
                     if (p.EndsWith(".bak")) StorageWarning = "백업 저장 데이터로 복구했습니다.";
                     return s;
                 } catch (Exception e) { StorageWarning = "저장 파일을 읽지 못했습니다. 기존 파일은 백업으로 보존됩니다."; Debug.LogWarning("BeastBeat save: " + e.Message); }
@@ -39,6 +53,15 @@ namespace BeastBeat
         public void Persist() { TryPersist(); }
         public bool TryPersist()
         {
+            SyncPartyLevels();
+            QueueWorkbookUnlocks();
+            if (!WriteProgress()) return false;
+            // 진행도와 재시도 목록부터 보존합니다. 엑셀 잠금 때문에 보상/레벨을 되돌리지 않습니다.
+            FlushWorkbookUnlocks();
+            return true;
+        }
+        bool WriteProgress()
+        {
             try {
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
                 File.WriteAllText(path + ".tmp", JsonUtility.ToJson(Save, true));
@@ -47,10 +70,49 @@ namespace BeastBeat
                 StorageWarning = ""; return true;
             } catch (Exception e) { StorageWarning = "자동 저장 실패: 저장 폴더의 여유 공간과 권한을 확인해주세요."; Debug.LogWarning("BeastBeat save failed: " + e.Message); return false; }
         }
+        void QueueWorkbookUnlocks()
+        {
+            if (workbookPath == null || Data.unlockableBangbooIds == null) return;
+            foreach (int id in Data.unlockableBangbooIds)
+                if (Save.level >= Data.Boo(id).unlockLevel && !Data.initialOwnedBangbooIds.Contains(id) && !Save.pendingWorkbookUnlocks.Contains(id))
+                    Save.pendingWorkbookUnlocks.Add(id);
+        }
+        public bool RetryWorkbookUnlocks()
+        {
+            QueueWorkbookUnlocks();
+            if (workbookPath == null || Save.pendingWorkbookUnlocks.Count == 0) return true;
+            if (!WriteProgress()) return false;
+            return FlushWorkbookUnlocks();
+        }
+        bool FlushWorkbookUnlocks()
+        {
+            if (workbookPath == null || Save.pendingWorkbookUnlocks.Count == 0) return true;
+            try {
+                int[] ids = Save.pendingWorkbookUnlocks.ToArray();
+                WorkbookOwnershipStore.SaveUnlocked(workbookPath, Data.rewardCatalog == null ? 1 : Data.rewardCatalog.user.id, ids);
+                Data.initialOwnedBangbooIds = Data.initialOwnedBangbooIds.Union(ids).ToArray();
+                Save.pendingWorkbookUnlocks.Clear();
+                WorkbookStorageWarning = "";
+                // 여기서 저장이 중단되어도 이전 파일의 대기 목록을 다시 적용하는 것은 안전합니다.
+                WriteProgress();
+                #if UNITY_EDITOR
+                if (Path.GetFullPath(workbookPath) == Path.GetFullPath(Path.Combine(Application.dataPath, "Resources/Data/game_data.xlsx")))
+                    UnityEditor.AssetDatabase.ImportAsset("Assets/Resources/Data/game_data.xlsx");
+                #endif
+                return true;
+            } catch (Exception e) {
+                string action = e is FileNotFoundException || e is DirectoryNotFoundException ? "game_data.xlsx 원본 경로를 확인해 주세요." :
+                    e is IOException || e is UnauthorizedAccessException ? "Excel에서 game_data.xlsx를 저장하고 닫고, 쓰기 권한을 확인해 주세요." : "users 시트의 컬럼과 사용자 ID를 확인해 주세요.";
+                string message = "방부 해금의 엑셀 저장 대기 중입니다. " + action + " (" + e.Message + ")";
+                if (WorkbookStorageWarning != message) Debug.LogWarning(message);
+                WorkbookStorageWarning = message;
+                return false;
+            }
+        }
         public bool Eligible { get { return Save.accountLevel >= Data.event_list.minimumAccountLevel && Save.clearedChapter >= Data.event_list.minimumChapter; } }
         public bool LimitedActive { get { return DateTime.UtcNow < DateTime.Parse(Save.eventStartedUtc, null, System.Globalization.DateTimeStyles.RoundtripKind).AddDays(Data.event_list.demoLimitedDays); } }
         public int DaysLeft { get { return Math.Max(0, (int)Math.Ceiling((DateTime.Parse(Save.eventStartedUtc, null, System.Globalization.DateTimeStyles.RoundtripKind).AddDays(Data.event_list.demoLimitedDays) - DateTime.UtcNow).TotalDays)); } }
-        public bool Owns(int id) { return Save.owned.Any(x => x.id == id); }
+        public bool Owns(int id) { return Data.unlockableBangbooIds == null ? Save.owned.Any(x => x.id == id) : Data.unlockableBangbooIds.Contains(id) && (Data.initialOwnedBangbooIds.Contains(id) || Save.level >= Data.Boo(id).unlockLevel); }
         public OwnedBoo Owned(int id) { return Save.owned.First(x => x.id == id); }
         public bool CanAdopt(int id) { return !Owns(id) && Save.level >= Data.Boo(id).unlockLevel; }
         public bool Adopt(int id)
@@ -79,37 +141,45 @@ namespace BeastBeat
                 item.amount += r.amount;
             }
         }
-        void Grow(ref int level, ref int xp, int amount, int cap)
+        // Individual levels/XP remain in old saves for compatibility only.
+        public void SyncPartyLevels()
         {
-            xp += amount;
-            while (level < cap && xp >= Data.NeedXp(level)) { xp -= Data.NeedXp(level); level++; }
-            if (level >= Data.balance.maxLevel) xp = 0;
-            // At player cap, retain at most one level's experience until the player grows.
-            else if (level >= cap) xp = Math.Min(xp, Data.NeedXp(level) - 1);
+            // users의 명시 보유 + 현재 레벨의 자동 해금만 인정합니다. 이전 owned는 판정 근거가 아닙니다.
+            if (Data.unlockableBangbooIds != null)
+            {
+                Save.owned = Data.unlockableBangbooIds.Where(Owns).Select(id => new OwnedBoo { id = id, level = Save.level }).ToList();
+                Save.party = Save.party.Where(Owns).ToList();
+                if (Save.configuredParty != null)
+                    Save.configuredParty = Save.configuredParty.Select(id => id != 0 && Owns(id) ? id : 0).ToArray();
+            }
+            Save.xp = 0;
+            foreach (var b in Save.owned) { b.level = Save.level; b.xp = 0; }
         }
         public List<string> Victory(int stageId, IEnumerable<int> participating)
         {
-            var s = Data.Stage(stageId); var notes = new List<string>();
+            var stage = Data.Stage(stageId); var notes = new List<string>();
+            if(stage.level_gain < 0) throw new InvalidOperationException("level_gain은 0 이상의 정수여야 합니다.");
             int before = Save.level;
-            Grow(ref Save.level, ref Save.xp, s.experience, Data.balance.maxLevel);
-            notes.Add("플레이어 경험치 +" + s.experience);
-            if (Save.level > before) notes.Add("플레이어 LV. " + before + " → " + Save.level);
-            foreach (int id in participating.Distinct()) {
-                var b = Owned(id); int old = b.level;
-                Grow(ref b.level, ref b.xp, s.experience, Save.level);
-                if (old != b.level) notes.Add(Data.Boo(id).name + " LV. " + old + " → " + b.level);
-                if (old < Data.balance.evolutionLevel && b.level >= Data.balance.evolutionLevel) notes.Add(Data.Boo(id).name + " 진화! 코어가 각성했습니다.");
-            }
+            var ownedBefore = Data.bangboo.Where(b => Owns(b.id)).Select(b => b.id).ToHashSet();
             if (!Save.cleared.Contains(stageId)) {
+                Save.level += Math.Min(stage.level_gain, Math.Max(0, Data.balance.maxLevel - Save.level));
+                SyncPartyLevels();
+                foreach (var boo in Data.bangboo.Where(b => Owns(b.id) && !ownedBefore.Contains(b.id))) notes.Add("방부 해금: " + boo.name);
+                if (Save.level > before) notes.Add("플레이어·방부 LV. " + before + " → " + Save.level);
+                else notes.Add(Save.level >= Data.balance.maxLevel ? "플레이어·방부가 최고 레벨입니다." : "이 스테이지는 레벨 상승 보상이 없습니다.");
+                if (before < Data.balance.evolutionLevel && Save.level >= Data.balance.evolutionLevel)
+                    notes.Add("모든 보유 방부가 진화 레벨에 도달했습니다.");
                 Save.cleared.Add(stageId); Grant(Data.stage_rewards.Where(x => x.owner_id == stageId).ToArray());
                 notes.Add("첫 클리어 보상을 획득했습니다.");
-            } else notes.Add("재도전 경험치를 획득했습니다. 첫 클리어 보상은 이미 수령했습니다.");
-            Save.lastStage = stageId; Persist(); return notes;
+            } else notes.Add("이미 클리어한 스테이지입니다. 레벨과 첫 클리어 보상은 추가 지급되지 않습니다.");
+            Save.lastStage = stageId; Persist();
+            if (!string.IsNullOrEmpty(WorkbookStorageWarning)) notes.Add(WorkbookStorageWarning);
+            return notes;
         }
         public int Metric(AchievementData a)
         {
             if (a.metric == "collection") return Save.owned.Count;
-            if (a.metric == "evolution") return Save.owned.Count(x => x.level >= Data.balance.evolutionLevel);
+            if (a.metric == "evolution") return Save.level >= Data.balance.evolutionLevel ? Save.owned.Count : 0;
             if (a.metric == "stage") return Save.cleared.Count;
             return 0;
         }
@@ -137,8 +207,11 @@ namespace BeastBeat
         public bool HasRewards { get { return Enumerable.Range(1,20).Any(x => CanClaim("l" + x)) || Data.achievement.Any(x => CanClaim("a" + x.id)) || CanClaim("special") || CanClaim("maxlevel"); } }
         public int Stat(BooData b, int level, string stat)
         {
-            if (stat == "hp") return Math.Min(999, b.hp + (level - 1) * 4 + (level >= Data.balance.evolutionLevel ? 25 : 0));
-            return (stat == "atk" ? b.atk : b.def) + (level - 1) * 4 + (level >= Data.balance.evolutionLevel ? 12 : 0);
+            if (level < 1 || level > Data.balance.maxLevel) throw new ArgumentOutOfRangeException(nameof(level));
+            // 엑셀의 방부 정의에 현재 레벨 공식을 적용합니다. 원본 능력치 셀은 덮어쓰지 않습니다.
+            if (stat == "hp") return (int)Math.Floor(((level - 1) / 19.0) * 1995) + 800;
+            if (stat == "atk" || stat == "def") return (int)Math.Floor(((level - 1) / 19.0) * 160) + 50;
+            throw new ArgumentException("지원하지 않는 능력치: " + stat);
         }
     }
 }

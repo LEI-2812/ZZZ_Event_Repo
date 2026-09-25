@@ -3,7 +3,6 @@ using System.Linq;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace BeastBeat
@@ -15,15 +14,15 @@ namespace BeastBeat
         public TMP_Text[] levelLabels, levelUpLabels;
         public TMP_Text infoText, titleText;
         public Button okButton;
-        public string stageScene="Assets/Scenes/Stage List Scene.unity";
+
         public ResultPartyMember[] DisplayedParty {get;private set;}
         public BattleOutcome Outcome {get;private set;}
         public ProgressService Progress {get;private set;}
         readonly Dictionary<int,Sprite> portraitsById=new Dictionary<int,Sprite>();
         BangbooPortraits portraits;
         string revision;
+        string workbookWarning;
         float nextRefresh;
-        bool navigating;
 
         void Awake()
         {
@@ -39,14 +38,19 @@ namespace BeastBeat
         void Update()
         {
             // A completed battle keeps its participant snapshot. Direct scene preview follows workbook edits.
-            if(Outcome!=null||Time.unscaledTime<nextRefresh)return;
+            if (Outcome != null) {
+                if (workbookWarning != Progress.WorkbookStorageWarning) Refresh();
+                return;
+            }
+            if(Time.unscaledTime<nextRefresh)return;
             nextRefresh=Time.unscaledTime+.5f;var book=workbook?workbook:GameWorkbook.Load();
             if(book&&book.revision!=revision){try{Refresh();}catch(Exception ex){infoText.text="데이터 확인: "+ex.Message;}}
         }
         public void Refresh()
         {
+            workbookWarning = Progress.WorkbookStorageWarning;
             var book=workbook?workbook:GameWorkbook.Load();revision=book.revision;
-            DisplayedParty=Outcome!=null?Outcome.Party:BattleCatalog.Load(book).ForUser(Progress).Select(p=>new ResultPartyMember{bid=p.bid,lv=p.lv,leveledUp=false}).ToArray();
+            DisplayedParty=Outcome!=null?Outcome.Party:BattleCatalog.Load(book).ForUser(Progress).Select(p=>new ResultPartyMember{bid=p.bid,lv=Progress.Save.level,leveledUp=false}).ToArray();
             titleText.text="도전 결과";
             if(Outcome==null)infoText.text="파티 미리보기 · 완료된 배틀이 없습니다.";
             else{
@@ -54,10 +58,11 @@ namespace BeastBeat
                 if(npc.Length>4)npc=npc.Substring(0,4);
                 infoText.text=Outcome.Won?"‘"+npc+"’과의 배틀에서 승리했다!":"‘"+npc+"’과의 배틀에서 패배했다.";
                 if(Outcome.Preview)infoText.text+="\n연습 배틀 · 저장 및 보상 지급 없음";
+                if (!string.IsNullOrEmpty(Progress.WorkbookStorageWarning)) infoText.text += "\n" + Progress.WorkbookStorageWarning;
             }
             for(int i=0;i<partyImages.Length;i++){
                 bool filled=i<DisplayedParty.Length;partyImages[i].gameObject.SetActive(filled);
-                levelUpLabels[i].gameObject.SetActive(filled&&DisplayedParty[i].leveledUp);
+                if(levelUpLabels!=null&&i<levelUpLabels.Length&&levelUpLabels[i])levelUpLabels[i].gameObject.SetActive(filled&&DisplayedParty[i].leveledUp);
                 if(!filled)continue;
                 var member=DisplayedParty[i];levelLabels[i].text="Lv. "+member.lv;
                 int key=member.bid+(member.lv>=Progress.Data.balance.evolutionLevel?1000:0);
@@ -69,19 +74,17 @@ namespace BeastBeat
                 partyImages[i].sprite=sprite;
             }
         }
-        public void Confirm()
+        public void Confirm() => Move_Scene.For(this).Confirm();
+        public bool TryPrepareReturn(out string message)
         {
-            if(navigating)return;
-            if(!Application.CanStreamedLevelBeLoaded(stageScene)){infoText.text="스테이지 목록 씬이 등록되지 않았습니다.";return;}
-            if(Outcome!=null){
-                if(Outcome.Won&&!Outcome.Preview){
-                    if(!Progress.Save.cleared.Contains(Outcome.StageId))Progress.Save.cleared.Add(Outcome.StageId);
-                    if(!Progress.TryPersist()){infoText.text=Progress.StorageWarning;return;}
-                }
-                BeastBeatSession.SelectedStage=Outcome.StageId;
-                BeastBeatSession.StageGroup=Progress.Data.Stage(Outcome.StageId).type;
+            message = "";
+            if (Outcome != null) {
+                if (Outcome.Won && !Outcome.Preview && !Progress.TryPersist()) { message = Progress.StorageWarning; return false; }
+                BeastBeatSession.SelectedStage = Outcome.StageId;
+                BeastBeatSession.StageGroup = Progress.Data.Stage(Outcome.StageId).type;
             }
-            navigating=true;BeastBeatSession.Battle=null;SceneManager.LoadScene(stageScene);
+            BeastBeatSession.Battle = null;
+            return true;
         }
         void OnDestroy(){foreach(var sprite in portraitsById.Values)if(sprite)Destroy(sprite);portraits?.Dispose();}
     }

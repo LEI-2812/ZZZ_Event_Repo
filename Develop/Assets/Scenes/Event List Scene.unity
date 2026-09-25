@@ -307,13 +307,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uBC29\uBD80\uC640 \uD568\uAED8 \uBB34\uB300\uC5D0 \uC62C\uB77C \uCC54\uD53C\uC5B8 \uB9AC\uADF8\uC5D0 \uB3C4\uC804\uD558\uC138\uC694!\n\uB098\uB9CC\uC758 \uD300\uC744 \uB9CC\uB4E4\uACE0, \uC804\uC220\uC744 \uC120\uD0DD\uD574 \uC2B9\uB9AC\uB97C \uC313\uC544 \uBCF4\uC138\uC694.\n\uB808\uBCA8\uC744 \uC62C\uB9AC\uBA74 \uC0C8\uB85C\uC6B4 \uBCF4\uC0C1\uC744 \uBC1B\uC744 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+  m_text: "\uADF8 \uD654\uC81C\uC758 \uAC8C\uC784, [\uBE44\uC2A4\uD2B8 \uBE44\uD2B8]\uAC00 \uB4DC\uB514\uC5B4 \uB274\uC5D0\uB9AC\uB450\uC5D0 \uC785\uC131\uD588\uC2B5\uB2C8\uB2E4!\n\uCC54\uD53C\uC5B8\uC804\uC5D0 \uCC38\uAC00\uD558\uB824\uBA74, \uB2F9\uC2E0\uB9CC\uC758 \uD30C\uD2B8\uB108\uAC00 \uD544\uC694\uD569\uB2C8\uB2E4.\n\uC5B4\uB5A4 Bangboo\uB97C \uC120\uD0DD\uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 87e1915cc39e1af4382e20fe46362046, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 003191928eb072a4a894ef0e47e96597, type: 2}
@@ -407,6 +407,7 @@ GameObject:
   - component: {fileID: 35111684}
   - component: {fileID: 35111688}
   - component: {fileID: 35111689}
+  - component: {fileID: 35111690}
   m_Layer: 0
   m_Name: "main \xB7 UI Canvas"
   m_TagString: Untagged
@@ -523,11 +524,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94ea598249500a94cac1eb567baf3a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.MainSceneActions
-  entryScene: Assets/Scenes/eventlist.unity
-  levelScene: Assets/Scenes/rw_level.unity
-  leagueScene: Assets/Scenes/stage_list.unity
-  bangbooScene: Assets/Scenes/bangboo_list.unity
-  rewardScene: Assets/Scenes/reward_list.unity
 --- !u!114 &35111689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -572,12 +568,23 @@ MonoBehaviour:
   - {fileID: 417092834}
   - {fileID: 715444705}
   - {fileID: 256011707}
-  mainScene: Assets/Scenes/Main Scene.unity
-  levelScene: Assets/Scenes/Level Complete List Scene.unity
   activeTab: {r: 1, g: 0.87, b: 0.08, a: 1}
   inactiveTab: {r: 1, g: 1, b: 1, a: 1}
   category: permanent
   selectedId: 1
+--- !u!114 &35111690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 35111683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a01f867b8f889e4c84244181a033d96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.Move_Scene
+  errorText: {fileID: 1926966956}
 --- !u!1 &111538465
 GameObject:
   m_ObjectHideFlags: 0
@@ -955,7 +962,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uBE44\uC2A4\uD2B8 \uBE44\uD2B8 \uD55C\uC815 \uD6C8\uC7A5"
+  m_text: "\uC544\uC774\uD15C 10 \xB7 \uC774\uB984 \uBBF8\uC785\uB825"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 87e1915cc39e1af4382e20fe46362046, type: 2}
   m_sharedMaterial: {fileID: -3557095628995322528, guid: 87e1915cc39e1af4382e20fe46362046, type: 2}
@@ -1067,6 +1074,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Btn_Event_12
       objectReference: {fileID: 0}
+    - target: {fileID: 5097793321759228693, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5572293180607315938, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: owner
       value: 
@@ -1089,7 +1100,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchorMin.x
@@ -1097,15 +1108,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 271
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 48
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1137,11 +1148,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 141.5
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -589
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1216,7 +1227,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.64, g: 0.47, b: 0.17, a: 1}
+  m_Color: {r: 0.4, g: 0.42, b: 0.45, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1597,8 +1608,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1192160082}
   m_HandleRect: {fileID: 1192160081}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.81037277
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1650,7 +1661,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 351642055}
-  - component: {fileID: 351642059}
   - component: {fileID: 351642058}
   - component: {fileID: 351642057}
   - component: {fileID: 351642056}
@@ -1763,25 +1773,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 351642054}
   m_CullTransparentMesh: 1
---- !u!114 &351642059
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 351642054}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a93803ad7cc474ea620c0194b63118, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.EditableUINode
-  bindingKey: "Popup/Toast \xB7 \uC548\uB0B4/#0/Button:21/Toast:70#0"
-  overrideText: 0
-  overrideTexture: 0
-  authored: 1
-  sourceText: 
-  sourceColor: {r: 0.22, g: 0.81, b: 0.98, a: 1}
-  sourceSize: {x: 690, y: 50}
 --- !u!1 &395493146
 GameObject:
   m_ObjectHideFlags: 0
@@ -1909,7 +1900,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.4, g: 0.28, b: 0.57, a: 1}
+  m_Color: {r: 0.4, g: 0.42, b: 0.45, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2111,6 +2102,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Btn_Event_8
       objectReference: {fileID: 0}
+    - target: {fileID: 5097793321759228693, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5572293180607315938, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: owner
       value: 
@@ -2133,7 +2128,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchorMin.x
@@ -2141,15 +2136,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 271
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 48
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2181,11 +2176,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 141.5
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -385
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2406,7 +2401,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "W-\uC5D4\uC9C4 \uC5D0\uB108\uC9C0 \uBAA8\uB4C8"
+  m_text: "\uC544\uC774\uD15C 6 \xB7 \uC774\uB984 \uBBF8\uC785\uB825"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 87e1915cc39e1af4382e20fe46362046, type: 2}
   m_sharedMaterial: {fileID: -3557095628995322528, guid: 87e1915cc39e1af4382e20fe46362046, type: 2}
@@ -2655,6 +2650,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Btn_Event_9
       objectReference: {fileID: 0}
+    - target: {fileID: 5097793321759228693, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5572293180607315938, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: owner
       value: 
@@ -2677,7 +2676,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchorMin.x
@@ -2685,15 +2684,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 271
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 48
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2725,11 +2724,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 141.5
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -436
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2804,7 +2803,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.64, g: 0.47, b: 0.17, a: 1}
+  m_Color: {r: 0, g: 0.6666667, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2894,7 +2893,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Bangboo \uD2F0\uCF13"
+  m_text: "\uC544\uC774\uD15C 2 \xB7 \uC774\uB984 \uBBF8\uC785\uB825"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 87e1915cc39e1af4382e20fe46362046, type: 2}
   m_sharedMaterial: {fileID: -3557095628995322528, guid: 87e1915cc39e1af4382e20fe46362046, type: 2}
@@ -2975,7 +2974,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 684093447}
-  - component: {fileID: 684093450}
   - component: {fileID: 684093449}
   - component: {fileID: 684093448}
   m_Layer: 0
@@ -3046,25 +3044,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 684093446}
   m_CullTransparentMesh: 1
---- !u!114 &684093450
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 684093446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a93803ad7cc474ea620c0194b63118, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.EditableUINode
-  bindingKey: "Popup/Toast \xB7 \uC548\uB0B4/#0/Button:21/Toast:70#0/Label:0/Button:216/Toast:70#0"
-  overrideText: 0
-  overrideTexture: 0
-  authored: 1
-  sourceText: "\uD655\uC778"
-  sourceColor: {r: 0.025, g: 0.033, b: 0.055, a: 1}
-  sourceSize: {x: 658, y: 50}
 --- !u!1 &715444703
 GameObject:
   m_ObjectHideFlags: 0
@@ -3116,7 +3095,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.22, g: 0.41, b: 0.51, a: 1}
+  m_Color: {r: 0.4, g: 0.42, b: 0.45, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3152,7 +3131,6 @@ GameObject:
   - component: {fileID: 750386345}
   - component: {fileID: 750386348}
   - component: {fileID: 750386347}
-  - component: {fileID: 750386346}
   m_Layer: 0
   m_Name: "Toast \xB7 \uC548\uB0B4"
   m_TagString: Untagged
@@ -3180,25 +3158,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &750386346
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 750386344}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a93803ad7cc474ea620c0194b63118, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.EditableUINode
-  bindingKey: "Popup/Toast \xB7 \uC548\uB0B4"
-  overrideText: 0
-  overrideTexture: 0
-  authored: 1
-  sourceText: 
-  sourceColor: {r: 0, g: 0, b: 0, a: 0.78}
-  sourceSize: {x: 0, y: 0}
 --- !u!114 &750386347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3320,10 +3279,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 35111689}
-        m_TargetAssemblyTypeName: BeastBeat.EventEntryActions, Assembly-CSharp
+      - m_Target: {fileID: 35111690}
+        m_TargetAssemblyTypeName: BeastBeat.Move_Scene, Assembly-CSharp
         m_MethodName: OpenLevelRewards
-        m_Mode: 0
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: 
@@ -3622,6 +3581,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Btn_Event_6
       objectReference: {fileID: 0}
+    - target: {fileID: 5097793321759228693, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5572293180607315938, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: owner
       value: 
@@ -3644,7 +3607,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchorMin.x
@@ -3652,15 +3615,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 271
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 48
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3692,11 +3655,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 141.5
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -283
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3760,6 +3723,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Btn_Event_11
       objectReference: {fileID: 0}
+    - target: {fileID: 5097793321759228693, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5572293180607315938, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: owner
       value: 
@@ -3782,7 +3749,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchorMin.x
@@ -3790,15 +3757,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 271
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 48
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3830,11 +3797,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 141.5
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -538
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4125,7 +4092,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.4, g: 0.28, b: 0.57, a: 1}
+  m_Color: {r: 0.9137255, g: 0, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4190,6 +4157,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Btn_Event_10
       objectReference: {fileID: 0}
+    - target: {fileID: 5097793321759228693, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5572293180607315938, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: owner
       value: 
@@ -4212,7 +4183,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchorMin.x
@@ -4220,15 +4191,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 271
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 48
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4260,11 +4231,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 141.5
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -487
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4297,7 +4268,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1081634742}
-  - component: {fileID: 1081634745}
   - component: {fileID: 1081634744}
   - component: {fileID: 1081634743}
   m_Layer: 0
@@ -4368,25 +4338,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1081634741}
   m_CullTransparentMesh: 1
---- !u!114 &1081634745
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1081634741}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a93803ad7cc474ea620c0194b63118, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.EditableUINode
-  bindingKey: "Popup/Toast \xB7 \uC548\uB0B4/#0/Button:21#0/Label:0/Button:216#0"
-  overrideText: 0
-  overrideTexture: 0
-  authored: 1
-  sourceText: "\xD7"
-  sourceColor: {r: 1, g: 1, b: 1, a: 1}
-  sourceSize: {x: 13, y: 45}
 --- !u!1 &1134259944
 GameObject:
   m_ObjectHideFlags: 0
@@ -5135,7 +5086,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.64, g: 0.47, b: 0.17, a: 1}
+  m_Color: {r: 0.49019608, g: 0.65882355, b: 0.60784316, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5225,7 +5176,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uAE30\uBC00 \uB9C8\uC2A4\uD130 \uD14C\uC774\uD504"
+  m_text: "\uC544\uC774\uD15C 1 \xB7 \uC774\uB984 \uBBF8\uC785\uB825"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 87e1915cc39e1af4382e20fe46362046, type: 2}
   m_sharedMaterial: {fileID: -3557095628995322528, guid: 87e1915cc39e1af4382e20fe46362046, type: 2}
@@ -5551,7 +5502,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1477228147}
-  - component: {fileID: 1477228150}
   - component: {fileID: 1477228149}
   - component: {fileID: 1477228148}
   m_Layer: 0
@@ -5622,25 +5572,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1477228146}
   m_CullTransparentMesh: 1
---- !u!114 &1477228150
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1477228146}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a93803ad7cc474ea620c0194b63118, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.EditableUINode
-  bindingKey: "Popup/Toast \xB7 \uC548\uB0B4/#0/Label:0/Toast:27#0"
-  overrideText: 0
-  overrideTexture: 0
-  authored: 1
-  sourceText: "\uC548\uB0B4 \uBB38\uAD6C"
-  sourceColor: {r: 1, g: 1, b: 1, a: 1}
-  sourceSize: {x: 690, y: 86}
 --- !u!1 &1529176572
 GameObject:
   m_ObjectHideFlags: 0
@@ -5650,7 +5581,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1529176573}
-  - component: {fileID: 1529176577}
   - component: {fileID: 1529176576}
   - component: {fileID: 1529176575}
   - component: {fileID: 1529176574}
@@ -5763,25 +5693,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1529176572}
   m_CullTransparentMesh: 1
---- !u!114 &1529176577
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1529176572}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a93803ad7cc474ea620c0194b63118, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.EditableUINode
-  bindingKey: "Popup/Toast \xB7 \uC548\uB0B4/#0/Button:21#0"
-  overrideText: 0
-  overrideTexture: 0
-  authored: 1
-  sourceText: 
-  sourceColor: {r: 0.055, g: 0.075, b: 0.12, a: 1}
-  sourceSize: {x: 45, y: 45}
 --- !u!1 &1558400073
 GameObject:
   m_ObjectHideFlags: 0
@@ -5791,7 +5702,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1558400074}
-  - component: {fileID: 1558400077}
   - component: {fileID: 1558400076}
   - component: {fileID: 1558400075}
   m_Layer: 0
@@ -5863,25 +5773,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1558400073}
   m_CullTransparentMesh: 1
---- !u!114 &1558400077
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1558400073}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a93803ad7cc474ea620c0194b63118, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.EditableUINode
-  bindingKey: "Popup/Toast \xB7 \uC548\uB0B4/#0"
-  overrideText: 0
-  overrideTexture: 0
-  authored: 1
-  sourceText: 
-  sourceColor: {r: 0.055, g: 0.075, b: 0.12, a: 1}
-  sourceSize: {x: 750, y: 280}
 --- !u!1 &1588580154
 GameObject:
   m_ObjectHideFlags: 0
@@ -6012,7 +5903,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1600488920}
-  - component: {fileID: 1600488923}
   - component: {fileID: 1600488922}
   - component: {fileID: 1600488921}
   m_Layer: 0
@@ -6079,25 +5969,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1600488919}
   m_CullTransparentMesh: 1
---- !u!114 &1600488923
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1600488919}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a93803ad7cc474ea620c0194b63118, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.EditableUINode
-  bindingKey: "Popup/Toast \xB7 \uC548\uB0B4/#0/#0"
-  overrideText: 0
-  overrideTexture: 0
-  authored: 1
-  sourceText: 
-  sourceColor: {r: 0.22, g: 0.81, b: 0.98, a: 1}
-  sourceSize: {x: 750, y: 5}
 --- !u!1 &1650917583
 GameObject:
   m_ObjectHideFlags: 0
@@ -6107,7 +5978,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1650917584}
-  - component: {fileID: 1650917587}
   - component: {fileID: 1650917586}
   - component: {fileID: 1650917585}
   m_Layer: 0
@@ -6178,25 +6048,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1650917583}
   m_CullTransparentMesh: 1
---- !u!114 &1650917587
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1650917583}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a93803ad7cc474ea620c0194b63118, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.EditableUINode
-  bindingKey: "Popup/Toast \xB7 \uC548\uB0B4/#0/Label:0#0"
-  overrideText: 0
-  overrideTexture: 0
-  authored: 1
-  sourceText: "\uC548\uB0B4"
-  sourceColor: {r: 1, g: 1, b: 1, a: 1}
-  sourceSize: {x: 650, y: 50}
 --- !u!1 &1680404616
 GameObject:
   m_ObjectHideFlags: 0
@@ -7268,6 +7119,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Btn_Event_7
       objectReference: {fileID: 0}
+    - target: {fileID: 5097793321759228693, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5572293180607315938, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: owner
       value: 
@@ -7290,7 +7145,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchorMin.x
@@ -7298,15 +7153,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 271
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 48
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7338,11 +7193,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 141.5
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -334
       objectReference: {fileID: 0}
     - target: {fileID: 5653745988632149439, guid: ccb2b1175516fdb41b66184d1aa8b6a8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -7542,7 +7397,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uB370\uB2C8"
+  m_text: "\uC544\uC774\uD15C 9 \xB7 \uC774\uB984 \uBBF8\uC785\uB825"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 87e1915cc39e1af4382e20fe46362046, type: 2}
   m_sharedMaterial: {fileID: -3557095628995322528, guid: 87e1915cc39e1af4382e20fe46362046, type: 2}
@@ -7715,7 +7570,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC120\uC784 \uC870\uC0AC\uC6D0 \uAE30\uB85D"
+  m_text: "\uC544\uC774\uD15C 3 \xB7 \uC774\uB984 \uBBF8\uC785\uB825"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 87e1915cc39e1af4382e20fe46362046, type: 2}
   m_sharedMaterial: {fileID: -3557095628995322528, guid: 87e1915cc39e1af4382e20fe46362046, type: 2}
@@ -8141,10 +7996,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 35111689}
-        m_TargetAssemblyTypeName: BeastBeat.EventEntryActions, Assembly-CSharp
+      - m_Target: {fileID: 35111690}
+        m_TargetAssemblyTypeName: BeastBeat.Move_Scene, Assembly-CSharp
         m_MethodName: OpenMainScene
-        m_Mode: 0
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: 

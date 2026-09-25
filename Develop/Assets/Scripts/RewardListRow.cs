@@ -31,8 +31,8 @@ namespace BeastBeat
             for(int i=0;i<itemImages.Length;i++){
                 if(i>=items.Length){itemLabels[i].text="";itemImages[i].color=Color.clear;continue;}
                 var item=screen.Data.items;var definition=System.Array.Find(item,d=>d.id==items[i].items_id);
-                itemLabels[i].text=definition.name+"\n×"+items[i].amount;
-                itemImages[i].color=definition.grade==1?new Color(.62f,.46f,.16f):definition.grade==2?new Color(.4f,.28f,.56f):new Color(.2f,.4f,.5f);
+                itemLabels[i].text=ItemCatalog.DisplayName(definition)+"\n×"+items[i].amount;
+                itemImages[i].color=ItemCatalog.GradeColor(definition.grade);
             }
         }
         public void InvokeAction(){if(!owner)return;if(string.IsNullOrEmpty(claimKey))owner.SelectGroup(groupId);else owner.ClaimRow(claimKey);}

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace BeastBeat
@@ -20,16 +19,14 @@ namespace BeastBeat
         public TMP_Text[] achievementTitles, achievementCounts, rewardLabels;
         public Image background;
         public Image[] rewardImages;
-        [Header("Scene destinations")]
-        public string mainScene = "Assets/Scenes/Main Scene.unity";
-        public string levelScene = "Assets/Scenes/Level Complete List Scene.unity";
+
+
         [Header("Tab colors (no sprites)")]
         public Color activeTab = new Color(1f, .87f, .08f), inactiveTab = Color.white;
         [SerializeField] string category = "permanent";
         [SerializeField] int selectedId;
         string lastRevision;
         float nextRefresh;
-        bool navigating;
         Sprite initialBackground;
         GameData data;
         List<EventCatalogEntry> entries = new List<EventCatalogEntry>();
@@ -37,11 +34,12 @@ namespace BeastBeat
         static int rememberedId;
         public string Category => category;
         public int SelectedId => selectedId;
-        public int VisibleCount => entries.Count(e => e.enabled && e.category == category);
+        public int VisibleCount => entries.Count(e => e.category == category);
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void ResetSelection() { rememberedCategory = "permanent"; rememberedId = 0; }
         void Awake()
         {
+            if (!enabled) return;
             initialBackground = background ? background.sprite : null;
             EnsureData(); category = rememberedCategory; selectedId = rememberedId;
             ReloadWorkbook();
@@ -71,7 +69,8 @@ namespace BeastBeat
             lastRevision = source ? source.revision : "missing";
             try
             {
-                EnsureData(); var parsed = EventCatalog.Parse(source ? source.ReadSheet("event_list") : throw new FormatException("game_data.xlsx를 찾을 수 없습니다."));
+                if(!source)throw new FormatException("game_data.xlsx를 찾을 수 없습니다.");
+                data = GameData.Load(source); EnsureData(); var parsed = EventCatalog.Parse(source.ReadSheet("event_list"));
                 foreach (var entry in parsed)
                 {
                     if (entry.rewardIds.Any(id => !data.items.Any(item => item.id == id))) throw new FormatException("없는 보상 아이템 ID: 이벤트 " + entry.id);
@@ -79,7 +78,7 @@ namespace BeastBeat
                 }
                 entries = parsed; RefreshList(false);
             }
-            catch (Exception ex) { Debug.LogError("이벤트 XLSX: " + ex.Message, this); if (descriptionText) descriptionText.text = "이벤트 데이터를 확인해 주세요.\n" + ex.Message; }
+            catch (Exception ex) { goEventButton.interactable=false; Debug.LogError("이벤트 XLSX: " + ex.Message, this); if (descriptionText) descriptionText.text = "이벤트 데이터를 확인해 주세요.\n" + ex.Message; }
         }
         public void ShowPermanent() { SetCategory("permanent"); }
         public void ShowLimited() { SetCategory("limited"); }
@@ -91,7 +90,7 @@ namespace BeastBeat
         void RefreshList(bool resetScroll)
         {
             if (!eventScroll || !rowPrefab) return;
-            var visible = entries.Where(e => e.enabled && e.category == category).ToList();
+            var visible = entries.Where(e => e.category == category).ToList();
             if (!visible.Any(e => e.id == selectedId)) selectedId = visible.Count > 0 ? visible[0].id : 0;
             // Only pool our row components. Other user-authored children are untouched.
             var rows = eventScroll.content.GetComponentsInChildren<EventCatalogRow>(true).ToList();
@@ -127,7 +126,7 @@ namespace BeastBeat
         }
         public void SelectEvent(int id)
         {
-            var entry = entries.FirstOrDefault(e => e.id == id && e.enabled && e.category == category);
+            var entry = entries.FirstOrDefault(e => e.id == id && e.category == category);
             selectedId = entry == null ? 0 : id;
             if (Application.isPlaying) { rememberedCategory = category; rememberedId = selectedId; }
             foreach (var row in eventScroll.content.GetComponentsInChildren<EventCatalogRow>(true)) row.SetSelected(row.EventId == selectedId);
@@ -144,8 +143,8 @@ namespace BeastBeat
             {
                 var item = entry != null && i < entry.rewardIds.Length ? data.items.First(x => x.id == entry.rewardIds[i]) : null;
                 // Keep the original image and sprite; placeholders use item names and grade colors.
-                rewardImages[i].color = item == null ? new Color(.08f, .09f, .1f, .7f) : item.grade == 1 ? new Color(.64f, .47f, .17f) : item.grade == 2 ? new Color(.4f, .28f, .57f) : item.grade == 3 ? new Color(.22f, .41f, .51f) : new Color(.32f, .4f, .36f);
-                if (i < rewardLabels.Length) rewardLabels[i].text = item == null ? "—" : item.name;
+                rewardImages[i].color = item == null ? new Color(.08f, .09f, .1f, .7f) : ItemCatalog.GradeColor(item.grade);
+                if (i < rewardLabels.Length) rewardLabels[i].text = item == null ? "—" : ItemCatalog.DisplayName(item);
             }
             for (int i = 0; i < achievementTitles.Length; i++)
             {
@@ -155,13 +154,8 @@ namespace BeastBeat
                 achievementCounts[i].text = achievement == null ? "—" : Math.Min(progress, achievement.target) + " / " + achievement.target;
             }
         }
-        public void OpenMainScene() { if (selectedId != 0) Open(mainScene); }
-        public void OpenLevelRewards() { BeastBeatSession.PreviousScreen = "Entry"; BeastBeatSession.RewardReturnScenePath = gameObject.scene.path; Open(levelScene); }
-        void Open(string path)
-        {
-            if (navigating) return;
-            if (!Application.CanStreamedLevelBeLoaded(path)) { Debug.LogError("Scene is not registered: " + path, this); return; }
-            navigating = true; SceneManager.LoadScene(path);
-        }
+        // 이전에 연결한 UnityEvent도 새 이동 컴포넌트로 전달합니다.
+        public void OpenMainScene() => Move_Scene.For(this).OpenMainScene();
+        public void OpenLevelRewards() => Move_Scene.For(this).OpenLevelRewards();
     }
 }

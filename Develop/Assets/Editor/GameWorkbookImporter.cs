@@ -25,7 +25,9 @@ namespace BeastBeat.Editor
             asset.name = Path.GetFileNameWithoutExtension(context.assetPath);
             try
             {
-                byte[] bytes = File.ReadAllBytes(context.assetPath);
+                byte[] bytes;
+                using (var file = new FileStream(context.assetPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
+                using (var buffer = new MemoryStream()) { file.CopyTo(buffer); bytes = buffer.ToArray(); }
                 using (var hash = SHA256.Create()) asset.revision = Convert.ToBase64String(hash.ComputeHash(bytes));
                 asset.sheets = Read(bytes);
             }

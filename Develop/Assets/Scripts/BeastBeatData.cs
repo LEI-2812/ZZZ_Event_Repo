@@ -6,7 +6,7 @@ using UnityEngine;
 namespace BeastBeat
 {
     public enum Element { Physical = 1, Fire, Ice, Electric, Ether }
-    public enum Condition { Ready = 1, Paralysis, Frozen, Burn }
+    public enum Condition { Ready = 1, Paralysis, Frozen, Burn, Confused = 6 }
     [Serializable] public class BooData
     {
         public int id, type, hp, atk, def, unlockLevel;
@@ -18,12 +18,15 @@ namespace BeastBeat
         public int id, bangboo_id, charge_count, status;
         public string name, description, effect;
         public float power, chance;
+        public int type, dmg = -1; // dmg가 없는 이전 데이터만 power 계산을 사용합니다.
     }
     [Serializable] public class StageData
     {
         public int id, event_list_id = 1, type, npc_type, level, experience;
+        public int level_gain = 1;
         public string name, npc, npc_dialogue;
         public int[] enemies;
+        public int[] enemyLevels;
     }
     [Serializable] public class ItemData { public int id, grade; public string name; }
     [Serializable] public class RewardData { public int id, owner_id, items_id, amount; }
@@ -36,13 +39,15 @@ namespace BeastBeat
     }
     [Serializable] public class BalanceData
     {
-        public float strong = 1.5f, weak = .65f, defenseFactor = .012f;
+        public float strong = 1.3f, weak = .7f, defenseFactor = .012f;
         public int maxLevel = 20, evolutionLevel = 10, xpBase = 100, xpStep = 20;
     }
     [Serializable] public class GameData
     {
         [NonSerialized] public RewardCatalog rewardCatalog;
         [NonSerialized] public Dictionary<int,int> legacyBangbooIds;
+        [NonSerialized] public int[] initialOwnedBangbooIds = Array.Empty<int>();
+        [NonSerialized] public int[] unlockableBangbooIds;
         public EventData event_list;
         public BalanceData balance;
         public BooData[] bangboo;
@@ -54,14 +59,14 @@ namespace BeastBeat
         public BooData Boo(int id) { return bangboo.First(x => x.id == id); }
         public SkillData Skill(int id) { return skills.First(x => x.id == id); }
         public StageData Stage(int id) { return stage_list.First(x => x.id == id); }
-        public int NeedXp(int level) { return balance.xpBase + (level - 1) * balance.xpStep; }
         public static GameData LoadBase() { return JsonUtility.FromJson<GameData>((Resources.Load<TextAsset>("Image/game-data")??Resources.Load<TextAsset>("BeastBeat/game-data")).text); }
-        public static GameData Load()
+        public static GameData Load(GameWorkbook workbook = null)
         {
             var data = LoadBase();
-            var workbook = GameWorkbook.Load();
-            if (workbook) { try { StageCatalog.Apply(data, StageCatalog.Parse(workbook.ReadSheet("stage_list"))); } catch (Exception ex) { Debug.LogError("Stage XLSX: " + ex.Message); } }
-            if (workbook) { RewardCatalog.Apply(data, workbook); BangbooCatalog.Apply(data, workbook); }
+            workbook = workbook ? workbook : GameWorkbook.Load();
+            if (workbook) ItemCatalog.Apply(data, workbook);
+            if (workbook) StageCatalog.Apply(data, StageCatalog.Parse(workbook.ReadSheet("stage_list")));
+            if (workbook) { RewardCatalog.Apply(data, workbook); BangbooCatalog.Apply(data, workbook); StagePartyCatalog.Apply(data, workbook); }
             return data;
         }
         public StageData ResolveStage(int id) { return stage_list.FirstOrDefault(s => s.id == id) ?? stage_list.OrderBy(s => s.id).FirstOrDefault(); }
@@ -81,6 +86,7 @@ namespace BeastBeat
         public string birthday = "0704", eventStartedUtc;
         public bool tutorialSeen, muted, liveBackground, masterTitle;
         public List<OwnedBoo> owned = new List<OwnedBoo>();
+        public List<int> pendingWorkbookUnlocks = new List<int>();
         public List<int> party = new List<int>();
         public int[] configuredParty;
         public int bangbooIdSchema;

@@ -12,7 +12,6 @@ namespace BeastBeat
         public int id;
         public string category, title, description, background;
         public DateTime updatedAt;
-        public bool enabled;
         public int[] rewardIds, achievementIds;
     }
 
@@ -25,7 +24,7 @@ namespace BeastBeat
             if (rows.Count == 0) throw new FormatException("이벤트 CSV가 비어 있습니다.");
             var headers = rows[0].Select(s => s.Trim().TrimStart('\uFEFF')).ToArray();
             if (headers.Distinct().Count() != headers.Length) throw new FormatException("중복된 CSV 열 이름입니다.");
-            foreach (var key in new[] { "id", "category", "updated_at", "title", "description", "enabled" })
+            foreach (var key in new[] { "id", "category", "updated_at", "title", "description" })
                 if (!headers.Contains(key)) throw new FormatException("필수 CSV 열 누락: " + key);
             var entries = new List<EventCatalogEntry>();
             var ids = new HashSet<int>();
@@ -43,9 +42,6 @@ namespace BeastBeat
                         updatedAt = DateTime.ParseExact(Get("updated_at"), "yyyy-MM-dd", CultureInfo.InvariantCulture),
                         background = Get("background"), rewardIds = Ids(Get("reward_ids")), achievementIds = Ids(Get("achievement_ids"))
                     };
-                    string enabled = Get("enabled").ToLowerInvariant();
-                    if (enabled != "1" && enabled != "0" && enabled != "true" && enabled != "false") throw new FormatException("enabled는 1 또는 0이어야 합니다.");
-                    entry.enabled = enabled == "1" || enabled == "true";
                     if (entry.id <= 0 || !ids.Add(entry.id)) throw new FormatException("ID는 중복 없는 양수여야 합니다.");
                     if (entry.category != "permanent" && entry.category != "limited") throw new FormatException("category는 permanent 또는 limited여야 합니다.");
                     if (entry.title.Length == 0) throw new FormatException("title이 비어 있습니다.");

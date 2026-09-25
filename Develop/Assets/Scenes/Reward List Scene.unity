@@ -347,6 +347,7 @@ GameObject:
   - component: {fileID: 35111688}
   - component: {fileID: 35111689}
   - component: {fileID: 35111690}
+  - component: {fileID: 35111691}
   m_Layer: 0
   m_Name: "main \xB7 UI Canvas"
   m_TagString: Untagged
@@ -457,11 +458,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94ea598249500a94cac1eb567baf3a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.MainSceneActions
-  entryScene: Assets/Scenes/Event List Scene.unity
-  levelScene: Assets/Scenes/rw_level.unity
-  leagueScene: Assets/Scenes/stage_list.unity
-  bangbooScene: Assets/Scenes/bangboo_list.unity
-  rewardScene: Assets/Scenes/reward_list.unity
 --- !u!114 &35111689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -514,8 +510,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  previousScene: Assets/Scenes/Main Scene.unity
-  battleScene: Assets/Scenes/battle.unity
   activeTab: {r: 0.2, g: 0.72, b: 1, a: 1}
   inactiveTab: {r: 1, g: 1, b: 1, a: 1}
   inactiveElement: {r: 0.35, g: 0.37, b: 0.4, a: 1}
@@ -546,8 +540,20 @@ MonoBehaviour:
   specialItems: {fileID: 670047175}
   timeText: {fileID: 1392713861}
   statusText: {fileID: 1989537619}
-  previousScene: Assets/Scenes/Main Scene.unity
   selectedGroup: 1
+--- !u!114 &35111691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 35111683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a01f867b8f889e4c84244181a033d96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.Move_Scene
+  errorText: {fileID: 1989537619}
 --- !u!1 &67292130
 GameObject:
   m_ObjectHideFlags: 0
@@ -2011,7 +2017,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 351642055}
-  - component: {fileID: 351642059}
   - component: {fileID: 351642058}
   - component: {fileID: 351642057}
   - component: {fileID: 351642056}
@@ -2124,25 +2129,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 351642054}
   m_CullTransparentMesh: 1
---- !u!114 &351642059
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 351642054}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a93803ad7cc474ea620c0194b63118, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.EditableUINode
-  bindingKey: "Popup/Toast \xB7 \uC548\uB0B4/#0/Button:21/Toast:70#0"
-  overrideText: 0
-  overrideTexture: 0
-  authored: 1
-  sourceText: 
-  sourceColor: {r: 0.22, g: 0.81, b: 0.98, a: 1}
-  sourceSize: {x: 690, y: 50}
 --- !u!1 &352309951
 GameObject:
   m_ObjectHideFlags: 0
@@ -3920,7 +3906,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 684093447}
-  - component: {fileID: 684093450}
   - component: {fileID: 684093449}
   - component: {fileID: 684093448}
   m_Layer: 0
@@ -3991,25 +3976,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 684093446}
   m_CullTransparentMesh: 1
---- !u!114 &684093450
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 684093446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a93803ad7cc474ea620c0194b63118, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.EditableUINode
-  bindingKey: "Popup/Toast \xB7 \uC548\uB0B4/#0/Button:21/Toast:70#0/Label:0/Button:216/Toast:70#0"
-  overrideText: 0
-  overrideTexture: 0
-  authored: 1
-  sourceText: "\uD655\uC778"
-  sourceColor: {r: 0.025, g: 0.033, b: 0.055, a: 1}
-  sourceSize: {x: 658, y: 50}
 --- !u!1 &741654483
 GameObject:
   m_ObjectHideFlags: 0
@@ -4158,7 +4124,6 @@ GameObject:
   - component: {fileID: 750386345}
   - component: {fileID: 750386348}
   - component: {fileID: 750386347}
-  - component: {fileID: 750386346}
   m_Layer: 0
   m_Name: "Toast \xB7 \uC548\uB0B4"
   m_TagString: Untagged
@@ -4186,25 +4151,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &750386346
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 750386344}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a93803ad7cc474ea620c0194b63118, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.EditableUINode
-  bindingKey: "Popup/Toast \xB7 \uC548\uB0B4"
-  overrideText: 0
-  overrideTexture: 0
-  authored: 1
-  sourceText: 
-  sourceColor: {r: 0, g: 0, b: 0, a: 0.78}
-  sourceSize: {x: 0, y: 0}
 --- !u!114 &750386347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6359,7 +6305,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1081634742}
-  - component: {fileID: 1081634745}
   - component: {fileID: 1081634744}
   - component: {fileID: 1081634743}
   m_Layer: 0
@@ -6430,25 +6375,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1081634741}
   m_CullTransparentMesh: 1
---- !u!114 &1081634745
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1081634741}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a93803ad7cc474ea620c0194b63118, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.EditableUINode
-  bindingKey: "Popup/Toast \xB7 \uC548\uB0B4/#0/Button:21#0/Label:0/Button:216#0"
-  overrideText: 0
-  overrideTexture: 0
-  authored: 1
-  sourceText: "\xD7"
-  sourceColor: {r: 1, g: 1, b: 1, a: 1}
-  sourceSize: {x: 13, y: 45}
 --- !u!1 &1123922737
 GameObject:
   m_ObjectHideFlags: 0
@@ -6669,10 +6595,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 35111690}
-        m_TargetAssemblyTypeName: BeastBeat.RewardScreenActions, Assembly-CSharp
+      - m_Target: {fileID: 35111691}
+        m_TargetAssemblyTypeName: BeastBeat.Move_Scene, Assembly-CSharp
         m_MethodName: GoBack
-        m_Mode: 0
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: 
@@ -8018,7 +7944,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1477228147}
-  - component: {fileID: 1477228150}
   - component: {fileID: 1477228149}
   - component: {fileID: 1477228148}
   m_Layer: 0
@@ -8089,25 +8014,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1477228146}
   m_CullTransparentMesh: 1
---- !u!114 &1477228150
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1477228146}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a93803ad7cc474ea620c0194b63118, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.EditableUINode
-  bindingKey: "Popup/Toast \xB7 \uC548\uB0B4/#0/Label:0/Toast:27#0"
-  overrideText: 0
-  overrideTexture: 0
-  authored: 1
-  sourceText: "\uC548\uB0B4 \uBB38\uAD6C"
-  sourceColor: {r: 1, g: 1, b: 1, a: 1}
-  sourceSize: {x: 690, y: 86}
 --- !u!1 &1500377335
 GameObject:
   m_ObjectHideFlags: 0
@@ -8330,7 +8236,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1529176573}
-  - component: {fileID: 1529176577}
   - component: {fileID: 1529176576}
   - component: {fileID: 1529176575}
   - component: {fileID: 1529176574}
@@ -8443,25 +8348,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1529176572}
   m_CullTransparentMesh: 1
---- !u!114 &1529176577
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1529176572}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a93803ad7cc474ea620c0194b63118, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.EditableUINode
-  bindingKey: "Popup/Toast \xB7 \uC548\uB0B4/#0/Button:21#0"
-  overrideText: 0
-  overrideTexture: 0
-  authored: 1
-  sourceText: 
-  sourceColor: {r: 0.055, g: 0.075, b: 0.12, a: 1}
-  sourceSize: {x: 45, y: 45}
 --- !u!1 &1558400073
 GameObject:
   m_ObjectHideFlags: 0
@@ -8471,7 +8357,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1558400074}
-  - component: {fileID: 1558400077}
   - component: {fileID: 1558400076}
   - component: {fileID: 1558400075}
   m_Layer: 0
@@ -8543,25 +8428,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1558400073}
   m_CullTransparentMesh: 1
---- !u!114 &1558400077
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1558400073}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a93803ad7cc474ea620c0194b63118, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.EditableUINode
-  bindingKey: "Popup/Toast \xB7 \uC548\uB0B4/#0"
-  overrideText: 0
-  overrideTexture: 0
-  authored: 1
-  sourceText: 
-  sourceColor: {r: 0.055, g: 0.075, b: 0.12, a: 1}
-  sourceSize: {x: 750, y: 280}
 --- !u!1 &1570034653
 GameObject:
   m_ObjectHideFlags: 0
@@ -8661,7 +8527,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1600488920}
-  - component: {fileID: 1600488923}
   - component: {fileID: 1600488922}
   - component: {fileID: 1600488921}
   m_Layer: 0
@@ -8728,25 +8593,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1600488919}
   m_CullTransparentMesh: 1
---- !u!114 &1600488923
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1600488919}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a93803ad7cc474ea620c0194b63118, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.EditableUINode
-  bindingKey: "Popup/Toast \xB7 \uC548\uB0B4/#0/#0"
-  overrideText: 0
-  overrideTexture: 0
-  authored: 1
-  sourceText: 
-  sourceColor: {r: 0.22, g: 0.81, b: 0.98, a: 1}
-  sourceSize: {x: 750, y: 5}
 --- !u!1 &1609235005
 GameObject:
   m_ObjectHideFlags: 0
@@ -8889,7 +8735,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1650917584}
-  - component: {fileID: 1650917587}
   - component: {fileID: 1650917586}
   - component: {fileID: 1650917585}
   m_Layer: 0
@@ -8960,25 +8805,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1650917583}
   m_CullTransparentMesh: 1
---- !u!114 &1650917587
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1650917583}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a93803ad7cc474ea620c0194b63118, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.EditableUINode
-  bindingKey: "Popup/Toast \xB7 \uC548\uB0B4/#0/Label:0#0"
-  overrideText: 0
-  overrideTexture: 0
-  authored: 1
-  sourceText: "\uC548\uB0B4"
-  sourceColor: {r: 1, g: 1, b: 1, a: 1}
-  sourceSize: {x: 650, y: 50}
 --- !u!1 &1654223143
 GameObject:
   m_ObjectHideFlags: 0

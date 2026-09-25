@@ -9,8 +9,8 @@
     "demoLimitedDays": 14
   },
   "balance": {
-    "strong": 1.5,
-    "weak": 0.65,
+    "strong": 1.3,
+    "weak": 0.7,
     "defenseFactor": 0.012,
     "maxLevel": 20,
     "evolutionLevel": 10,

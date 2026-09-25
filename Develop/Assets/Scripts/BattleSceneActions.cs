@@ -1,11 +1,11 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace BeastBeat
@@ -25,8 +25,7 @@ namespace BeastBeat
         public TMP_Text[] infoLabels;
         public ScrollRect infoScroll;
         public PauseInfoRow infoRowPrefab;
-        public string stageScene = "Assets/Scenes/Stage List Scene.unity";
-        public string resultScene = "Assets/Scenes/Clear Scene.unity";
+
         public BattleEngine Battle { get; private set; }
         public ProgressService Progress => Battle == null ? BeastBeatSession.Progress : Battle.Progress;
         public bool Busy { get; private set; }
@@ -34,16 +33,18 @@ namespace BeastBeat
         public bool SkillsOpen { get; private set; }
         public int SelectedInfo { get; private set; }
         readonly List<PauseInfoRow> rows = new List<PauseInfoRow>();
-        readonly Dictionary<TMP_FontAsset,TMP_FontAsset> displayFonts = new Dictionary<TMP_FontAsset,TMP_FontAsset>();
+        TMP_Text mySkillText, enemySkillText;
         BattleCatalog catalog;
-        string revision;
+        string revision, skillRevision;
         float nextCheck;
         bool enemyActing, navigating;
         string error;
 
         void Awake()
         {
+            if (!enabled) return;
             Instance = this;
+            ClearSkillMessages();
             pausePopup.SetActive(false); changePopup.SetActive(false); retirePopup.SetActive(false);
             try
             {
@@ -61,18 +62,14 @@ namespace BeastBeat
                     BeastBeatSession.SelectedStage = stage.id; BeastBeatSession.StageGroup = stage.type;
                 }
                 BeastBeatSession.Battle = Battle;
-                ReloadInfo(); Refresh();
+                ReloadInfo(); skillRevision = (workbook ? workbook : GameWorkbook.Load()).revision; Refresh();
             }
             catch (Exception ex) { ShowError(ex.Message); }
         }
         void OnDestroy()
         {
             if (Instance == this) Instance = null;
-            foreach(var font in displayFonts.Values) if(font)
-            {
-                // TMP destroys its atlas/material on disposal. These are shared source assets, not owned by the fallback wrapper.
-                font.atlasTextures=Array.Empty<Texture2D>();font.material=null;Destroy(font);
-            }
+
         }
         void Update()
         {
@@ -80,12 +77,12 @@ namespace BeastBeat
             {
                 if (IsPaused) ClosePopup(); else if (SkillsOpen) CloseSkills(); else Pause();
             }
-            if (Time.unscaledTime < nextCheck) return;
+            if (Busy || Time.unscaledTime < nextCheck) return;
             nextCheck = Time.unscaledTime + .5f;
             var book = workbook ? workbook : GameWorkbook.Load();
-            if (book && book.revision != revision)
+            if (book && book.revision != skillRevision)
             {
-                try { ReloadInfo(); } catch (Exception ex) { ShowError(ex.Message); }
+                try { Battle?.ReloadSkills(GameData.Load(book)); skillRevision=book.revision; ReloadInfo(); Refresh(); } catch (Exception ex) { ShowError(ex.Message); }
             }
         }
         void ShowError(string message)
@@ -134,7 +131,17 @@ namespace BeastBeat
         public void Pause() { if(navigating)return; pausePopup.SetActive(true); changePopup.SetActive(false); retirePopup.SetActive(false); try { ReloadInfo(); } catch(Exception ex) { ShowError(ex.Message); } }
         public void ClosePopup() { pausePopup.SetActive(false);changePopup.SetActive(false);retirePopup.SetActive(false);if(Battle!=null)Refresh(); }
         public void CloseSkills() { SkillsOpen=false;Refresh(); }
-        public void Fight() { if(SkillsOpen){UseSkill(0);return;}if(!CanAct())return;if(Battle.NeedsSwitch){OpenChange();return;}SkillsOpen=true;Refresh(); }
+        public void Fight()
+        {
+            if(SkillsOpen){UseSkill(0);return;}
+            if(!CanAct())return;
+            if(Battle.NeedsSwitch){OpenChange();return;}
+            SkillsOpen=true;
+            Refresh();
+            // 같은 버튼을 스킬 선택에 재사용하므로 이전 클릭의 선택 상태를 해제합니다.
+            // 포인터 위치에 따른 Highlighted Color는 그대로 유지됩니다.
+            if(EventSystem.current) EventSystem.current.SetSelectedGameObject(null);
+        }
         public void Change() { if(SkillsOpen)UseSkill(1);else OpenChange(); }
         public void Retire() { if(SkillsOpen){UseSkill(2);return;}if(navigating)return;retirePopup.SetActive(true); }
         public void OpenChange() { if(!CanAct())return;changePopup.SetActive(true);Refresh(); }
@@ -155,6 +162,24 @@ namespace BeastBeat
             int skill=Battle.Player.pp.All(pp=>pp==0)?-1:ordered[index].i;
             var messages=Battle.Act(skill);if(messages.Count>0)StartCoroutine(Play(messages));
         }
+        void BindSkillMessages()
+        {
+            var nodes=gameObject.scene.GetRootGameObjects().SelectMany(root=>root.GetComponentsInChildren<Transform>(true));
+            if(!mySkillText) mySkillText=nodes.First(t=>t.name=="Img_MySkill").GetComponentInChildren<TMP_Text>(true);
+            if(!enemySkillText) enemySkillText=nodes.First(t=>t.name=="Img_YourSkill").GetComponentInChildren<TMP_Text>(true);
+        }
+        void ClearSkillMessages()
+        {
+            BindSkillMessages();mySkillText.text="";enemySkillText.text="";
+        }
+        // 공격·회복·방어를 실제 사용한 경우에만 해당 진영의 최근 기술을 표시합니다.
+        public void ShowSkillMessage(BattleMessage message)
+        {
+            if(string.IsNullOrEmpty(message.skillText)) return;
+            BindSkillMessages();
+            var label=message.enemy?enemySkillText:mySkillText;
+            label.text=message.skillText;
+        }
         IEnumerator Play(List<BattleMessage> messages)
         {
             Busy=true;SkillsOpen=false;
@@ -162,6 +187,7 @@ namespace BeastBeat
             {
                 while(IsPaused)yield return null;
                 enemyActing=message.enemy;BeastBeatSession.BattleLine=message.text;BeastBeatSession.History.Add(message.text);
+                ShowSkillMessage(message);
                 if(arena)arena.PlayAction(message.enemy,message.text);
                 Refresh();
                 float time=0;while(time<.65f){if(!IsPaused)time+=Time.unscaledDeltaTime;yield return null;}
@@ -171,7 +197,8 @@ namespace BeastBeat
             if(Battle.Finished)
             {
                 BeastBeatSession.ResultNotes=BattleOutcome.Complete(Battle,BeastBeatSession.PreviewBattle).Notes;
-                BeastBeatSession.Battle=Battle;Open(resultScene);
+                BeastBeatSession.Battle=Battle;
+                if (Move_Scene.For(this).OpenResult()) navigating = true;
             }
             else if(Battle.NeedsSwitch) { changePopup.SetActive(true);Refresh(); }
         }
@@ -180,37 +207,25 @@ namespace BeastBeat
             if(navigating)return;
             try
             {
+                Progress.ReloadData(GameData.Load(workbook ? workbook : GameWorkbook.Load()));
                 var next=BattleCatalog.CreateBattle(Progress,Battle==null?BeastBeatSession.SelectedStage:Battle.Stage.id);
                 StopAllCoroutines();Battle=next;BeastBeatSession.Battle=next;Busy=false;enemyActing=false;SkillsOpen=false;error=null;
-                BeastBeatSession.History.Clear();ClosePopup();ReloadInfo();Refresh();
+                BeastBeatSession.History.Clear();ClearSkillMessages();ClosePopup();ReloadInfo();Refresh();
             }
             catch(Exception ex){ShowError(ex.Message);}
         }
-        public void ExitBattle()
-        {
-            if(navigating)return;
-            StopAllCoroutines();Busy=false;BeastBeatSession.Battle=null;Open(stageScene);
-        }
-        void Open(string path)
-        {
-            if(!Application.CanStreamedLevelBeLoaded(path)){ShowError("씬이 등록되어 있지 않습니다: "+path);return;}
-            navigating=true;SceneManager.LoadScene(path);
-        }
+        public void ExitBattle() => Move_Scene.For(this).ExitBattle();
+        public void PrepareExit() { StopAllCoroutines(); Busy = false; }
         static T Child<T>(Transform parent,string name) where T:Component => parent.GetComponentsInChildren<T>(true).First(x=>x.name==name);
         void Label(Button b,string value)
         {
             var t=b.GetComponentInChildren<TMP_Text>(true);if(!t)return;
-            // Keep the original typeface for its supported glyphs; use the scene's Korean font only for missing characters.
-            if(t.font&&!t.font.HasCharacters(value)&&!displayFonts.Values.Contains(t.font))
+            // 동적 폰트를 Instantiate하면 글자 테이블은 복제되지만 atlas는 공유됩니다.
+            // 원본 폰트에서 글자를 추가해야 다른 UI의 글자 이미지가 덮어써지지 않습니다.
+            if(t.font && !t.font.HasCharacters(value, out uint[] _, true, true))
             {
-                if(!displayFonts.TryGetValue(t.font,out var font))
-                {
-                    font=Instantiate(t.font);font.name=t.font.name+" (battle text fallback)";
-                    font.fallbackFontAssetTable=new List<TMP_FontAsset>(t.font.fallbackFontAssetTable??new List<TMP_FontAsset>());
-                    if(!font.fallbackFontAssetTable.Contains(infoLabels[0].font))font.fallbackFontAssetTable.Add(infoLabels[0].font);
-                    displayFonts.Add(t.font,font);
-                }
-                t.font=font;
+                var korean = infoLabels.Length > 0 && infoLabels[0] ? infoLabels[0].font : null;
+                if(korean && korean.HasCharacters(value, out uint[] _, true, true)) t.font=korean;
             }
             t.text=value;
         }
@@ -220,7 +235,6 @@ namespace BeastBeat
             Child<TMP_Text>(root,"Txt_Hpnum").text=f.hp+" / "+f.maxHp;
             Child<TMP_Text>(root,"Txt_Lvnum").text="Lv. "+f.level;
             var hp=Child<Slider>(root,"Slider_Hp");hp.minValue=0;hp.maxValue=f.maxHp;hp.value=f.hp;hp.interactable=false;
-            var xp=Child<Slider>(root,"Slider_Lv");xp.minValue=0;xp.maxValue=1;xp.value=enemy?0:Battle.playerExperience[Battle.playerIndex]/(float)Battle.playerNeedExperience[Battle.playerIndex];xp.interactable=false;
         }
         public void Refresh()
         {

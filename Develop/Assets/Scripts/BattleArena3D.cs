@@ -12,7 +12,7 @@ namespace BeastBeat
         float flash;
         public void Sync(BattleEngine battle)
         {
-            playerActor.Configure(battle.Player.id,battle.Player.level);enemyActor.Configure(battle.Enemy.id,battle.Enemy.level);
+            playerActor.Configure(battle.Progress.Data.Boo(battle.Player.id),battle.Player.level);enemyActor.Configure(battle.Progress.Data.Boo(battle.Enemy.id),battle.Enemy.level);
             playerActor.opponent=enemyActor.transform;enemyActor.opponent=playerActor.transform;
         }
         public void PlayAction(bool enemy,string message)
@@ -21,7 +21,7 @@ namespace BeastBeat
             (enemy?enemyActor:playerActor).Attack();(enemy?playerActor:enemyActor).Hit();
             impactLight.transform.position=(enemy?playerActor:enemyActor).transform.position+Vector3.up*1.6f;impactLight.color=enemy?new Color(1,.35f,.2f):new Color(.2f,.8f,1);flash=1;
         }
-        void Update(){if((BeastBeatApp.Instance&&BeastBeatApp.Instance.IsPaused)||(BattleSceneActions.Instance&&BattleSceneActions.Instance.IsPaused))return;flash=Mathf.Max(0,flash-Time.unscaledDeltaTime*3);if(impactLight)impactLight.intensity=flash*5;}
+        void Update(){if(BattleSceneActions.Instance&&BattleSceneActions.Instance.IsPaused)return;flash=Mathf.Max(0,flash-Time.unscaledDeltaTime*3);if(impactLight)impactLight.intensity=flash*5;}
     }
     // Editor calls this once to author real scene geometry. Runtime uses the saved objects.
     public static class BattleArenaGeometry
@@ -69,7 +69,7 @@ namespace BeastBeat
             var camera=cameraGo.AddComponent<Camera>();camera.fieldOfView=43;camera.nearClipPlane=.1f;camera.farClipPlane=65;camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.01f,.025f,.05f);camera.cullingMask=~(1<<30);cameraGo.AddComponent<AudioListener>();arena.spectatorCamera=camera;
             return arena;
         }
-        static BangbooActor3D Actor(Transform parent,string name,Vector3 position,float yaw,int id){var go=new GameObject(name);go.transform.SetParent(parent,false);go.transform.localPosition=position;go.transform.localRotation=Quaternion.Euler(0,yaw,0);go.transform.localScale=Vector3.one*1.3f;var actor=go.AddComponent<BangbooActor3D>();actor.Configure(id,1);return actor;}
+        static BangbooActor3D Actor(Transform parent,string name,Vector3 position,float yaw,int id){var go=new GameObject(name);go.transform.SetParent(parent,false);go.transform.localPosition=position;go.transform.localRotation=Quaternion.Euler(0,yaw,0);go.transform.localScale=Vector3.one*1.3f;var actor=go.AddComponent<BangbooActor3D>();actor.Configure(GameData.LoadBase().Boo(id),1);return actor;}
         static Transform Group(Transform parent,string name){var go=new GameObject(name);go.transform.SetParent(parent,false);return go.transform;}
         static Material Mat(string name,Color color,bool emission=false){var m=new Material(Shader.Find("Universal Render Pipeline/Lit"));m.name="BB_"+name;m.color=color;m.SetColor("_BaseColor",color);m.SetFloat("_Smoothness",.25f);if(emission){m.EnableKeyword("_EMISSION");m.SetColor("_EmissionColor",color*2);}return m;}
         static GameObject Shape(Transform p,string n,PrimitiveType type,Vector3 position,Vector3 size,Material material){var go=GameObject.CreatePrimitive(type);go.name=n;go.transform.SetParent(p,false);go.transform.localPosition=position;go.transform.localScale=size;go.GetComponent<Renderer>().sharedMaterial=material;return go;}

@@ -1,24 +1,43 @@
-using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine;
+using TMPro;
+using System.Linq;
 
 namespace BeastBeat
 {
-    // Only navigation and game state. The scene owns all UI objects and styling.
+    // 메인 화면의 진행 상태를 초기화합니다. 이동은 Move_Scene에 위임합니다.
     public sealed class MainSceneActions : MonoBehaviour
     {
-        [Header("Scene destinations")]
-        public string entryScene="Assets/Scenes/Event List Scene.unity";
-        public string levelScene="Assets/Scenes/Level Complete List Scene.unity";
-        public string leagueScene="Assets/Scenes/Stage List Scene.unity";
-        public string bangbooScene="Assets/Scenes/Bangboo List Scene.unity";
-        public string rewardScene="Assets/Scenes/Reward List Scene.unity";
-        bool navigating;
+
+
+
+        TMP_Text levelLabel;
+        string levelTemplate;
+        int displayedLevel = -1;
+
+        // 씬의 글자 스타일과 LV. 접두사는 유지하고 99 자리만 실제 레벨로 바꿉니다.
+        public void RefreshLevel()
+        {
+            if (!levelLabel)
+            {
+                levelLabel = gameObject.scene.GetRootGameObjects()
+                    .SelectMany(root => root.GetComponentsInChildren<TMP_Text>(true))
+                    .FirstOrDefault(text => text.name == "Txt_Lv");
+                if (!levelLabel) return;
+                levelTemplate = levelLabel.text;
+            }
+            var progress = BeastBeatSession.Progress;
+            if (progress == null || displayedLevel == progress.Save.level) return;
+            displayedLevel = progress.Save.level;
+            levelLabel.text = levelTemplate.Replace("99", displayedLevel.ToString("D2"));
+        }
+        void Update() => RefreshLevel();
 
         void Awake()
         {
             if (!enabled) return;
             BeastBeatSession.HomeScenePath=gameObject.scene.path;
             EnsureProgress();
+            RefreshLevel();
         }
         void EnsureProgress()
         {
@@ -29,35 +48,10 @@ namespace BeastBeat
             BeastBeatSession.SelectedStage=stage==null?0:stage.id;
             BeastBeatSession.StageGroup=stage==null?1:stage.type;
         }
-        public void GoBack(){Open(entryScene);}
-        public void OpenPlayerLevel()
-        {
-            BeastBeatSession.PreviousScreen="Home";
-            BeastBeatSession.RewardReturnScenePath=gameObject.scene.path;
-            BeastBeatSession.RewardGroup=0;
-            Open(levelScene);
-        }
-        public void OpenLeague()
-        {
-            EnsureProgress();
-            BeastBeatSession.StageReturnScenePath=gameObject.scene.path;
-            // Match the original main: adopt a partner before entering the league.
-            if(BeastBeatSession.Progress.Save.party.Count==0){BeastBeatSession.SelectedBoo=11;Open(bangbooScene);}
-            else Open(leagueScene);
-        }
-        public void OpenBangboo(){BeastBeatSession.BangbooReturnScenePath=gameObject.scene.path;Open(bangbooScene);}
-        public void OpenLimitedRewards()
-        {
-            BeastBeatSession.PreviousScreen="Home";
-            BeastBeatSession.RewardReturnScenePath=gameObject.scene.path;
-            BeastBeatSession.RewardGroup=0;
-            Open(rewardScene);
-        }
-        void Open(string path)
-        {
-            if(navigating)return;
-            if(!Application.CanStreamedLevelBeLoaded(path)){Debug.LogError("Scene is not registered: "+path,this);return;}
-            navigating=true;SceneManager.LoadScene(path);
-        }
+        public void GoBack() => Move_Scene.For(this).GoBack();
+        public void OpenPlayerLevel() => Move_Scene.For(this).OpenPlayerLevel();
+        public void OpenLeague() => Move_Scene.For(this).OpenLeague();
+        public void OpenBangboo() => Move_Scene.For(this).OpenBangboo();
+        public void OpenLimitedRewards() => Move_Scene.For(this).OpenLimitedRewards();
     }
 }

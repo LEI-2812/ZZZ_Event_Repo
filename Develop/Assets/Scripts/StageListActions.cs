@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace BeastBeat
@@ -22,9 +21,8 @@ namespace BeastBeat
         public Image[] goodElements, badElements, rewardImages;
         public TMP_Text npcElementLabel;
         public TMP_Text[] rewardLabels;
-        [Header("Destinations")]
-        public string previousScene = "Assets/Scenes/Main Scene.unity";
-        public string battleScene = "Assets/Scenes/Battle Scene.unity";
+
+
         [Header("Selection colors")]
         public Color activeTab = new Color(.2f, .72f, 1f), inactiveTab = Color.white;
         public Color inactiveElement = new Color(.35f, .37f, .4f);
@@ -32,7 +30,7 @@ namespace BeastBeat
         GameData data;
         string lastRevision;
         float nextRefresh;
-        bool navigating, valid;
+        bool valid;
         public int Group => group;
         public int SelectedId => selectedId;
         public int VisibleCount => data == null ? 0 : data.stage_list.Count(s => s.event_list_id == eventId && s.type == group);
@@ -46,10 +44,11 @@ namespace BeastBeat
                 BeastBeatSession.SelectedStage = saved == null ? 0 : saved.id;
                 BeastBeatSession.StageGroup = saved == null ? 1 : saved.type;
             }
+            if (BeastBeatSession.SelectedEvent > 0) eventId = BeastBeatSession.SelectedEvent;
             selectedId = BeastBeatSession.SelectedStage;
             if (selectedId <= 0) selectedId = BeastBeatSession.Progress.Save.lastStage;
             group = BeastBeatSession.StageGroup;
-            if (!string.IsNullOrEmpty(BeastBeatSession.StageReturnScenePath)) previousScene = BeastBeatSession.StageReturnScenePath;
+
             int requestedId = selectedId;
             ReloadWorkbook();
             var last = data == null ? null : data.stage_list.FirstOrDefault(s => s.id == requestedId && s.event_list_id == eventId);
@@ -76,14 +75,12 @@ namespace BeastBeat
             lastRevision = source ? source.revision : "missing";
             try
             {
-                var entries = StageCatalog.Parse(source ? source.ReadSheet("stage_list") : throw new FormatException("game_data.xlsx를 찾을 수 없습니다."));
-                var fresh = GameData.LoadBase(); StageCatalog.Apply(fresh, entries); fresh.Validate();
+                var fresh = GameData.Load(source);
+                fresh.Validate();
                 data = fresh; valid = true;
                 if (Application.isPlaying)
                 {
-                    // Keep save/party identity; replace only stage definitions for the next battle.
-                    BeastBeatSession.Progress.Data.stage_list = fresh.stage_list;
-                    BeastBeatSession.Progress.Data.stage_rewards = fresh.stage_rewards;
+                    BeastBeatSession.Progress.ReloadData(fresh);
                 }
                 RefreshList(false);
             }
@@ -174,8 +171,8 @@ namespace BeastBeat
             {
                 var reward = i < rewards.Length ? rewards[i] : null;
                 var item = reward == null ? null : data.items.First(x => x.id == reward.items_id);
-                rewardLabels[i].text = item == null ? "—" : item.name + "\n×" + reward.amount;
-                rewardImages[i].color = item == null ? new Color(.2f, .22f, .25f) : item.grade == 1 ? new Color(.66f, .49f, .16f) : item.grade == 2 ? new Color(.42f, .28f, .57f) : new Color(.23f, .43f, .54f);
+                rewardLabels[i].text = item == null ? "—" : ItemCatalog.DisplayName(item) + "\n×" + reward.amount;
+                rewardImages[i].color = item == null ? new Color(.2f, .22f, .25f) : ItemCatalog.GradeColor(item.grade);
             }
             bool ready = stage != null;
             statusText.text = stage == null ? "이 분류에 스테이지를 추가해 주세요." : "";
@@ -186,34 +183,36 @@ namespace BeastBeat
                 bool cleared = p.Save.cleared.Contains(stage.id);
                 clearRewardTitle.text = cleared ? "클리어 보상 · 수령 완료" : "클리어 보상";
                 if (!p.Eligible) { ready = false; statusText.text = "이벤트 참여 조건을 확인해 주세요."; }
-                else if (p.Save.party.Count == 0) { ready = false; statusText.text = "Main Scene의 방부 도감에서 파티를 편성해 주세요."; }
+
                 else if (!p.StageOpen(stage.id)) { ready = false; statusText.text = "앞선 스테이지를 클리어하면 도전할 수 있습니다."; }
-                else statusText.text = "상대 LV. " + stage.level + "  ·  경험치 +" + stage.experience;
+                else statusText.text = "상대 LV. " + stage.level + (cleared ? "  ·  레벨 상승 수령 완료" : p.Save.level >= p.Data.balance.maxLevel ? "  ·  플레이어 최고 레벨" : "  ·  최초 클리어 레벨 +" + Math.Min(stage.level_gain, p.Data.balance.maxLevel - p.Save.level));
             }
             battleButton.interactable = ready;
         }
         static Color ElementColor(int type) { ColorUtility.TryParseHtmlString("#" + Elements.Hex(type), out var color); return color; }
-        public void GoBack() { Open(previousScene); }
-        public void StartBattle()
+        public void GoBack() => Move_Scene.For(this).GoBack();
+        public void StartBattle() => Move_Scene.For(this).StartBattle();
+        // 화면은 선택 상태와 배틀 준비만 담당하며 실제 씬 로드는 Move_Scene에서 처리합니다.
+        public bool TryPrepareBattle(out string message)
         {
-            if (!valid || navigating || !battleButton.interactable || selectedId == 0) return;
+            message = "";
+            if (!valid || selectedId == 0) { message = "유효한 스테이지를 선택하세요."; return false; }
             var p = BeastBeatSession.Progress;
-            if (!p.Eligible || !p.StageOpen(selectedId) || p.Save.party.Count == 0) { SelectStage(selectedId); return; }
-            if (!Application.CanStreamedLevelBeLoaded(battleScene)) { statusText.text = "배틀 씬이 등록되어 있지 않습니다."; return; }
-            try { BeastBeatSession.Battle = BattleCatalog.CreateBattle(p, selectedId); }
-            catch (Exception ex) { statusText.text = ex.Message; return; }
-            BeastBeatSession.SelectedStage = selectedId; BeastBeatSession.StageGroup = group;
-            BeastBeatSession.PreviewBattle = false; BeastBeatSession.History.Clear(); BeastBeatSession.ResultNotes.Clear();
-            BeastBeatSession.BattleLine = p.Data.Stage(selectedId).npc + "가 승부를 걸어왔다!";
-            BeastBeatSession.TutorialPending = !p.Save.tutorialSeen;
-            p.Save.lastStage = selectedId; p.Persist();
-            Open(battleScene);
-        }
-        void Open(string path)
-        {
-            if (navigating) return;
-            if (!Application.CanStreamedLevelBeLoaded(path)) { statusText.text = "씬이 등록되어 있지 않습니다: " + path; return; }
-            navigating = true; SceneManager.LoadScene(path);
+            try
+            {
+                if (!p.Eligible || !p.StageOpen(selectedId)) throw new InvalidOperationException("스테이지 참여 조건을 확인하세요.");
+                var battle = BattleCatalog.CreateBattle(p, selectedId);
+                int oldStage = p.Save.lastStage;
+                p.Save.lastStage = selectedId;
+                if (!p.TryPersist()) { p.Save.lastStage = oldStage; throw new InvalidOperationException(p.StorageWarning); }
+                BeastBeatSession.Battle = battle;
+                BeastBeatSession.SelectedStage = selectedId; BeastBeatSession.StageGroup = group;
+                BeastBeatSession.PreviewBattle = false; BeastBeatSession.History.Clear(); BeastBeatSession.ResultNotes.Clear();
+                BeastBeatSession.BattleLine = p.Data.Stage(selectedId).npc + "가 승부를 걸어왔다!";
+                BeastBeatSession.TutorialPending = !p.Save.tutorialSeen;
+                return true;
+            }
+            catch (Exception ex) { message = ex.Message; statusText.text = message; return false; }
         }
     }
 }

@@ -10,13 +10,13 @@ namespace BeastBeat.Editor
 {
     public static class BeastBeatSetup
     {
-        public const string ScenePath="Assets/BeastBeat/Scenes/eventlist.unity";
-        [MenuItem("Beast Beat/이벤트 씬 만들기 또는 열기")]
+        public const string ScenePath="Assets/Scenes/Event List Scene.unity";
+        [MenuItem("Beast Beat/이벤트 씬 열기")]
         public static void OpenScene()
         {
             if(EditorApplication.isPlaying)return;
-            if(!File.Exists(ScenePath))BeastBeatSceneSetup.CreateScenes();
-            BeastBeatSceneSetup.OpenEntry();
+            if(!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())return;
+            EditorSceneManager.OpenScene(ScenePath);
         }
         [MenuItem("Beast Beat/검증/핵심 규칙 테스트")]
         public static void RunChecks()
@@ -26,8 +26,8 @@ namespace BeastBeat.Editor
             string dir=Path.Combine(Application.temporaryCachePath,"BeastBeatChecks-"+Guid.NewGuid().ToString("N"));Directory.CreateDirectory(dir);
             var p=new ProgressService(data,Path.Combine(dir,"save.json"));
             check(Elements.Strong(1,2)&&Elements.Strong(2,3)&&Elements.Strong(3,1),"circular affinity");
-            check(Elements.Multiplier(4,5,data.balance)==1.5f&&Elements.Multiplier(5,4,data.balance)==1.5f,"mutual affinity");
-            check(Elements.Multiplier(1,3,data.balance)==.65f&&Elements.Multiplier(1,4,data.balance)==1,"weak and neutral");
+            check(Elements.Multiplier(4,5,data.balance)==1.3f&&Elements.Multiplier(5,4,data.balance)==1.3f,"mutual affinity");
+            check(Elements.Multiplier(1,3,data.balance)==.7f&&Elements.Multiplier(1,4,data.balance)==1,"weak and neutral");
             p.Save.accountLevel=22;check(!p.Eligible,"account gate");p.Save.accountLevel=30;p.Save.clearedChapter=2;check(!p.Eligible,"chapter gate");p.Save.clearedChapter=3;
             check(p.StageOpen(1)&&!p.StageOpen(2),"stage lock");
             check(p.Adopt(11)&&!p.Adopt(11)&&!p.Adopt(52),"adoption gate and duplicates");p.Adopt(21);p.Adopt(31);
