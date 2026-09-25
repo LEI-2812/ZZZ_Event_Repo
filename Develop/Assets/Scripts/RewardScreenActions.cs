@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -58,13 +58,13 @@ namespace BeastBeat
             for(int i=0;i<groups.Length;i++){
                 int group=groups[i],count,total;string title;
                 if(levelMode){var levels=Data.level_rewards.Where(r=>(r.owner_id-1)/10==group).Select(r=>r.owner_id).Distinct().ToArray();count=levels.Count(l=>RewardClaims.Claimed(progress,"l"+l));total=levels.Length;title="레벨 "+(group*10+1)+" - "+Math.Min(group*10+10,Data.balance.maxLevel);}
-                else {var rewards=Data.rewardCatalog.rows.Where(r=>r.level_id==group).ToArray();count=rewards.Count(r=>RewardClaims.Claimed(progress,"ar"+r.id));total=rewards.Length;title=Data.achievement.First(a=>a.id==group).name;}
+                else {var rewards=Data.rewardCatalog.rows.Where(r=>r.a_id==group).ToArray();count=rewards.Count(r=>RewardClaims.Claimed(progress,"ar"+r.id));total=rewards.Length;title=Data.achievement.First(a=>a.id==group).name;}
                 groupRows[i].Group(this,group,title,count+" / "+total,selectedGroup==group);
             }
             if(levelMode){var levels=Data.level_rewards.Where(r=>(r.owner_id-1)/10==selectedGroup).GroupBy(r=>r.owner_id).OrderBy(g=>g.Key).ToArray();var rows=Pool(infoScroll,infoPrefab,levels.Length);
                 for(int i=0;i<levels.Length;i++){var l=levels[i];var key="l"+l.Key;rows[i].Reward(this,key,"LV. "+l.Key.ToString("00")+" 보상",l.ToArray(),"현재 LV. "+progress.Save.level,progress.CanClaim(key),RewardClaims.Claimed(progress,key));}
-            }else {var rewards=Data.rewardCatalog.rows.Where(r=>r.level_id==selectedGroup).OrderBy(r=>r.id).ToArray();var rows=Pool(infoScroll,infoPrefab,rewards.Length);
-                for(int i=0;i<rewards.Length;i++){var reward=rewards[i];var a=Data.achievement.First(x=>x.id==reward.level_id);var key="ar"+reward.id;rows[i].Reward(this,key,reward.info,new[]{new RewardData{items_id=reward.items_id,amount=reward.amount}},Math.Min(progress.Metric(a),a.target)+" / "+a.target,progress.CanClaim(key),RewardClaims.Claimed(progress,key));}
+            }else {var rewards=Data.rewardCatalog.rows.Where(r=>r.a_id==selectedGroup).OrderBy(r=>r.id).ToArray();var rows=Pool(infoScroll,infoPrefab,rewards.Length);
+                for(int i=0;i<rewards.Length;i++){var reward=rewards[i];var a=Data.achievement.First(x=>x.id==reward.a_id);var key="ar"+reward.id;rows[i].Reward(this,key,reward.info,new[]{new RewardData{items_id=reward.items_id,amount=reward.amount}},"조건 준비 중",progress.CanClaim(key),RewardClaims.Claimed(progress,key));}
             }
             string specialKey=levelMode?"maxlevel":"special";bool claimed=RewardClaims.Claimed(progress,specialKey),complete=RewardClaims.Complete(progress,levelMode);
             specialButton.interactable=progress.CanClaim(specialKey);specialButtonText.text=claimed?"수령 완료":specialButton.interactable?"수령하기":"진행 중";

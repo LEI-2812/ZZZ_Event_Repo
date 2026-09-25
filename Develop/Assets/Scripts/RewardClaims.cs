@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using UnityEngine;
 
@@ -13,7 +13,7 @@ namespace BeastBeat
             if(key=="maxlevel")return p.Data.rewardCatalog.user.is_get_lv_reward;
             if(key.StartsWith("ar")&&int.TryParse(key.Substring(2),out int id)){
                 var row=p.Data.rewardCatalog.rows.FirstOrDefault(r=>r.id==id);
-                return row!=null&&p.Save.claimed.Contains("a"+row.level_id); // previous versions claimed a whole group
+                return row!=null&&p.Save.claimed.Contains("a"+row.a_id); // previous versions claimed a whole group
             }
             return false;
         }
@@ -29,11 +29,11 @@ namespace BeastBeat
             if(key=="special")return p.LimitedActive&&Complete(p,false);
             if(key=="maxlevel")return Complete(p,true);
             if(key.StartsWith("ar")&&int.TryParse(key.Substring(2),out int rewardId)){
-                var row=p.Data.rewardCatalog.rows.FirstOrDefault(r=>r.id==rewardId);var a=row==null?null:p.Data.achievement.FirstOrDefault(x=>x.id==row.level_id);
-                return a!=null&&p.LimitedActive&&p.Metric(a)>=a.target;
+                var row=p.Data.rewardCatalog.rows.FirstOrDefault(r=>r.id==rewardId);var a=row==null?null:p.Data.achievement.FirstOrDefault(x=>x.id==row.a_id);
+                return false; // 업적 수령 조건은 아직 정의되지 않았습니다.
             }
             if(key[0]=='l'&&int.TryParse(key.Substring(1),out int level))return p.Data.level_rewards.Any(r=>r.owner_id==level)&&p.Save.level>=level;
-            if(key[0]=='a'&&int.TryParse(key.Substring(1),out int group))return p.Data.rewardCatalog.rows.Any(r=>r.level_id==group&&CanClaim(p,"ar"+r.id));
+            if(key[0]=='a'&&int.TryParse(key.Substring(1),out int group))return p.Data.rewardCatalog.rows.Any(r=>r.a_id==group&&CanClaim(p,"ar"+r.id));
             return false;
         }
         public static bool Claim(ProgressService p,string key)
@@ -42,7 +42,7 @@ namespace BeastBeat
             string[] keys=new[]{key}; RewardData[] rewards;
             if(key=="special"||key=="maxlevel")rewards=p.Data.rewardCatalog.special[key];
             else if(key.StartsWith("ar")) {int id=int.Parse(key.Substring(2));rewards=p.Data.achievement_rewards.Where(r=>r.id==id).ToArray();}
-            else if(key[0]=='a') {int group=int.Parse(key.Substring(1));var rows=p.Data.rewardCatalog.rows.Where(r=>r.level_id==group&&CanClaim(p,"ar"+r.id)).ToArray();keys=rows.Select(r=>"ar"+r.id).ToArray();rewards=p.Data.achievement_rewards.Where(r=>rows.Any(x=>x.id==r.id)).ToArray();}
+            else if(key[0]=='a') {int group=int.Parse(key.Substring(1));var rows=p.Data.rewardCatalog.rows.Where(r=>r.a_id==group&&CanClaim(p,"ar"+r.id)).ToArray();keys=rows.Select(r=>"ar"+r.id).ToArray();rewards=p.Data.achievement_rewards.Where(r=>rows.Any(x=>x.id==r.id)).ToArray();}
             else {int level=int.Parse(key.Substring(1));rewards=p.Data.level_rewards.Where(r=>r.owner_id==level).ToArray();}
             string before=JsonUtility.ToJson(p.Save);p.Grant(rewards);p.Save.claimed.AddRange(keys);
             if(p.TryPersist())return true;

@@ -229,8 +229,25 @@ namespace BeastBeat
             }
             t.text=value;
         }
+        // 교체·상태 회복 때도 현재 출전 방부의 상태만 표시합니다.
+        public static void RefreshConditionIcon(Image icon, Fighter fighter)
+        {
+            bool visible = fighter.Alive && (fighter.state == Condition.Burn ||
+                fighter.state == Condition.Paralysis || fighter.state == Condition.Frozen ||
+                fighter.state == Condition.Confused);
+            icon.gameObject.SetActive(visible);
+            if (!visible) return;
+            switch (fighter.state)
+            {
+                case Condition.Burn: icon.color = Color.red; break;
+                case Condition.Paralysis: icon.color = Color.yellow; break;
+                case Condition.Frozen: icon.color = new Color32(105, 230, 215, 255); break;
+                case Condition.Confused: icon.color = Color.gray; break;
+            }
+        }
         void Status(Transform root,Fighter f,bool enemy)
         {
+            RefreshConditionIcon(Child<Image>(root,"Img_status"), f);
             Child<TMP_Text>(root,"Txt_Name").text=Progress.Data.Boo(f.id).name;
             Child<TMP_Text>(root,"Txt_Hpnum").text=f.hp+" / "+f.maxHp;
             Child<TMP_Text>(root,"Txt_Lvnum").text="Lv. "+f.level;

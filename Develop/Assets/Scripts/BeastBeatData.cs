@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -30,7 +30,7 @@ namespace BeastBeat
     }
     [Serializable] public class ItemData { public int id, grade; public string name; }
     [Serializable] public class RewardData { public int id, owner_id, items_id, amount; }
-    [Serializable] public class AchievementData { public int id, target; public string name, metric; }
+    [Serializable] public class AchievementData { public int id; public string name; }
     [Serializable] public class EventData
     {
         public int id = 1, type = 1, minimumAccountLevel = 23, minimumChapter = 3;
@@ -86,6 +86,7 @@ namespace BeastBeat
         public string birthday = "0704", eventStartedUtc;
         public bool tutorialSeen, muted, liveBackground, masterTitle;
         public List<OwnedBoo> owned = new List<OwnedBoo>();
+        public int pendingWorkbookLevel;
         public List<int> pendingWorkbookUnlocks = new List<int>();
         public List<int> party = new List<int>();
         public int[] configuredParty;

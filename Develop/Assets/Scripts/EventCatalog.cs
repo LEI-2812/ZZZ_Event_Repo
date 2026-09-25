@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -40,7 +40,7 @@ namespace BeastBeat
                         id = int.Parse(Get("id"), CultureInfo.InvariantCulture),
                         category = Get("category"), title = Get("title"), description = Get("description").Replace("\\n", "\n"),
                         updatedAt = DateTime.ParseExact(Get("updated_at"), "yyyy-MM-dd", CultureInfo.InvariantCulture),
-                        background = Get("background"), rewardIds = Ids(Get("reward_ids")), achievementIds = Ids(Get("achievement_ids"))
+                        background = "", rewardIds = Ids(Get("reward_id")), achievementIds = Ids(Get("achievement_id"))
                     };
                     if (entry.id <= 0 || !ids.Add(entry.id)) throw new FormatException("ID는 중복 없는 양수여야 합니다.");
                     if (entry.category != "permanent" && entry.category != "limited") throw new FormatException("category는 permanent 또는 limited여야 합니다.");

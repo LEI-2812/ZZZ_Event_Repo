@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -14,7 +14,7 @@ using UnityEngine;
 
 namespace BeastBeat.Editor
 {
-    [ScriptedImporter(1, "xlsx")]
+    [ScriptedImporter(2, "xlsx")]
     public sealed class GameWorkbookImporter : ScriptedImporter
     {
         static readonly XNamespace Ns = "http://schemas.openxmlformats.org/spreadsheetml/2006/main";
@@ -75,6 +75,8 @@ namespace BeastBeat.Editor
                     foreach (var row in xml.Descendants(Ns + "sheetData").Elements(Ns + "row"))
                     {
                         int rowNumber = (int?)row.Attribute("r") ?? 0;
+                        // 실제 엑셀 2행만 헤더, 4행부터 데이터입니다. 설명/자료형은 읽지 않습니다.
+                        if(rowNumber == 1 || rowNumber == 3) continue;
                         var values = new SortedDictionary<int, string>();
                         foreach (var cell in row.Elements(Ns + "c"))
                         {
@@ -93,10 +95,10 @@ namespace BeastBeat.Editor
                             }
                             if (value.Length > 0) values[Column(reference)] = value;
                         }
-                        if (values.Count == 0) continue;
+                        if (values.Count == 0 && rowNumber != 2) continue;
                         if (width == 0)
                         {
-                            if (rowNumber != 1) throw new FormatException(name + ": 첫 행에 컬럼 이름을 입력해 주세요.");
+                            if (rowNumber != 2 || values.Count == 0) throw new FormatException(name + ": 2행에 컬럼 이름을 입력해 주세요.");
                             width = values.Keys.Max() + 1;
                         }
                         if (values.Keys.Max() >= width) throw new FormatException(name + " " + rowNumber + "행: 헤더 밖에 데이터가 있습니다.");
@@ -104,10 +106,12 @@ namespace BeastBeat.Editor
                         {
                             if (col > 0) records.Append(',');
                             string value = values.TryGetValue(col, out var text) ? text : "";
+                            if(rowNumber == 2) value = new string(value.Where(c=>!char.IsWhiteSpace(c) && c!='\uFEFF').ToArray());
                             records.Append('"').Append(value.Replace("\"", "\"\"")).Append('"');
                         }
                         records.Append('\n');
                     }
+                    if(width == 0) throw new FormatException(name + ": 2행 컬럼명이 없습니다.");
                     sheets.Add(new GameWorkbook.Sheet { name = name, records = records.ToString() });
                 }
                 return sheets.ToArray();

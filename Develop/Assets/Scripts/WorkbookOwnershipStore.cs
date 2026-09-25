@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -14,10 +14,11 @@ namespace BeastBeat
         static readonly XNamespace Ns = "http://schemas.openxmlformats.org/spreadsheetml/2006/main";
         static readonly XNamespace Rel = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
 
-        public static void SaveUnlocked(string path, int userId, IEnumerable<int> bangbooIds)
+        public static void SaveUnlocked(string path, int userId, IEnumerable<int> bangbooIds, int? level = null)
         {
             var ids = bangbooIds.Distinct().ToArray();
-            if (ids.Length == 0) return;
+            if (ids.Length == 0 && !level.HasValue) return;
+            if(level.HasValue && (level.Value < 1 || level.Value > 20)) throw new ArgumentOutOfRangeException(nameof(level));
             string temporary = Path.Combine(Path.GetDirectoryName(path), "." + Path.GetFileName(path) + "." + Guid.NewGuid().ToString("N") + ".tmp");
             try
             {
@@ -39,10 +40,10 @@ namespace BeastBeat
                             ReadXml(zip, "xl/sharedStrings.xml").Root.Elements(Ns + "si").Select(Text).ToArray();
                         var sheet = ReadXml(zip, sheetPath);
                         var rows = sheet.Descendants(Ns + "sheetData").Elements(Ns + "row").ToArray();
-                        var header = rows.Single(r => (string)r.Attribute("r") == "1");
+                        var header = rows.Single(r => (string)r.Attribute("r") == "2");
                         var columns = header.Elements(Ns + "c").ToDictionary(c => Value(c, shared).Trim(), c => Column((string)c.Attribute("r")));
                         if (!columns.TryGetValue("id", out var idColumn)) throw new FormatException("users.id 컬럼 누락");
-                        var users = rows.Skip(1).Where(r => r.Elements(Ns + "c").Any(c => Column((string)c.Attribute("r")) == idColumn && Value(c, shared) == userId.ToString())).ToArray();
+                        var users = rows.Where(r => (int)r.Attribute("r") >= 4).Where(r => r.Elements(Ns + "c").Any(c => Column((string)c.Attribute("r")) == idColumn && Value(c, shared) == userId.ToString())).ToArray();
                         if (users.Length != 1) throw new FormatException("users: 현재 사용자 id=" + userId + "가 없거나 중복되었습니다.");
                         bool changed = false;
                         foreach (int id in ids)
@@ -58,6 +59,16 @@ namespace BeastBeat
                             cell.Elements(Ns + "v").Remove(); cell.Elements(Ns + "is").Remove();
                             cell.SetAttributeValue("t", "b"); cell.AddFirst(new XElement(Ns + "v", "1"));
                             changed = true;
+                        }
+                        if(level.HasValue) {
+                            if(!columns.TryGetValue("level",out var column))throw new FormatException("users.level 컬럼 누락");
+                            string address=column+(string)users[0].Attribute("r");
+                            var cell=users[0].Elements(Ns+"c").SingleOrDefault(c=>(string)c.Attribute("r")==address);
+                            if(cell==null||cell.Element(Ns+"f")!=null)throw new FormatException("users.level 셀/수식 확인");
+                            if(Value(cell,shared)!=level.Value.ToString()) {
+                                cell.Elements(Ns+"v").Remove();cell.Elements(Ns+"is").Remove();
+                                cell.SetAttributeValue("t","n");cell.AddFirst(new XElement(Ns+"v",level.Value));changed=true;
+                            }
                         }
                         if (!changed) return;
                         using (var output = new FileStream(temporary, FileMode.CreateNew, FileAccess.Write, FileShare.None))

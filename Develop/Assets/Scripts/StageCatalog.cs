@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -9,12 +9,13 @@ namespace BeastBeat {
   public int[] rewardIds=Array.Empty<int>(),rewardAmounts=Array.Empty<int>();
  }
  public static class StageCatalog {
-  public static readonly string[] Headers={"아이디","이벤트 아이디","종류","등장 npc","npc 대사","npc 속성"};
+  public static readonly string[] Headers={"id","e_name","s_num","npc_name","npc_con","npc_type"};
   public static string GroupName(int group)=>new[]{"","워밍업","예선전","본선","결승전"}[group];
   public static List<StageCatalogEntry> Parse(string csv) {
    var rows=EventCatalog.ReadRows(csv);
    if(rows.Count==0)throw new FormatException("stage_list 헤더가 없습니다.");
    var header=rows[0].Select(s=>s.Trim().TrimStart('\uFEFF')).ToArray();
+   header=header.Select(key=>key=="s_id"?"id":key).ToArray();
    if(header.Distinct().Count()!=header.Length||Headers.Any(key=>!header.Contains(key)))throw new FormatException("stage_list 필수 컬럼: "+string.Join(",",Headers));
    if(header.Contains("reward_ids")!=header.Contains("reward_amounts"))throw new FormatException("reward_ids와 reward_amounts는 함께 필요합니다.");
    var ids=new HashSet<int>();var result=new List<StageCatalogEntry>();
@@ -25,7 +26,7 @@ namespace BeastBeat {
      string Get(string key){int index=Array.IndexOf(header,key);return index<0?"":row[index].Trim();}
      int Number(string key)=>int.Parse(Get(key),CultureInfo.InvariantCulture);
      int[] Numbers(string key)=>string.IsNullOrWhiteSpace(Get(key))?Array.Empty<int>():Get(key).Split(';').Select(s=>int.Parse(s.Trim(),CultureInfo.InvariantCulture)).ToArray();
-     var e=new StageCatalogEntry{id=Number("아이디"),eventId=Number("이벤트 아이디"),group=Number("종류"),npc=Get("등장 npc"),dialogue=Get("npc 대사").Replace("\\n","\n"),element=Number("npc 속성"),team=Get("s_name"),levelGain=header.Contains("level_gain")?Number("level_gain"):1,rewardIds=Numbers("reward_ids"),rewardAmounts=Numbers("reward_amounts")};
+     var e=new StageCatalogEntry{id=Number("id"),eventId=Number("e_name"),group=Number("s_num"),npc=Get("npc_name"),dialogue=Get("npc_con").Replace("\\n","\n"),element=Number("npc_type"),team=Get("s_name"),levelGain=header.Contains("level_gain")?Number("level_gain"):1,rewardIds=Numbers("reward_ids"),rewardAmounts=Numbers("reward_amounts")};
      if(e.id<=0||!ids.Add(e.id))throw new FormatException("아이디는 중복 없는 양수여야 합니다.");
      if(e.eventId<=0||e.group<1||e.group>4||e.element<1||e.element>5)throw new FormatException("이벤트 아이디·종류·npc 속성을 확인하세요.");
      if(e.npc.Length==0)throw new FormatException("등장 npc가 비어 있습니다.");

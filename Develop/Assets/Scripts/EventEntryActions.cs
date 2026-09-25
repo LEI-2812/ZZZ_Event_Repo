@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -150,8 +150,7 @@ namespace BeastBeat
             {
                 var achievement = entry != null && i < entry.achievementIds.Length ? data.achievement.First(a => a.id == entry.achievementIds[i]) : null;
                 achievementTitles[i].text = achievement == null ? "—" : achievement.name;
-                int progress = achievement != null && Application.isPlaying ? BeastBeatSession.Progress.Metric(achievement) : 0;
-                achievementCounts[i].text = achievement == null ? "—" : Math.Min(progress, achievement.target) + " / " + achievement.target;
+                achievementCounts[i].text = achievement == null ? "—" : "조건 준비 중";
             }
         }
         // 이전에 연결한 UnityEvent도 새 이동 컴포넌트로 전달합니다.

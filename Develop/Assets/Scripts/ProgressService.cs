@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
@@ -21,6 +21,7 @@ namespace BeastBeat
             workbookPath = ownershipWorkbookPath ?? (file == null ? Path.Combine(Application.dataPath, "Resources/Data/game_data.xlsx") : null);
             Save = Load() ?? new SaveData { eventStartedUtc = DateTime.UtcNow.ToString("o"), bangbooIdSchema = 1 };
             if (Save.pendingWorkbookUnlocks == null) Save.pendingWorkbookUnlocks = new List<int>();
+            Save.level = Save.pendingWorkbookLevel > 0 ? Save.pendingWorkbookLevel : Data.rewardCatalog?.user.level ?? Save.level;
             SyncPartyLevels();
             QueueWorkbookUnlocks();
         }
@@ -29,6 +30,7 @@ namespace BeastBeat
         {
             data.Validate();
             Data = data;
+            Save.level = Save.pendingWorkbookLevel > 0 ? Save.pendingWorkbookLevel : Data.rewardCatalog?.user.level ?? Save.level;
             SyncPartyLevels();
         }
         SaveData Load()
@@ -53,6 +55,7 @@ namespace BeastBeat
         public void Persist() { TryPersist(); }
         public bool TryPersist()
         {
+            if(workbookPath != null && Data.rewardCatalog != null && Save.level != Data.rewardCatalog.user.level) Save.pendingWorkbookLevel=Save.level;
             SyncPartyLevels();
             QueueWorkbookUnlocks();
             if (!WriteProgress()) return false;
@@ -80,17 +83,19 @@ namespace BeastBeat
         public bool RetryWorkbookUnlocks()
         {
             QueueWorkbookUnlocks();
-            if (workbookPath == null || Save.pendingWorkbookUnlocks.Count == 0) return true;
+            if (workbookPath == null || Save.pendingWorkbookUnlocks.Count == 0 && Save.pendingWorkbookLevel == 0) return true;
             if (!WriteProgress()) return false;
             return FlushWorkbookUnlocks();
         }
         bool FlushWorkbookUnlocks()
         {
-            if (workbookPath == null || Save.pendingWorkbookUnlocks.Count == 0) return true;
+            if (workbookPath == null || Save.pendingWorkbookUnlocks.Count == 0 && Save.pendingWorkbookLevel == 0) return true;
             try {
                 int[] ids = Save.pendingWorkbookUnlocks.ToArray();
-                WorkbookOwnershipStore.SaveUnlocked(workbookPath, Data.rewardCatalog == null ? 1 : Data.rewardCatalog.user.id, ids);
+                WorkbookOwnershipStore.SaveUnlocked(workbookPath, Data.rewardCatalog == null ? 1 : Data.rewardCatalog.user.id, ids, Save.pendingWorkbookLevel > 0 ? (int?)Save.pendingWorkbookLevel : null);
                 Data.initialOwnedBangbooIds = Data.initialOwnedBangbooIds.Union(ids).ToArray();
+                if(Save.pendingWorkbookLevel > 0 && Data.rewardCatalog != null) Data.rewardCatalog.user.level=Save.pendingWorkbookLevel;
+                Save.pendingWorkbookLevel=0;
                 Save.pendingWorkbookUnlocks.Clear();
                 WorkbookStorageWarning = "";
                 // 여기서 저장이 중단되어도 이전 파일의 대기 목록을 다시 적용하는 것은 안전합니다.
@@ -103,7 +108,7 @@ namespace BeastBeat
             } catch (Exception e) {
                 string action = e is FileNotFoundException || e is DirectoryNotFoundException ? "game_data.xlsx 원본 경로를 확인해 주세요." :
                     e is IOException || e is UnauthorizedAccessException ? "Excel에서 game_data.xlsx를 저장하고 닫고, 쓰기 권한을 확인해 주세요." : "users 시트의 컬럼과 사용자 ID를 확인해 주세요.";
-                string message = "방부 해금의 엑셀 저장 대기 중입니다. " + action + " (" + e.Message + ")";
+                string message = "플레이어 레벨·방부 해금의 엑셀 저장 대기 중입니다. " + action + " (" + e.Message + ")";
                 if (WorkbookStorageWarning != message) Debug.LogWarning(message);
                 WorkbookStorageWarning = message;
                 return false;
@@ -176,13 +181,6 @@ namespace BeastBeat
             if (!string.IsNullOrEmpty(WorkbookStorageWarning)) notes.Add(WorkbookStorageWarning);
             return notes;
         }
-        public int Metric(AchievementData a)
-        {
-            if (a.metric == "collection") return Save.owned.Count;
-            if (a.metric == "evolution") return Save.level >= Data.balance.evolutionLevel ? Save.owned.Count : 0;
-            if (a.metric == "stage") return Save.cleared.Count;
-            return 0;
-        }
         public bool CanClaim(string key)
         {
             if (Data.rewardCatalog != null) return RewardClaims.CanClaim(this,key);
@@ -192,7 +190,7 @@ namespace BeastBeat
             int id; if (key.Length < 2 || !int.TryParse(key.Substring(1), out id)) return false;
             if (key[0] == 'l') return id >= 1 && id <= 20 && Save.level >= id;
             var a = Data.achievement.FirstOrDefault(x => x.id == id);
-            return key[0] == 'a' && a != null && Metric(a) >= a.target;
+            return false; // 업적 조건 미구현
         }
         public bool Claim(string key)
         {

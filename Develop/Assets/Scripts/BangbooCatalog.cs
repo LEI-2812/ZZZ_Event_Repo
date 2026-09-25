@@ -5,7 +5,6 @@ namespace BeastBeat {
  public sealed class BangbooInfo { public int id,type,hp,atk,def,release_lv; public string name; }
  public sealed class BangbooSkillInfo { public int id,bid,type,max_num,dmg=-1,debuffType=1,debuffProb; public string name; }
  public sealed class BangbooCatalog {
-  public bool legacyUsers;
   public BangbooInfo[] entries; public BangbooSkillInfo[] skills;
   public HashSet<int> owned=new HashSet<int>();
   static List<Dictionary<string,string>> Table(GameWorkbook book,string name,params string[] required){
@@ -17,7 +16,7 @@ namespace BeastBeat {
   static int N(Dictionary<string,string> row,string key){if(!row.TryGetValue(key,out var v)||!int.TryParse(v,out var n))throw new FormatException(key+": 정수 필요");return n;}
   static int DamageValue(Dictionary<string,string> row){if(!row.ContainsKey("dmg"))return -1;int value=N(row,"dmg");if(value<0)throw new FormatException("skills.dmg는 0 이상의 정수여야 합니다.");return value;}
   static int Debuff(Dictionary<string,string> row){
-   string key=row.ContainsKey("debuff_type")?"debuff_type":"dbf_type";
+   string key="dbf_type";
    if(!row.TryGetValue(key,out var value))return 1;
    switch(value.Trim().ToUpperInvariant()){
     case "NONE":case "0":case "1":case "":return 1;
@@ -30,15 +29,12 @@ namespace BeastBeat {
   public static BangbooCatalog Load(GameWorkbook book,int uid=1,bool includeUsers=true){
    var c=new BangbooCatalog();
    c.entries=Table(book,"bangboo","id","name","type","hp","atk","def","release_lv").Select(r=>new BangbooInfo{id=N(r,"id"),name=r["name"],type=N(r,"type"),hp=N(r,"hp"),atk=N(r,"atk"),def=N(r,"def"),release_lv=N(r,"release_lv")}).OrderBy(b=>b.id).ToArray();
-   c.skills=Table(book,"skills","id","bid","name","type","max_num").Select(r=>new BangbooSkillInfo{id=N(r,"id"),bid=N(r,"bid"),name=r["name"],type=N(r,"type"),max_num=N(r,"max_num"),dmg=DamageValue(r),debuffType=Debuff(r),debuffProb=r.ContainsKey("debuff_prob")?N(r,"debuff_prob"):r.ContainsKey("dbf_prob")?N(r,"dbf_prob"):0}).OrderBy(s=>s.id).ToArray();
+   c.skills=Table(book,"skills","id","bid","name","type","max_num","dmg","dbf_type","dbf_prob").Select(r=>new BangbooSkillInfo{id=N(r,"id"),bid=N(r,"bid"),name=r["name"],type=N(r,"type"),max_num=N(r,"max_num"),dmg=DamageValue(r),debuffType=Debuff(r),debuffProb=N(r,"dbf_prob")}).OrderBy(s=>s.id).ToArray();
    var user=includeUsers?Table(book,"users","id").SingleOrDefault(r=>N(r,"id")==uid):null;
    if(includeUsers&&user==null)throw new FormatException("users: 현재 유저 없음");
-   c.legacyUsers=user!=null&&!user.ContainsKey("has_bangboo_1")&&(user.ContainsKey("has_bangboo_21")||user.ContainsKey("has_bangboo_31"));
-   var oldBoos=GameData.LoadBase().bangboo;
    foreach(var b in c.entries){
     if(b.release_lv<1||b.release_lv>20||b.id<=0||string.IsNullOrWhiteSpace(b.name)||b.type<1||b.type>5||b.hp<=0||b.atk<0||b.def<0||c.skills.Count(s=>s.bid==b.id)!=3)throw new FormatException("bangboo: 능력치 또는 스킬 3개 확인: "+b.id);
-    int userId=b.id;if(c.legacyUsers){var previous=oldBoos.FirstOrDefault(x=>x.name==b.name);userId=previous==null?-1:previous.id;}
-    string hasKey="has_bangboo_"+userId;
+    string hasKey="has_bangboo_"+b.id;
     bool has=user!=null&&user.ContainsKey(hasKey)&&B(user,hasKey);
     if(has)c.owned.Add(b.id);
    }
@@ -67,7 +63,7 @@ namespace BeastBeat {
    foreach(var old in original.Where(x=>data.legacyBangbooIds[x.id]>=10000)){
     int oldId=old.id;var copy=UnityEngine.JsonUtility.FromJson<BooData>(UnityEngine.JsonUtility.ToJson(old));copy.id=data.legacyBangbooIds[oldId];copy.skillIds=old.skillIds.Select(id=>10000+id).ToArray();boos.Add(copy);
     // 옛 적의 표시 ID는 유지하되 기술은 현재 엑셀의 같은 속성 방부에서 가져옵니다.
-    // stage_party에 직접 편성된 적은 해당 bid의 기술을 그대로 사용합니다.
+    // stage_list에 직접 편성된 적은 해당 bid의 기술을 그대로 사용합니다.
     var source=boos.First(b=>b.id<10000&&b.type==old.type);
     for(int i=0;i<old.skillIds.Length;i++){
      var current=skills.First(s=>s.id==source.skillIds[i]);
@@ -86,11 +82,7 @@ namespace BeastBeat {
    if(save.configuredParty!=null)save.configuredParty=save.configuredParty.Select(id=>data.legacyBangbooIds.TryGetValue(id,out var mapped)?mapped:id).ToArray();
    save.bangbooIdSchema=1;
   }
-  public static int WorkbookPartyId(GameData data,GameWorkbook book,int id){
-   var header=EventCatalog.ReadRows(book.ReadSheet("users"))[0];
-   bool legacy=!header.Contains("has_bangboo_1")&&(header.Contains("has_bangboo_21")||header.Contains("has_bangboo_31"));
-   return legacy&&data.legacyBangbooIds!=null&&data.legacyBangbooIds.TryGetValue(id,out var mapped)?mapped:id;
-  }
+  public static int WorkbookPartyId(GameData data,GameWorkbook book,int id) => id;
 
   public static int[] Slots(ProgressService p,GameWorkbook book){
    if(p.Save.configuredParty!=null&&p.Save.configuredParty.Length==3)return (int[])p.Save.configuredParty.Clone();
