@@ -19,10 +19,11 @@ namespace BeastBeat
                 foreach(var row in stageRows.Skip(1).Where(r=>r.Any(v=>!string.IsNullOrWhiteSpace(v)))) {
                     int N(string key){int i=Array.IndexOf(stageHeader,key);string v=i<row.Count?row[i].Trim():"";if(v=="")return 0;if(!int.TryParse(v,out int n))throw new FormatException("stage_list "+key+": 정수 필요");return n;}
                     int id=N(stageHeader.Contains("s_id")?"s_id":"id"),level=N("b_lv");var stage=data.stage_list.Single(s=>s.id==id);
-                    var members=new List<int>();bool empty=false;
+                    var members=new List<int>();
                     foreach(var key in partyKeys.Take(3)) {
-                        int bid=N(key);if(bid==0){empty=true;continue;}
-                        if(empty||!data.bangboo.Any(b=>b.id==bid&&b.id<10000))throw new FormatException("stage_list "+id+": "+key+" 방부 ID 또는 빈 슬롯 순서 확인");
+                        // 각 슬롯을 독립적으로 검사합니다. ID 0인 슬롯만 건너뜁니다.
+                        int bid=N(key);if(bid==0)continue;
+                        if(!data.bangboo.Any(b=>b.id==bid&&b.id<10000))throw new FormatException("stage_list "+id+": "+key+" 방부 ID 확인");
                         members.Add(bid);
                     }
                     if(members.Count==0||level<1||level>data.balance.maxLevel)throw new FormatException("stage_list "+id+": 적 편성과 b_lv 확인");

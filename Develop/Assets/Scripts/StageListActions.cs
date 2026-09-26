@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -180,12 +180,9 @@ namespace BeastBeat
             if (stage != null && Application.isPlaying)
             {
                 var p = BeastBeatSession.Progress;
-                bool cleared = p.Save.cleared.Contains(stage.id);
-                clearRewardTitle.text = cleared ? "클리어 보상 · 수령 완료" : "클리어 보상";
                 if (!p.Eligible) { ready = false; statusText.text = "이벤트 참여 조건을 확인해 주세요."; }
 
                 else if (!p.StageOpen(stage.id)) { ready = false; statusText.text = "앞선 스테이지를 클리어하면 도전할 수 있습니다."; }
-                else statusText.text = "상대 LV. " + stage.level + (cleared ? "  ·  레벨 상승 수령 완료" : p.Save.level >= p.Data.balance.maxLevel ? "  ·  플레이어 최고 레벨" : "  ·  최초 클리어 레벨 +" + Math.Min(stage.level_gain, p.Data.balance.maxLevel - p.Save.level));
             }
             battleButton.interactable = ready;
         }
@@ -207,9 +204,7 @@ namespace BeastBeat
                 if (!p.TryPersist()) { p.Save.lastStage = oldStage; throw new InvalidOperationException(p.StorageWarning); }
                 BeastBeatSession.Battle = battle;
                 BeastBeatSession.SelectedStage = selectedId; BeastBeatSession.StageGroup = group;
-                BeastBeatSession.PreviewBattle = false; BeastBeatSession.History.Clear(); BeastBeatSession.ResultNotes.Clear();
-                BeastBeatSession.BattleLine = p.Data.Stage(selectedId).npc + "가 승부를 걸어왔다!";
-                BeastBeatSession.TutorialPending = !p.Save.tutorialSeen;
+                BeastBeatSession.PreviewBattle = false;
                 return true;
             }
             catch (Exception ex) { message = ex.Message; statusText.text = message; return false; }

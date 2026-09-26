@@ -35,7 +35,6 @@ namespace BeastBeat
         void Awake()
         {
             if (!enabled) return;
-            BeastBeatSession.HomeScenePath=gameObject.scene.path;
             EnsureProgress();
             RefreshLevel();
         }

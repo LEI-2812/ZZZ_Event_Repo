@@ -14,10 +14,11 @@ namespace BeastBeat
         static readonly XNamespace Ns = "http://schemas.openxmlformats.org/spreadsheetml/2006/main";
         static readonly XNamespace Rel = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
 
-        public static void SaveUnlocked(string path, int userId, IEnumerable<int> bangbooIds, int? level = null)
+        public static void SaveUnlocked(string path, int userId, IEnumerable<int> bangbooIds, int? level = null, IEnumerable<int> clearedStages = null)
         {
             var ids = bangbooIds.Distinct().ToArray();
-            if (ids.Length == 0 && !level.HasValue) return;
+            var stages=(clearedStages??Enumerable.Empty<int>()).Distinct().ToArray();
+            if (ids.Length == 0 && !level.HasValue && stages.Length == 0) return;
             if(level.HasValue && (level.Value < 1 || level.Value > 20)) throw new ArgumentOutOfRangeException(nameof(level));
             string temporary = Path.Combine(Path.GetDirectoryName(path), "." + Path.GetFileName(path) + "." + Guid.NewGuid().ToString("N") + ".tmp");
             try
@@ -46,13 +47,12 @@ namespace BeastBeat
                         var users = rows.Where(r => (int)r.Attribute("r") >= 4).Where(r => r.Elements(Ns + "c").Any(c => Column((string)c.Attribute("r")) == idColumn && Value(c, shared) == userId.ToString())).ToArray();
                         if (users.Length != 1) throw new FormatException("users: 현재 사용자 id=" + userId + "가 없거나 중복되었습니다.");
                         bool changed = false;
-                        foreach (int id in ids)
+                        foreach (string key in ids.Select(id=>"has_bangboo_"+id).Concat(stages.Select(id=>columns.ContainsKey("is_st"+id+"_clear")?"is_st"+id+"_clear":"is_str"+id+"_clear")))
                         {
-                            string key = "has_bangboo_" + id;
                             if (!columns.TryGetValue(key, out var column)) throw new FormatException("users." + key + " 컬럼 누락");
                             string address = column + (string)users[0].Attribute("r");
                             var cell = users[0].Elements(Ns + "c").SingleOrDefault(c => (string)c.Attribute("r") == address);
-                            if (cell == null) throw new FormatException("users!" + address + " 보유 셀 누락");
+                            if (cell == null) throw new FormatException("users!" + address + " 저장 셀 누락");
                             string value = Value(cell, shared);
                             if (value == "1" || value.Equals("true", StringComparison.OrdinalIgnoreCase)) continue;
                             if (cell.Element(Ns + "f") != null) throw new FormatException("users!" + address + " 수식 셀은 수정할 수 없습니다.");

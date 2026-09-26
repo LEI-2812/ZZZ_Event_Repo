@@ -35,7 +35,7 @@ namespace BeastBeat
         readonly List<PauseInfoRow> rows = new List<PauseInfoRow>();
         TMP_Text mySkillText, enemySkillText;
         BattleCatalog catalog;
-        string revision, skillRevision;
+        string skillRevision;
         float nextCheck;
         bool enemyActing, navigating;
         string error;
@@ -96,7 +96,7 @@ namespace BeastBeat
         public void ReloadInfo()
         {
             var book = workbook ? workbook : GameWorkbook.Load();
-            catalog = BattleCatalog.Load(book); revision = book.revision;
+            catalog = BattleCatalog.Load(book);
             Canvas.ForceUpdateCanvases();
             infoScroll.viewport.ForceUpdateRectTransforms();
             float viewportHeight = infoScroll.viewport.rect.height;
@@ -186,7 +186,7 @@ namespace BeastBeat
             foreach(var message in messages)
             {
                 while(IsPaused)yield return null;
-                enemyActing=message.enemy;BeastBeatSession.BattleLine=message.text;BeastBeatSession.History.Add(message.text);
+                enemyActing=message.enemy;
                 ShowSkillMessage(message);
                 if(arena)arena.PlayAction(message.enemy,message.text);
                 Refresh();
@@ -196,7 +196,7 @@ namespace BeastBeat
             Busy=false;enemyActing=false;Refresh();
             if(Battle.Finished)
             {
-                BeastBeatSession.ResultNotes=BattleOutcome.Complete(Battle,BeastBeatSession.PreviewBattle).Notes;
+                BattleOutcome.Complete(Battle,BeastBeatSession.PreviewBattle);
                 BeastBeatSession.Battle=Battle;
                 if (Move_Scene.For(this).OpenResult()) navigating = true;
             }
@@ -210,7 +210,7 @@ namespace BeastBeat
                 Progress.ReloadData(GameData.Load(workbook ? workbook : GameWorkbook.Load()));
                 var next=BattleCatalog.CreateBattle(Progress,Battle==null?BeastBeatSession.SelectedStage:Battle.Stage.id);
                 StopAllCoroutines();Battle=next;BeastBeatSession.Battle=next;Busy=false;enemyActing=false;SkillsOpen=false;error=null;
-                BeastBeatSession.History.Clear();ClearSkillMessages();ClosePopup();ReloadInfo();Refresh();
+                ClearSkillMessages();ClosePopup();ReloadInfo();Refresh();
             }
             catch(Exception ex){ShowError(ex.Message);}
         }

@@ -80,8 +80,6 @@ namespace BeastBeat
         void RememberRewardReturn()
         {
             BeastBeatSession.RewardReturnScenePath = gameObject.scene.path;
-            BeastBeatSession.PreviousScreen = gameObject.scene.path == Entry ? "Entry" : "Home";
-            BeastBeatSession.RewardGroup = 0;
         }
         public void OpenBangboo() => Navigate(Collection, () => BeastBeatSession.BangbooReturnScenePath = gameObject.scene.path);
         // 파티가 비어 있어도 리그 버튼의 목적지는 바꾸지 않습니다. 편성 오류는 배틀 시작 전에 안내합니다.

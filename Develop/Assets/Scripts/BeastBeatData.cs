@@ -87,6 +87,7 @@ namespace BeastBeat
         public bool tutorialSeen, muted, liveBackground, masterTitle;
         public List<OwnedBoo> owned = new List<OwnedBoo>();
         public int pendingWorkbookLevel;
+        public List<int> pendingWorkbookStageClears = new List<int>();
         public List<int> pendingWorkbookUnlocks = new List<int>();
         public List<int> party = new List<int>();
         public int[] configuredParty;
