@@ -74,7 +74,6 @@ namespace BeastBeat
                 partyImages[i].sprite=sprite;
             }
         }
-        public void Confirm() => Move_Scene.For(this).Confirm();
         public bool TryPrepareReturn(out string message)
         {
             message = "";

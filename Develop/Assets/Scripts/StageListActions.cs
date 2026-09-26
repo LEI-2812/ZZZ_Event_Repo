@@ -187,8 +187,6 @@ namespace BeastBeat
             battleButton.interactable = ready;
         }
         static Color ElementColor(int type) { ColorUtility.TryParseHtmlString("#" + Elements.Hex(type), out var color); return color; }
-        public void GoBack() => Move_Scene.For(this).GoBack();
-        public void StartBattle() => Move_Scene.For(this).StartBattle();
         // 화면은 선택 상태와 배틀 준비만 담당하며 실제 씬 로드는 Move_Scene에서 처리합니다.
         public bool TryPrepareBattle(out string message)
         {

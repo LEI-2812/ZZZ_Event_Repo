@@ -80,6 +80,5 @@ namespace BeastBeat
         void UpdateTime(){var end=DateTime.Parse(progress.Save.eventStartedUtc,null, System.Globalization.DateTimeStyles.RoundtripKind).AddDays(Data.event_list.demoLimitedDays);var remaining=end-DateTime.UtcNow;timeText.text=Data.rewardCatalog.user.name+"  ·  "+(remaining.TotalSeconds<=0?"기간 종료":"남은 시간 "+remaining.Days+"일 "+remaining.Hours+"시간");}
         public void ClaimRow(string key){if(!Application.isPlaying||!valid)return;bool claimed=progress.Claim(key);statusText.text=claimed?"보상을 수령했습니다.":string.IsNullOrEmpty(progress.StorageWarning)?"이미 받았거나 수령 조건을 충족하지 않았습니다.":progress.StorageWarning;Refresh();}
         public void GetSpecialReward(){ClaimRow(levelMode?"maxlevel":"special");}
-        public void GoBack() => Move_Scene.For(this).GoBack();
     }
 }

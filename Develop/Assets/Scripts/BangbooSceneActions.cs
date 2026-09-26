@@ -42,7 +42,6 @@ namespace BeastBeat {
   }
   public void AssignFirst(){Assign(0);} public void AssignSecond(){Assign(1);} public void AssignThird(){Assign(2);}
   public void Assign(int slot){if(Catalog==null)return;bool success=Catalog.Assign(Progress,workbook,slot,SelectedId,out var message);if(success)Refresh();statusText.text=message;}
-  public void GoBack() => Move_Scene.For(this).GoBack();
   void OnDestroy(){foreach(var sprite in sprites.Values)if(sprite)Destroy(sprite);portraits?.Dispose();}
  }
 }

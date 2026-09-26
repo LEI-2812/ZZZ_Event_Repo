@@ -153,8 +153,5 @@ namespace BeastBeat
                 achievementCounts[i].text = achievement == null ? "—" : "조건 준비 중";
             }
         }
-        // 이전에 연결한 UnityEvent도 새 이동 컴포넌트로 전달합니다.
-        public void OpenMainScene() => Move_Scene.For(this).OpenMainScene();
-        public void OpenLevelRewards() => Move_Scene.For(this).OpenLevelRewards();
     }
 }

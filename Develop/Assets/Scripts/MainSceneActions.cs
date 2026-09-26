@@ -47,10 +47,5 @@ namespace BeastBeat
             BeastBeatSession.SelectedStage=stage==null?0:stage.id;
             BeastBeatSession.StageGroup=stage==null?1:stage.type;
         }
-        public void GoBack() => Move_Scene.For(this).GoBack();
-        public void OpenPlayerLevel() => Move_Scene.For(this).OpenPlayerLevel();
-        public void OpenLeague() => Move_Scene.For(this).OpenLeague();
-        public void OpenBangboo() => Move_Scene.For(this).OpenBangboo();
-        public void OpenLimitedRewards() => Move_Scene.For(this).OpenLimitedRewards();
     }
 }

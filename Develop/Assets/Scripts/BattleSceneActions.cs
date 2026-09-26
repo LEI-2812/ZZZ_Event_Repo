@@ -214,7 +214,6 @@ namespace BeastBeat
             }
             catch(Exception ex){ShowError(ex.Message);}
         }
-        public void ExitBattle() => Move_Scene.For(this).ExitBattle();
         public void PrepareExit() { StopAllCoroutines(); Busy = false; }
         static T Child<T>(Transform parent,string name) where T:Component => parent.GetComponentsInChildren<T>(true).First(x=>x.name==name);
         void Label(Button b,string value)
