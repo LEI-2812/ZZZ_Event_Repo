@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -64,7 +64,7 @@ namespace BeastBeat
             if(levelMode){var levels=Data.level_rewards.Where(r=>(r.owner_id-1)/10==selectedGroup).GroupBy(r=>r.owner_id).OrderBy(g=>g.Key).ToArray();var rows=Pool(infoScroll,infoPrefab,levels.Length);
                 for(int i=0;i<levels.Length;i++){var l=levels[i];var key="l"+l.Key;rows[i].Reward(this,key,"LV. "+l.Key.ToString("00")+" 보상",l.ToArray(),"현재 LV. "+progress.Save.level,progress.CanClaim(key),RewardClaims.Claimed(progress,key));}
             }else {var rewards=Data.rewardCatalog.rows.Where(r=>r.a_id==selectedGroup).OrderBy(r=>r.id).ToArray();var rows=Pool(infoScroll,infoPrefab,rewards.Length);
-                for(int i=0;i<rewards.Length;i++){var reward=rewards[i];var a=Data.achievement.First(x=>x.id==reward.a_id);var key="ar"+reward.id;rows[i].Reward(this,key,reward.info,new[]{new RewardData{items_id=reward.items_id,amount=reward.amount}},"조건 준비 중",progress.CanClaim(key),RewardClaims.Claimed(progress,key));}
+                for(int i=0;i<rewards.Length;i++){var reward=rewards[i];var a=Data.achievement.First(x=>x.id==reward.a_id);var key="ar"+reward.id;rows[i].Reward(this,key,reward.info,reward.Items,"조건 준비 중",progress.CanClaim(key),RewardClaims.Claimed(progress,key));}
             }
             string specialKey=levelMode?"maxlevel":"special";bool claimed=RewardClaims.Claimed(progress,specialKey),complete=RewardClaims.Complete(progress,levelMode);
             specialButton.interactable=progress.CanClaim(specialKey);specialButtonText.text=claimed?"수령 완료":specialButton.interactable?"수령하기":"진행 중";

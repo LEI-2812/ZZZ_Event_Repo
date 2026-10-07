@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 namespace BeastBeat {
@@ -16,13 +16,12 @@ namespace BeastBeat {
   static int N(Dictionary<string,string> row,string key){if(!row.TryGetValue(key,out var v)||!int.TryParse(v,out var n))throw new FormatException(key+": 정수 필요");return n;}
   static int DamageValue(Dictionary<string,string> row){if(!row.ContainsKey("dmg"))return -1;int value=N(row,"dmg");if(value<0)throw new FormatException("skills.dmg는 0 이상의 정수여야 합니다.");return value;}
   static int Debuff(Dictionary<string,string> row){
-   string key="dbf_type";
-   if(!row.TryGetValue(key,out var value))return 1;
-   switch(value.Trim().ToUpperInvariant()){
-    case "NONE":case "0":case "1":case "":return 1;
-    case "PAR":case "2":return 2;case "FRZ":case "3":return 3;
-    case "BRN":case "4":return 4;case "CNF":case "6":return 6;
-    default:throw new FormatException("skills: 지원하지 않는 상태이상 "+value);
+   if(!row.TryGetValue("dbf_type",out var raw)||!int.TryParse(raw,System.Globalization.NumberStyles.Integer,System.Globalization.CultureInfo.InvariantCulture,out int value))
+    throw new FormatException("skills/dbf_type은 정수여야 합니다. 스킬 id="+row["id"]);
+   switch(value){
+    case 1:case 2:case 3:case 4:case 6:return value;
+    case 5:throw new FormatException("skills/dbf_type: 5는 리타이어 결과 상태이므로 스킬에 사용할 수 없습니다. 스킬 id="+row["id"]);
+    default:throw new FormatException("skills/dbf_type: 1(없음), 2(마비), 3(빙결), 4(화상), 6(혼란)만 허용합니다. 스킬 id="+row["id"]+", 값="+value);
    }
   }
   static bool B(Dictionary<string,string> row,string key){if(!row.TryGetValue(key,out var v))throw new FormatException(key+": 컬럼 누락");if(v=="1"||v.Equals("true",StringComparison.OrdinalIgnoreCase))return true;if(v=="0"||v.Equals("false",StringComparison.OrdinalIgnoreCase))return false;throw new FormatException(key+": True/False 필요");}

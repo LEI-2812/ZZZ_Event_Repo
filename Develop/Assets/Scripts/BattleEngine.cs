@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -145,7 +145,8 @@ namespace BeastBeat
             float m = SkillMultiplier(a,b,skill);
             log.Add(new BattleMessage(Name(a) + "의 " + skill.name + "! " + amount + " 피해" + (m > 1 ? " · 효과가 굉장했다!" : m < 1 ? " · 효과가 약했다…" : ""),ai,skillText));
             bool immune = skill.status == (int)Condition.Paralysis && Progress.Data.Boo(b.id).type == (int)Element.Electric;
-            if (b.Alive && skill.status > 1 && b.state == Condition.Ready && !immune && random.NextDouble() < skill.chance) {
+            bool hasDebuff = skill.status == (int)Condition.Paralysis || skill.status == (int)Condition.Frozen || skill.status == (int)Condition.Burn || skill.status == (int)Condition.Confused;
+            if (b.Alive && hasDebuff && b.state == Condition.Ready && !immune && random.NextDouble() < skill.chance) {
                 b.state = (Condition)skill.status; b.stateTurns = b.state == Condition.Frozen ? random.Next(1,3) : 2;
                 log.Add(new BattleMessage(Name(b) + "에게 " + StatusName(b.state) + " 발생!",ai));
             }

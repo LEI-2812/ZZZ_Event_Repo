@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using UnityEditor;
@@ -23,7 +23,7 @@ namespace BeastBeat.Editor
                 var cells=EventCatalog.ReadRows(fixture.records);
                 var header=cells[0];var row=cells.Skip(1).First(r=>r[header.IndexOf("id")]=="18");
                 row[header.IndexOf("dmg")]="6";
-                row[header.IndexOf(header.Contains("dbf_type")?"dbf_type":"debuff_type")]="CNF";
+                row[header.IndexOf(header.Contains("dbf_type")?"dbf_type":"debuff_type")]="6";
                 row[header.IndexOf(header.Contains("dbf_prob")?"dbf_prob":"debuff_prob")]="35";
                 fixture.records=string.Join("\n",cells.Select(r=>string.Join(",",r.Select(v=>"\""+v.Replace("\"","\"\"")+"\""))));
                 var data = GameData.Load(book);

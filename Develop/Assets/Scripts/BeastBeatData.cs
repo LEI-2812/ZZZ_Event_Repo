@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,7 +6,7 @@ using UnityEngine;
 namespace BeastBeat
 {
     public enum Element { Physical = 1, Fire, Ice, Electric, Ether }
-    public enum Condition { Ready = 1, Paralysis, Frozen, Burn, Confused = 6 }
+    public enum Condition { Ready = 1, Paralysis = 2, Frozen = 3, Burn = 4, Confused = 6 }
     [Serializable] public class BooData
     {
         public int id, type, hp, atk, def, unlockLevel;

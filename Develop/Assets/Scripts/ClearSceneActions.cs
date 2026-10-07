@@ -11,7 +11,7 @@ namespace BeastBeat
     {
         public GameWorkbook workbook;
         public Image[] partyImages;
-        public TMP_Text[] levelLabels, levelUpLabels;
+        public TMP_Text[] levelUpLabels;
         public TMP_Text infoText, titleText;
         public Button okButton;
 
@@ -64,7 +64,7 @@ namespace BeastBeat
                 bool filled=i<DisplayedParty.Length;partyImages[i].gameObject.SetActive(filled);
                 if(levelUpLabels!=null&&i<levelUpLabels.Length&&levelUpLabels[i])levelUpLabels[i].gameObject.SetActive(filled&&DisplayedParty[i].leveledUp);
                 if(!filled)continue;
-                var member=DisplayedParty[i];levelLabels[i].text="Lv. "+member.lv;
+                var member=DisplayedParty[i];
                 int key=member.bid+(member.lv>=Progress.Data.balance.evolutionLevel?1000:0);
                 if(!portraitsById.TryGetValue(key,out var sprite)){
                     var texture=portraits.Get(Progress.Data.Boo(member.bid),member.lv>=Progress.Data.balance.evolutionLevel);

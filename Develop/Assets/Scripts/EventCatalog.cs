@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -9,8 +9,8 @@ namespace BeastBeat
     [Serializable]
     public sealed class EventCatalogEntry
     {
-        public int id;
-        public string category, title, description, background;
+        public int id, category;
+        public string title, description, background;
         public DateTime updatedAt;
         public int[] rewardIds, achievementIds;
     }
@@ -38,12 +38,12 @@ namespace BeastBeat
                 {
                     var entry = new EventCatalogEntry {
                         id = int.Parse(Get("id"), CultureInfo.InvariantCulture),
-                        category = Get("category"), title = Get("title"), description = Get("description").Replace("\\n", "\n"),
+                        category = int.Parse(Get("category"), CultureInfo.InvariantCulture), title = Get("title"), description = Get("description").Replace("\\n", "\n"),
                         updatedAt = DateTime.ParseExact(Get("updated_at"), "yyyy-MM-dd", CultureInfo.InvariantCulture),
                         background = "", rewardIds = Ids(Get("reward_id")), achievementIds = Ids(Get("achievement_id"))
                     };
                     if (entry.id <= 0 || !ids.Add(entry.id)) throw new FormatException("ID는 중복 없는 양수여야 합니다.");
-                    if (entry.category != "permanent" && entry.category != "limited") throw new FormatException("category는 permanent 또는 limited여야 합니다.");
+                    if (entry.category != 0 && entry.category != 1) throw new FormatException("category는 0(상시) 또는 1(한정)이어야 합니다.");
                     if (entry.title.Length == 0) throw new FormatException("title이 비어 있습니다.");
                     if (entry.rewardIds.Length > 6 || entry.achievementIds.Length > 3) throw new FormatException("보상은 최대 6개, 업적은 최대 3개입니다.");
                     entries.Add(entry);

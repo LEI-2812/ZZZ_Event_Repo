@@ -24,7 +24,7 @@ namespace BeastBeat.Editor
             count = 0;
             var source = GameWorkbook.Load(); var data = GameData.Load(source); data.Validate();
             Check(EventCatalog.Parse(source.ReadSheet("event_list")).Count == 10, "all current events load without enabled");
-            Check(EventCatalog.Parse("id,category,updated_at,title,description,enabled\n1,permanent,2026-09-01,test,test,0").Count == 1, "legacy enabled ignored");
+            Check(EventCatalog.Parse("id,category,updated_at,title,description,enabled\n1,0,2026-09-01,test,test,0").Count == 1, "legacy enabled ignored");
             Check(data.stage_list.Length == 14 && data.stage_list[0].name == "Random Play!", "NPC rows and team title");
             Check(data.stage_list.Sum(s => s.level_gain) == 19, "configured growth totals");
             Check(data.stage_list.Count(s => s.level_gain == 0) == 4, "zero growth stages accepted");
@@ -86,7 +86,7 @@ namespace BeastBeat.Editor
                 battle.Finished = battle.Won = true; BattleOutcome.Complete(battle, true);
                 Preview("Clear Scene", s => {
                     var ui = Component<ClearSceneActions>(s); ui.workbook = book; ui.SendMessage("Awake");
-                    Check(ui.DisplayedParty[0].lv == 7 && ui.levelLabels[0].text == "Lv. 7", "result level independent of party.lv");
+                    Check(ui.DisplayedParty[0].lv == 7, "result level independent of party.lv");
                 });
                 p.Save.level = 1; p.Save.cleared.Clear(); p.SyncPartyLevels();
                 foreach(var stage in modified.stage_list.OrderBy(s => s.id)) p.Victory(stage.id, p.Save.party);

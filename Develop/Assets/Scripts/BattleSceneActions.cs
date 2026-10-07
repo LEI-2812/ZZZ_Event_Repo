@@ -256,8 +256,19 @@ namespace BeastBeat
         {
             if(Battle==null)return;
             Status(myStatus,Battle.Player,false);Status(enemyStatus,Battle.Enemy,true);
-            myTurn.text=Busy&&!enemyActing?"내 턴 ▶":"내 턴";enemyTurn.text=Busy&&enemyActing?"상대 턴 ▶":"상대 턴";
-            myTurn.alpha=enemyActing?.45f:1;enemyTurn.alpha=enemyActing?1:.45f;
+
+            myTurn.text = "내 턴";
+            enemyTurn.text = "상대 턴";
+
+            ColorUtility.TryParseHtmlString("#F64674", out Color activeColor);
+            ColorUtility.TryParseHtmlString("#FFFFFF", out Color inactiveColor);
+
+            myTurn.transform.parent.GetComponent<Image>().color =
+                enemyActing ? inactiveColor : activeColor;
+
+            enemyTurn.transform.parent.GetComponent<Image>().color =
+                enemyActing ? activeColor : inactiveColor;
+
             if(arena)arena.Sync(Battle);
             var buttons=new[]{fightButton,changeButton,retireButton};
             if(SkillsOpen)

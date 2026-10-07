@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
 namespace BeastBeat
 {
-    [Serializable] public sealed class AchievementRewardEntry { public int id, items_id, a_id, amount; public string info; }
-    [Serializable] public sealed class RewardUser { public int id, level; public int[] clearedStages=Array.Empty<int>(); public string name; public bool is_get_lm_reward, is_get_lv_reward; }
+    [Serializable] public sealed class AchievementRewardEntry { public int id, a_id; public int[] itemIds, amounts; public string info; public RewardData[] Items => itemIds.Select((itemId, i) => new RewardData { id=id, owner_id=a_id, items_id=itemId, amount=amounts[i] }).ToArray(); }
+    [Serializable] public sealed class RewardUser { public int id, level, gender; public int[] clearedStages=Array.Empty<int>(); public string name; public bool is_get_lm_reward, is_get_lv_reward; }
     public sealed class RewardCatalog
     {
         public AchievementRewardEntry[] rows;
@@ -32,11 +32,34 @@ namespace BeastBeat
             if (!int.TryParse(row[key],NumberStyles.Integer,CultureInfo.InvariantCulture,out int value) || value <= 0) throw new FormatException(key + "는 양수입니다: " + row[key]);
             return value;
         }
+        static int[] Numbers(Dictionary<string,string> row, string key)
+        {
+            var parts = row[key].Split(';');
+            if (parts.Length < 1 || parts.Length > 3)
+                throw new FormatException("achievement_reward." + key + "는 최대 3개까지 입력할 수 있습니다.");
+            return parts.Select(part => {
+                if (!int.TryParse(part.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int value) || value <= 0)
+                    throw new FormatException("achievement_reward." + key + "는 세미콜론으로 구분한 양수여야 합니다.");
+                return value;
+            }).ToArray();
+        }
         static bool Flag(string value)
         {
             if(value=="0"||value.Equals("false",StringComparison.OrdinalIgnoreCase))return false;
             if(value=="1"||value.Equals("true",StringComparison.OrdinalIgnoreCase))return true;
             throw new FormatException("획득 여부는 0 또는 1입니다.");
+        }
+        static int Gender(Dictionary<string,string> row)
+        {
+            int value = Number(row, "gender");
+            if (value != 1 && value != 2) throw new FormatException("users.gender는 1(남성) 또는 2(여성)이어야 합니다.");
+            return value;
+        }
+        public static int ReadPlayerGender(GameWorkbook book)
+        {
+            var row = Table(book, "users", "id", "gender").SingleOrDefault(r => Number(r, "id") == 1);
+            if (row == null) throw new FormatException("users 시트에 현재 사용자 id=1이 필요합니다.");
+            return Gender(row);
         }
         public static void Apply(GameData data, GameWorkbook book)
         {
@@ -46,18 +69,18 @@ namespace BeastBeat
                 if(string.IsNullOrWhiteSpace(n["name"]))throw new FormatException("업적 이름 누락: "+id);
                 return new AchievementData{id=id,name=n["name"]};
             }).OrderBy(a=>a.id).ToArray();
-            var rewards=Table(book,"achievement_reward","id","items_id","achievement_info","a_id","amount").Select(r=>new AchievementRewardEntry{id=Number(r,"id"),items_id=Number(r,"items_id"),info=r["achievement_info"],a_id=Number(r,"a_id"),amount=Number(r,"amount")}).OrderBy(r=>r.id).ToArray();
-            foreach(var row in rewards)if(!achievements.Any(a=>a.id==row.a_id)||!data.items.Any(i=>i.id==row.items_id)||string.IsNullOrWhiteSpace(row.info))throw new FormatException("achievement_reward 참조/제목 오류: "+row.id);
+            var rewards=Table(book,"achievement_reward","id","items_id","achievement_info","a_id","amount").Select(r=>new AchievementRewardEntry{id=Number(r,"id"),itemIds=Numbers(r,"items_id"),info=r["achievement_info"],a_id=Number(r,"a_id"),amounts=Numbers(r,"amount")}).OrderBy(r=>r.id).ToArray();
+            foreach(var row in rewards)if(!achievements.Any(a=>a.id==row.a_id)||row.itemIds.Length!=row.amounts.Length||row.itemIds.Distinct().Count()!=row.itemIds.Length||row.itemIds.Any(id=>!data.items.Any(i=>i.id==id))||string.IsNullOrWhiteSpace(row.info))throw new FormatException("achievement_reward 참조/제목 오류: "+row.id);
             var levels=Table(book,"level_reward","id","lv_num","items_id","amount").Select(r=>new RewardData{id=Number(r,"id"),owner_id=Number(r,"lv_num"),items_id=Number(r,"items_id"),amount=Number(r,"amount")}).OrderBy(r=>r.id).ToArray();
             foreach(var row in levels)if(row.owner_id>data.balance.maxLevel||!data.items.Any(i=>i.id==row.items_id))throw new FormatException("level_reward 참조 오류: "+row.id);
-            var users=Table(book,"users","id","category","level","is_get_lm_reward","is_get_lv_reward").Select(r=>new RewardUser{id=Number(r,"id"),name=r["category"],level=Number(r,"level"),clearedStages=data.stage_list.Where(stage=>{string key=r.ContainsKey("is_st"+stage.id+"_clear")?"is_st"+stage.id+"_clear":"is_str"+stage.id+"_clear";if(!r.ContainsKey(key))throw new FormatException("users 컬럼 누락: "+key);return Flag(r[key]);}).Select(stage=>stage.id).ToArray(),is_get_lm_reward=Flag(r["is_get_lm_reward"]),is_get_lv_reward=Flag(r["is_get_lv_reward"])}).ToArray();
+            var users=Table(book,"users","id","name","gender","level","is_get_lm_reward","is_get_lv_reward").Select(r=>new RewardUser{id=Number(r,"id"),name=r["name"],gender=Gender(r),level=Number(r,"level"),clearedStages=data.stage_list.Where(stage=>{string key=r.ContainsKey("is_st"+stage.id+"_clear")?"is_st"+stage.id+"_clear":"is_str"+stage.id+"_clear";if(!r.ContainsKey(key))throw new FormatException("users 컬럼 누락: "+key);return Flag(r[key]);}).Select(stage=>stage.id).ToArray(),is_get_lm_reward=Flag(r["is_get_lm_reward"]),is_get_lv_reward=Flag(r["is_get_lv_reward"])}).ToArray();
             var user=users.SingleOrDefault(u=>u.id==1)??throw new FormatException("users 시트에 현재 사용자 id=1이 필요합니다.");
             if(user.level>data.balance.maxLevel)throw new FormatException("users.level 범위 초과");
             var specials=Table(book,"special_reward","id","type","items_id","amount");
             foreach(var row in specials)if(!new[]{"special","maxlevel"}.Contains(row["type"])||!data.items.Any(i=>i.id==Number(row,"items_id")))throw new FormatException("특별 보상 참조 오류");
             var mapped=specials.GroupBy(r=>r["type"]).ToDictionary(g=>g.Key,g=>g.Select(r=>new RewardData{id=Number(r,"id"),items_id=Number(r,"items_id"),amount=Number(r,"amount")}).ToArray());
             if(!mapped.ContainsKey("special")||!mapped.ContainsKey("maxlevel"))throw new FormatException("special/maxlevel 지급 아이템이 필요합니다.");
-            data.achievement=achievements;data.achievement_rewards=rewards.Select(r=>new RewardData{id=r.id,owner_id=r.a_id,items_id=r.items_id,amount=r.amount}).ToArray();data.level_rewards=levels;
+            data.achievement=achievements;data.achievement_rewards=rewards.SelectMany(r=>r.Items).ToArray();data.level_rewards=levels;
             data.rewardCatalog=new RewardCatalog{rows=rewards,user=user,special=mapped};
         }
     }

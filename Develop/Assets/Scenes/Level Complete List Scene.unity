@@ -877,17 +877,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 260199093558176434, guid: ca2523fc75aac0844855a214c0f1a21b, type: 3}
   m_PrefabInstance: {fileID: 85196802}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &85196805 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5447429027450625022, guid: ca2523fc75aac0844855a214c0f1a21b, type: 3}
-  m_PrefabInstance: {fileID: 85196802}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!114 &85196806 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8106722811003037087, guid: ca2523fc75aac0844855a214c0f1a21b, type: 3}
@@ -939,7 +928,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.RewardListRow
   titleLabel: {fileID: 85196806}
-  progressLabel: {fileID: 85196805}
+  progressLabel: {fileID: 0}
   buttonLabel: {fileID: 0}
   actionButton: {fileID: 85196808}
   background: {fileID: 85196809}
@@ -1230,17 +1219,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
---- !u!114 &191450865 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5447429027450625022, guid: ca2523fc75aac0844855a214c0f1a21b, type: 3}
-  m_PrefabInstance: {fileID: 191450861}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!114 &191450866 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8106722811003037087, guid: ca2523fc75aac0844855a214c0f1a21b, type: 3}
@@ -1270,7 +1248,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.RewardListRow
   titleLabel: {fileID: 191450866}
-  progressLabel: {fileID: 191450865}
+  progressLabel: {fileID: 0}
   buttonLabel: {fileID: 674397868}
   actionButton: {fileID: 1500377337}
   background: {fileID: 191450864}
@@ -1665,7 +1643,7 @@ RectTransform:
   m_Father: {fileID: 1791543052}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2885,17 +2863,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
---- !u!114 &360070222 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5447429027450625022, guid: ca2523fc75aac0844855a214c0f1a21b, type: 3}
-  m_PrefabInstance: {fileID: 360070218}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!114 &360070223 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8106722811003037087, guid: ca2523fc75aac0844855a214c0f1a21b, type: 3}
@@ -2925,7 +2892,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.RewardListRow
   titleLabel: {fileID: 360070223}
-  progressLabel: {fileID: 360070222}
+  progressLabel: {fileID: 0}
   buttonLabel: {fileID: 353844759}
   actionButton: {fileID: 1789267064}
   background: {fileID: 360070221}
@@ -3244,7 +3211,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &479591888
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3399,7 +3366,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4280556052
   m_fontColor: {r: 0.08, g: 0.1, b: 0.14, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -4488,7 +4455,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &782255777
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4553,7 +4520,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1063478751}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.49586776
+  m_Size: 0.49586773
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4881,17 +4848,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
---- !u!114 &794408874 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5447429027450625022, guid: ca2523fc75aac0844855a214c0f1a21b, type: 3}
-  m_PrefabInstance: {fileID: 794408870}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!114 &794408875 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8106722811003037087, guid: ca2523fc75aac0844855a214c0f1a21b, type: 3}
@@ -4921,7 +4877,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.RewardListRow
   titleLabel: {fileID: 794408875}
-  progressLabel: {fileID: 794408874}
+  progressLabel: {fileID: 0}
   buttonLabel: {fileID: 1881259724}
   actionButton: {fileID: 213012112}
   background: {fileID: 794408873}
@@ -5470,17 +5426,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 260199093558176434, guid: ca2523fc75aac0844855a214c0f1a21b, type: 3}
   m_PrefabInstance: {fileID: 918285581}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &918285584 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5447429027450625022, guid: ca2523fc75aac0844855a214c0f1a21b, type: 3}
-  m_PrefabInstance: {fileID: 918285581}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!114 &918285585 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8106722811003037087, guid: ca2523fc75aac0844855a214c0f1a21b, type: 3}
@@ -5532,7 +5477,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.RewardListRow
   titleLabel: {fileID: 918285585}
-  progressLabel: {fileID: 918285584}
+  progressLabel: {fileID: 0}
   buttonLabel: {fileID: 0}
   actionButton: {fileID: 918285587}
   background: {fileID: 918285588}
@@ -6093,17 +6038,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
---- !u!114 &1011195394 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5447429027450625022, guid: ca2523fc75aac0844855a214c0f1a21b, type: 3}
-  m_PrefabInstance: {fileID: 1011195390}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!114 &1011195395 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8106722811003037087, guid: ca2523fc75aac0844855a214c0f1a21b, type: 3}
@@ -6133,7 +6067,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.RewardListRow
   titleLabel: {fileID: 1011195395}
-  progressLabel: {fileID: 1011195394}
+  progressLabel: {fileID: 0}
   buttonLabel: {fileID: 1728216233}
   actionButton: {fileID: 952825095}
   background: {fileID: 1011195393}
@@ -6414,17 +6348,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 260199093558176434, guid: ca2523fc75aac0844855a214c0f1a21b, type: 3}
   m_PrefabInstance: {fileID: 1053196683}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1053196686 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5447429027450625022, guid: ca2523fc75aac0844855a214c0f1a21b, type: 3}
-  m_PrefabInstance: {fileID: 1053196683}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!114 &1053196687 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8106722811003037087, guid: ca2523fc75aac0844855a214c0f1a21b, type: 3}
@@ -6476,7 +6399,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.RewardListRow
   titleLabel: {fileID: 1053196687}
-  progressLabel: {fileID: 1053196686}
+  progressLabel: {fileID: 0}
   buttonLabel: {fileID: 0}
   actionButton: {fileID: 1053196689}
   background: {fileID: 1053196690}
@@ -6518,8 +6441,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1879008149}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 0.5041323}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6789,6 +6712,7 @@ GameObject:
   - component: {fileID: 1134259948}
   - component: {fileID: 1134259947}
   - component: {fileID: 1134259946}
+  - component: {fileID: 1134259949}
   m_Layer: 0
   m_Name: Btn_Goback
   m_TagString: Untagged
@@ -6885,7 +6809,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.088050246, g: 0.088050246, b: 0.088050246, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6910,6 +6834,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1134259944}
   m_CullTransparentMesh: 1
+--- !u!114 &1134259949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134259944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
+  m_EffectColor: {r: 0.78431374, g: 0.09411765, b: 0, a: 1}
+  m_EffectDistance: {x: 5, y: -5}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1193699862
 GameObject:
   m_ObjectHideFlags: 0
@@ -7328,17 +7267,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
---- !u!114 &1222841839 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5447429027450625022, guid: ca2523fc75aac0844855a214c0f1a21b, type: 3}
-  m_PrefabInstance: {fileID: 1222841835}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!114 &1222841840 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8106722811003037087, guid: ca2523fc75aac0844855a214c0f1a21b, type: 3}
@@ -7368,7 +7296,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.RewardListRow
   titleLabel: {fileID: 1222841840}
-  progressLabel: {fileID: 1222841839}
+  progressLabel: {fileID: 0}
   buttonLabel: {fileID: 2083168361}
   actionButton: {fileID: 384465862}
   background: {fileID: 1222841838}
@@ -7595,12 +7523,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.VerticalLayoutGroup
   m_Padding:
-    m_Left: 8
-    m_Right: 8
-    m_Top: 8
-    m_Bottom: 8
+    m_Left: 10
+    m_Right: 10
+    m_Top: 10
+    m_Bottom: 10
   m_ChildAlignment: 0
-  m_Spacing: 6
+  m_Spacing: 10
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
@@ -8031,12 +7959,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.VerticalLayoutGroup
   m_Padding:
-    m_Left: 8
-    m_Right: 8
-    m_Top: 8
-    m_Bottom: 8
+    m_Left: 10
+    m_Right: 10
+    m_Top: 10
+    m_Bottom: 10
   m_ChildAlignment: 0
-  m_Spacing: 6
+  m_Spacing: 10
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
@@ -8831,7 +8759,7 @@ RectTransform:
   m_Father: {fileID: 1900591100}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
@@ -9182,8 +9110,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -9593,8 +9521,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+    rgba: 4278196424
+  m_fontColor: {r: 0.78431374, g: 0.09411765, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -9699,7 +9627,7 @@ RectTransform:
   m_Father: {fileID: 2092485829}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
@@ -9765,6 +9693,7 @@ GameObject:
   - component: {fileID: 1774400795}
   - component: {fileID: 1774400797}
   - component: {fileID: 1774400796}
+  - component: {fileID: 1774400798}
   m_Layer: 0
   m_Name: Img_Specialui_Bg
   m_TagString: Untagged
@@ -9808,7 +9737,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.30980393, g: 0.31764707, b: 0.30980393, a: 1}
+  m_Color: {r: 0.28930807, g: 0.28930807, b: 0.28930807, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -9833,6 +9762,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1774400794}
   m_CullTransparentMesh: 1
+--- !u!114 &1774400798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1774400794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 4.5, y: -4.5}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1775377050
 GameObject:
   m_ObjectHideFlags: 0
@@ -10362,6 +10306,7 @@ GameObject:
   - component: {fileID: 1844309931}
   - component: {fileID: 1844309933}
   - component: {fileID: 1844309932}
+  - component: {fileID: 1844309934}
   m_Layer: 0
   m_Name: Img_Scrui_Bg
   m_TagString: Untagged
@@ -10404,7 +10349,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.20784314, g: 0.21176471, b: 0.20784314, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -10429,6 +10374,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1844309930}
   m_CullTransparentMesh: 1
+--- !u!114 &1844309934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844309930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 4.5, y: -4.5}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1862560874
 GameObject:
   m_ObjectHideFlags: 0
@@ -10740,7 +10700,7 @@ MonoBehaviour:
   m_ScrollSensitivity: 35
   m_Viewport: {fileID: 1570034654}
   m_HorizontalScrollbar: {fileID: 0}
-  m_VerticalScrollbar: {fileID: 479591889}
+  m_VerticalScrollbar: {fileID: 0}
   m_HorizontalScrollbarVisibility: 2
   m_VerticalScrollbarVisibility: 2
   m_HorizontalScrollbarSpacing: -3
@@ -10761,7 +10721,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.15686275, g: 0.16470589, b: 0.1882353, a: 0.392}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.8627451}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -11086,6 +11046,7 @@ GameObject:
   - component: {fileID: 1957920914}
   - component: {fileID: 1957920913}
   - component: {fileID: 1957920912}
+  - component: {fileID: 1957920915}
   m_Layer: 0
   m_Name: Btn_Getreward
   m_TagString: Untagged
@@ -11182,7 +11143,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.088050246, g: 0.088050246, b: 0.088050246, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -11207,6 +11168,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1957920910}
   m_CullTransparentMesh: 1
+--- !u!114 &1957920915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1957920910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
+  m_EffectColor: {r: 0.25882354, g: 0.25882354, b: 0.25882354, a: 1}
+  m_EffectDistance: {x: 5, y: -5}
+  m_UseGraphicAlpha: 1
 --- !u!1001 &1978296764
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11393,17 +11369,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 260199093558176434, guid: ca2523fc75aac0844855a214c0f1a21b, type: 3}
   m_PrefabInstance: {fileID: 1978296764}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1978296767 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5447429027450625022, guid: ca2523fc75aac0844855a214c0f1a21b, type: 3}
-  m_PrefabInstance: {fileID: 1978296764}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!114 &1978296768 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8106722811003037087, guid: ca2523fc75aac0844855a214c0f1a21b, type: 3}
@@ -11455,7 +11420,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.RewardListRow
   titleLabel: {fileID: 1978296768}
-  progressLabel: {fileID: 1978296767}
+  progressLabel: {fileID: 0}
   buttonLabel: {fileID: 0}
   actionButton: {fileID: 1978296770}
   background: {fileID: 1978296771}
@@ -12465,7 +12430,7 @@ MonoBehaviour:
   m_ScrollSensitivity: 35
   m_Viewport: {fileID: 1750069659}
   m_HorizontalScrollbar: {fileID: 0}
-  m_VerticalScrollbar: {fileID: 782255778}
+  m_VerticalScrollbar: {fileID: 0}
   m_HorizontalScrollbarVisibility: 2
   m_VerticalScrollbarVisibility: 2
   m_HorizontalScrollbarSpacing: -3
@@ -12486,7 +12451,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.15686275, g: 0.16470589, b: 0.1882353, a: 0.392}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.8627451}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -12785,17 +12750,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 260199093558176434, guid: ca2523fc75aac0844855a214c0f1a21b, type: 3}
   m_PrefabInstance: {fileID: 3090551788094821637}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3090551788094821640 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5447429027450625022, guid: ca2523fc75aac0844855a214c0f1a21b, type: 3}
-  m_PrefabInstance: {fileID: 3090551788094821637}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!114 &3090551788094821641 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8106722811003037087, guid: ca2523fc75aac0844855a214c0f1a21b, type: 3}
@@ -12847,7 +12801,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeastBeat.RewardListRow
   titleLabel: {fileID: 3090551788094821641}
-  progressLabel: {fileID: 3090551788094821640}
+  progressLabel: {fileID: 0}
   buttonLabel: {fileID: 0}
   actionButton: {fileID: 3090551788094821643}
   background: {fileID: 3090551788094821644}

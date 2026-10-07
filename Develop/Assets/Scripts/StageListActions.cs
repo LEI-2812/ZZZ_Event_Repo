@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -122,9 +122,7 @@ namespace BeastBeat
                 if (i < visible.Length)
                 {
                     var stage = visible[i]; rows[i].name = "Btn_Stage_" + stage.id;
-                    bool open = !Application.isPlaying || BeastBeatSession.Progress.StageOpen(stage.id);
-                    bool cleared = Application.isPlaying && BeastBeatSession.Progress.Save.cleared.Contains(stage.id);
-                    rows[i].Bind(this, stage, stage.id == selectedId, open, cleared);
+                    rows[i].Bind(this, stage, stage.id == selectedId);
                 }
             }
             for (int i = 0; i < groupButtons.Length; i++) groupButtons[i].targetGraphic.color = i + 1 == group ? activeTab : inactiveTab;
@@ -154,7 +152,7 @@ namespace BeastBeat
             selectedId = stage == null ? 0 : stage.id;
             foreach (var row in stageScroll.content.GetComponentsInChildren<StageCatalogRow>(true)) row.SetSelected(row.StageId == selectedId);
             if (Application.isPlaying && stage != null) { BeastBeatSession.SelectedStage = stage.id; BeastBeatSession.StageGroup = group; }
-            stageTitle.text = stage == null ? "등록된 스테이지가 없습니다" : stage.name;
+            stageTitle.text = stage == null ? "등록된 스테이지가 없습니다" : StageCatalog.GroupName(stage.type) + " 배틀 " + data.stage_list.Count(s => s.event_list_id == stage.event_list_id && s.type == stage.type && s.id <= stage.id).ToString("D2");
             npcName.text = stage == null ? "—" : stage.npc;
             npcName.gameObject.SetActive(!npcPortrait.sprite);
             string dialogue = stage == null ? "" : stage.npc_dialogue.Replace("\r", " ").Replace("\n", " ");
@@ -174,6 +172,7 @@ namespace BeastBeat
                 rewardLabels[i].text = item == null ? "—" : ItemCatalog.DisplayName(item) + "\n×" + reward.amount;
                 rewardImages[i].color = item == null ? new Color(.2f, .22f, .25f) : ItemCatalog.GradeColor(item.grade);
             }
+            bool locked = stage != null && Application.isPlaying && !BeastBeatSession.Progress.StageOpen(stage.id);
             bool ready = stage != null;
             statusText.text = stage == null ? "이 분류에 스테이지를 추가해 주세요." : "";
             clearRewardTitle.text = "클리어 보상";
@@ -182,9 +181,11 @@ namespace BeastBeat
                 var p = BeastBeatSession.Progress;
                 if (!p.Eligible) { ready = false; statusText.text = "이벤트 참여 조건을 확인해 주세요."; }
 
-                else if (!p.StageOpen(stage.id)) { ready = false; statusText.text = "앞선 스테이지를 클리어하면 도전할 수 있습니다."; }
+                else if (locked) { ready = false; }
             }
             battleButton.interactable = ready;
+            var battleLabel = battleButton.GetComponentInChildren<TMP_Text>(true);
+            if (battleLabel) battleLabel.text = locked ? "이전 스테이지 클리어 필요" : "배틀 시작";
         }
         static Color ElementColor(int type) { ColorUtility.TryParseHtmlString("#" + Elements.Hex(type), out var color); return color; }
         // 화면은 선택 상태와 배틀 준비만 담당하며 실제 씬 로드는 Move_Scene에서 처리합니다.

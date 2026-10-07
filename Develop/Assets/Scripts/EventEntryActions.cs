@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -22,21 +22,22 @@ namespace BeastBeat
 
 
         [Header("Tab colors (no sprites)")]
-        public Color activeTab = new Color(1f, .87f, .08f), inactiveTab = Color.white;
-        [SerializeField] string category = "permanent";
+        public Color activeTab = new Color(1f, .87f, .08f);
+        private readonly Color inactiveTab = new Color32(0x16, 0x16, 0x16, 0xFF);
+        int category;
         [SerializeField] int selectedId;
         string lastRevision;
         float nextRefresh;
         Sprite initialBackground;
         GameData data;
         List<EventCatalogEntry> entries = new List<EventCatalogEntry>();
-        static string rememberedCategory = "permanent";
+        static int rememberedCategory;
         static int rememberedId;
-        public string Category => category;
+        public int Category => category;
         public int SelectedId => selectedId;
         public int VisibleCount => entries.Count(e => e.category == category);
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        static void ResetSelection() { rememberedCategory = "permanent"; rememberedId = 0; }
+        static void ResetSelection() { rememberedCategory = 0; rememberedId = 0; }
         void Awake()
         {
             if (!enabled) return;
@@ -80,9 +81,9 @@ namespace BeastBeat
             }
             catch (Exception ex) { goEventButton.interactable=false; Debug.LogError("이벤트 XLSX: " + ex.Message, this); if (descriptionText) descriptionText.text = "이벤트 데이터를 확인해 주세요.\n" + ex.Message; }
         }
-        public void ShowPermanent() { SetCategory("permanent"); }
-        public void ShowLimited() { SetCategory("limited"); }
-        void SetCategory(string value)
+        public void ShowPermanent() { SetCategory(0); }
+        public void ShowLimited() { SetCategory(1); }
+        void SetCategory(int value)
         {
             if (category != value) selectedId = 0;
             category = value; RefreshList(true);
@@ -114,8 +115,12 @@ namespace BeastBeat
                 rows[i].gameObject.SetActive(i < visible.Count);
                 if (i < visible.Count) { rows[i].name = "Btn_Event_" + visible[i].id; rows[i].Bind(this, visible[i], visible[i].id == selectedId); }
             }
-            if (permanentButton.targetGraphic) permanentButton.targetGraphic.color = category == "permanent" ? activeTab : inactiveTab;
-            if (limitedButton.targetGraphic) limitedButton.targetGraphic.color = category == "limited" ? activeTab : inactiveTab;
+            if (permanentButton.targetGraphic) permanentButton.targetGraphic.color = category == 0 ? activeTab : inactiveTab;
+            if (limitedButton.targetGraphic) limitedButton.targetGraphic.color = category == 1 ? activeTab : inactiveTab;
+
+            permanentButton.GetComponentInChildren<TMP_Text>(true).color = category == 0 ? Color.black : Color.white;
+            limitedButton.GetComponentInChildren<TMP_Text>(true).color = category == 1 ? Color.black : Color.white;
+
             goEventButton.interactable = visible.Count > 0;
             SelectEvent(selectedId);
             LayoutRebuilder.ForceRebuildLayoutImmediate(eventScroll.content);
@@ -132,7 +137,7 @@ namespace BeastBeat
             foreach (var row in eventScroll.content.GetComponentsInChildren<EventCatalogRow>(true)) row.SetSelected(row.EventId == selectedId);
             titleText.text = entry == null ? "등록된 이벤트가 없습니다" : entry.title;
             descriptionText.text = entry == null ? "XLSX에 이벤트를 추가해 주세요." : entry.description;
-            statusText.text = category == "permanent" ? "리두기록" : "기간 한정";
+            statusText.text = category == 0 ? "리두기록" : "기간 한정";
             if (background)
             {
                 if (!initialBackground) initialBackground = background.sprite;
